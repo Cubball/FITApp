@@ -36,4 +36,11 @@ public class RolesController : ControllerBase
         // TODO:
         throw new NotImplementedException();
     }
+
+    [HttpPut("{id}")]
+    public ActionResult Put(string id, [FromBody] UpdateRoleRequest request)
+    {
+        // TODO:
+        throw new NotImplementedException();
+    }
 }
