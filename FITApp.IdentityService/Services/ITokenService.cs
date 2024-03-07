@@ -4,7 +4,7 @@ namespace FITApp.IdentityService.Services;
 
 public interface ITokenService
 {
-    string GenerateJwtToken(IEnumerable<Claim> claims);
+    string GenerateJwt(IEnumerable<Claim> claims);
 
     string GenerateRefreshToken();
 

@@ -24,7 +24,7 @@ public class TokenService : ITokenService
         _clock = clock;
     }
 
-    public string GenerateJwtToken(IEnumerable<Claim> claims)
+    public string GenerateJwt(IEnumerable<Claim> claims)
     {
         var tokenDescriptior = new SecurityTokenDescriptor
         {
