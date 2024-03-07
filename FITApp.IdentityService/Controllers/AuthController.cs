@@ -15,4 +15,11 @@ public class AuthController : ControllerBase
         // TODO:
         throw new NotImplementedException();
     }
+
+    [HttpPost("refresh")]
+    public ActionResult<RefreshResponse> Refresh([FromBody] RefreshRequest request)
+    {
+        // TODO:
+        throw new NotImplementedException();
+    }
 }
