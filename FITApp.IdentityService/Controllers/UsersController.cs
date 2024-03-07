@@ -43,4 +43,11 @@ public class UsersController : ControllerBase
         // TODO:
         throw new NotImplementedException();
     }
+
+    [HttpPut("{id}/role")]
+    public ActionResult ChangeRole(string id, [FromBody] ChangeRoleRequest changeRoleRequest)
+    {
+        // TODO:
+        throw new NotImplementedException();
+    }
 }
