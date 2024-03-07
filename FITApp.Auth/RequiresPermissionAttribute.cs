@@ -14,7 +14,7 @@ public class RequiresPermissionAttribute : Attribute, IAuthorizationFilter, IAsy
     /// <summary>
     /// Initializes a new instance of the <see cref="RequiresPermissionAttribute"/> class.
     /// </summary>
-    /// <param name="permissions">The permissions required to access the decorated controller or action. If the user has any of these permissions, access is granted.</param>
+    /// <param name="permissions">The permissions required to access the decorated controller or action. If the user has any of these permissions as a claim with a value of "true", access is granted.</param>
     public RequiresPermissionAttribute(params string[] permissions)
     {
         _permissions = permissions;
