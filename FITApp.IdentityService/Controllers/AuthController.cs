@@ -22,4 +22,11 @@ public class AuthController : ControllerBase
         // TODO:
         throw new NotImplementedException();
     }
+
+    [HttpPost("change-password")]
+    public ActionResult ChangePassword([FromBody] ChangePasswordRequest request)
+    {
+        // TODO: this endpoint will require authentication
+        throw new NotImplementedException();
+    }
 }
