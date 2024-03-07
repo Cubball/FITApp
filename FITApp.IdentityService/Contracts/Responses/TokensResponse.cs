@@ -1,6 +1,6 @@
 namespace FITApp.IdentityService.Contracts.Responses;
 
-public class RefreshResponse
+public class TokensResponse
 {
     public string AccessToken { get; set; } = null!;
 

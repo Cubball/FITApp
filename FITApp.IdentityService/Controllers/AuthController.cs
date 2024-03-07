@@ -10,14 +10,14 @@ namespace FITApp.IdentityService.Controllers;
 public class AuthController : ControllerBase
 {
     [HttpPost("login")]
-    public ActionResult<LoginResponse> Login([FromBody] LoginRequest request)
+    public ActionResult<TokensResponse> Login([FromBody] LoginRequest request)
     {
         // TODO:
         throw new NotImplementedException();
     }
 
     [HttpPost("refresh")]
-    public ActionResult<RefreshResponse> Refresh([FromBody] RefreshRequest request)
+    public ActionResult<TokensResponse> Refresh([FromBody] RefreshRequest request)
     {
         // TODO:
         throw new NotImplementedException();
