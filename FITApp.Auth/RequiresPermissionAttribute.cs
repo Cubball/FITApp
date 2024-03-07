@@ -7,7 +7,7 @@ namespace FITApp.Auth;
 /// Forbids access to the decorated controller or action if the user does not have any of the specified permissions.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
-public class RequiresPermissionAttribute : Attribute, IAuthorizationFilter, IAsyncAuthorizationFilter
+public class RequiresPermissionAttribute : Attribute, IAuthorizationFilter
 {
     private readonly string[] _permissions;
 
@@ -38,11 +38,5 @@ public class RequiresPermissionAttribute : Attribute, IAuthorizationFilter, IAsy
         {
             context.Result = new ForbidResult();
         }
-    }
-
-    public Task OnAuthorizationAsync(AuthorizationFilterContext context)
-    {
-        OnAuthorization(context);
-        return Task.CompletedTask;
     }
 }
