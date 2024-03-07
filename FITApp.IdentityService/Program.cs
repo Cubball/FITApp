@@ -1,5 +1,8 @@
 using FITApp.IdentityService.Data;
 using FITApp.IdentityService.Entities;
+using FITApp.IdentityService.Infrastructure;
+using FITApp.IdentityService.Options;
+using FITApp.IdentityService.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +24,10 @@ builder.Services.AddIdentity<User, Role>(o =>
         o.Password.RequiredLength = 8;
     })
     .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionKey));
+builder.Services.AddSingleton<IClock, SystemClock>();
+builder.Services.AddSingleton<ITokenService, TokenService>();
 
 var app = builder.Build();
 
