@@ -46,7 +46,7 @@ public class TokenService : ITokenService
         return Convert.ToBase64String(bytes);
     }
 
-    public async Task<(IEnumerable<Claim>, bool)> GetClaimsFromExpiredToken(string token)
+    public async Task<(IEnumerable<Claim>, bool)> GetClaimsFromExpiredTokenAsync(string token)
     {
         var tokenHandler = new JsonWebTokenHandler();
         var validationParameters = new TokenValidationParameters

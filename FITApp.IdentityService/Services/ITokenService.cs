@@ -8,5 +8,5 @@ public interface ITokenService
 
     string GenerateRefreshToken();
 
-    Task<(IEnumerable<Claim> Claims, bool IsValid)> GetClaimsFromExpiredToken(string token);
+    Task<(IEnumerable<Claim> Claims, bool IsValid)> GetClaimsFromExpiredTokenAsync(string token);
 }
