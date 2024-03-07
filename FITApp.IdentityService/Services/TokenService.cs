@@ -19,7 +19,7 @@ public class TokenService : ITokenService
         var key = options.Value.PrivateKey;
         var bytes = Convert.FromBase64String(key);
         var rsa = RSA.Create();
-        rsa.ImportRSAPublicKey(bytes, out _);
+        rsa.ImportRSAPrivateKey(bytes, out _);
         _key = new RsaSecurityKey(rsa);
         _clock = clock;
     }
