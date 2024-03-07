@@ -64,6 +64,12 @@ public class UserService : IUserService
         return claims;
     }
 
+    public async Task<string?> GetRefreshTokenAsync(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        return user?.RefreshToken;
+    }
+
     public async Task<bool> UpdateRefreshTokenAsync(string email, string refreshToken)
     {
         var user = await _userManager.FindByEmailAsync(email);
