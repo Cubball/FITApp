@@ -1,4 +1,5 @@
 using FITApp.IdentityService.Contracts.Responses;
+using FITApp.IdentityService.Contracts.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FITApp.IdentityService.Controllers;
@@ -17,6 +18,27 @@ public class UsersController : ControllerBase
 
     [HttpGet]
     public ActionResult<IEnumerable<UserResponse>> Get()
+    {
+        // TODO:
+        throw new NotImplementedException();
+    }
+
+    [HttpPost]
+    public ActionResult Create([FromBody] CreateUserRequest userRequest)
+    {
+        // TODO:
+        throw new NotImplementedException();
+    }
+
+    [HttpPost("{id}/reset-password")]
+    public ActionResult ResetPassword(string id)
+    {
+        // TODO:
+        throw new NotImplementedException();
+    }
+
+    [HttpDelete("{id}")]
+    public ActionResult Delete(string id)
     {
         // TODO:
         throw new NotImplementedException();
