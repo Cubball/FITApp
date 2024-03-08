@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using FITApp.Auth;
 using FITApp.IdentityService.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +21,18 @@ public static class DbInitializer
         var role = await roleManager.FindByNameAsync(adminRoleName);
         if (role is null)
         {
-            role = new Role { Name = adminRoleName };
+            role = new Role { Name = adminRoleName, IsAssignable = false };
             var roleResult = await roleManager.CreateAsync(role);
             if (!roleResult.Succeeded)
             {
                 throw new InvalidOperationException($"Failed to create admin role: {string.Join(", ", roleResult.Errors.Select(e => e.Description))}");
             }
-            // TODO: add persmission
+
+            roleResult = await roleManager.AddClaimAsync(role, new Claim(Permissions.All, "true"));
+            if (!roleResult.Succeeded)
+            {
+                throw new InvalidOperationException($"Failed to add claim to admin role: {string.Join(", ", roleResult.Errors.Select(e => e.Description))}");
+            }
         }
 
         var adminEmail = configuration["AdminOptions:Email"] ?? throw new InvalidOperationException("AdminOptions:Email is not set");
