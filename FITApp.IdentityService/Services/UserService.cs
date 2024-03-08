@@ -64,10 +64,10 @@ public class UserService : IUserService
         return claims;
     }
 
-    public async Task<string?> GetRefreshTokenAsync(string email)
+    public async Task<bool> IsRefreshTokenValidAsync(string email, string refreshToken)
     {
         var user = await _userManager.FindByEmailAsync(email);
-        return user?.RefreshToken;
+        return user?.RefreshToken == refreshToken && user?.RefreshTokenExpiryTime > _clock.UtcNow;
     }
 
     public async Task<bool> UpdateRefreshTokenAsync(string email, string refreshToken)

@@ -10,7 +10,7 @@ public interface IUserService
 
     Task<IEnumerable<Claim>> GetClaimsAsync(string email);
 
-    Task<string?> GetRefreshTokenAsync(string email);
+    Task<bool> IsRefreshTokenValidAsync(string email, string refreshToken);
 
     Task<bool> UpdateRefreshTokenAsync(string email, string refreshToken);
 }

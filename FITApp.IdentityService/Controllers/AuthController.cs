@@ -13,7 +13,9 @@ public class AuthController : ControllerBase
     private readonly ITokenService _tokenService;
     private readonly IUserService _userService;
 
-    public AuthController(ITokenService tokenService, IUserService userService)
+    public AuthController(
+        ITokenService tokenService,
+        IUserService userService)
     {
         _tokenService = tokenService;
         _userService = userService;
@@ -54,6 +56,12 @@ public class AuthController : ControllerBase
 
         var email = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
         if (email is null)
+        {
+            return Unauthorized();
+        }
+
+        var refreshTokenValid = await _userService.IsRefreshTokenValidAsync(email, request.RefreshToken);
+        if (!refreshTokenValid)
         {
             return Unauthorized();
         }
