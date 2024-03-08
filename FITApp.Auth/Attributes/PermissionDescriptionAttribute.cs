@@ -1,7 +1,7 @@
-namespace FITApp.Auth;
+namespace FITApp.Auth.Attributes;
 
 /// <summary>
-/// Provides a user-friendly description for a permission.
+/// Provides a user-friendly description for a permission. Is used to write a description for a permission in the database.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field)]
 public class PermissionDescriptionAttribute : Attribute
