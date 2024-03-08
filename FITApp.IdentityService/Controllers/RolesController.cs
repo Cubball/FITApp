@@ -141,7 +141,7 @@ public class RolesController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("/permissions")]
+    [HttpGet("permissions")]
     public ActionResult<IEnumerable<Permission>> GetPermissions()
     {
         var permissions = _context.Permissions.ToList();

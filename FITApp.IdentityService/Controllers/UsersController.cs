@@ -81,6 +81,12 @@ public class UsersController : ControllerBase
             return BadRequest("Email is not valid");
         }
 
+        var userCheck = await _userManager.FindByEmailAsync(userRequest.Email);
+        if (userCheck != null)
+        {
+            return BadRequest("User with this email already exists");
+        }
+
         var password = _configuration.GetSection("DefaultPassword").Value;
 
         var user = new User
