@@ -70,8 +70,7 @@ public class UsersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateUserRequest userRequest)
     {
-        var isRightEmail = new EmailAddressAttribute().IsValid(userRequest.Email);
-        isRightEmail = isRightEmail && userRequest.Email.EndsWith("knu.ua");
+        var isRightEmail = userRequest.Email.EndsWith("@knu.ua");
         if (!isRightEmail)
         {
             return BadRequest("Email is not valid");
