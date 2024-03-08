@@ -4,6 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using FITApp.IdentityService.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using MimeKit;
+using System.Net.Mail;
+using MailKit.Net.Smtp;
+using MailKit;
+using MailKit.Security;
 
 namespace FITApp.IdentityService.Controllers;
 
@@ -70,8 +75,7 @@ public class UsersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateUserRequest userRequest)
     {
-        var isRightEmail = new EmailAddressAttribute().IsValid(userRequest.Email);
-        isRightEmail = isRightEmail && userRequest.Email.EndsWith("knu.ua");
+        var isRightEmail = userRequest.Email.EndsWith("@knu.ua");
         if (!isRightEmail)
         {
             return BadRequest("Email is not valid");
@@ -96,7 +100,10 @@ public class UsersController : ControllerBase
 
         await _userManager.AddToRoleAsync(user, role.Name!);
 
-        // TODO: send email with password
+        var subject = "FITApp registration";
+        var message = $"You have been registered in FITApp. Your password is {password}";
+
+        SendEmail(userRequest.Email, subject, message);
 
         return Created();
     }
@@ -114,7 +121,10 @@ public class UsersController : ControllerBase
         await _userManager.RemovePasswordAsync(user);
         await _userManager.AddPasswordAsync(user, password);
 
-        // TODO: send email with password
+        var subject = "FITApp password reset";
+        var message = $"Your password has been reset. Your new password is {password}";
+
+        SendEmail(user.Email!, subject, message);
 
         return Ok();
     }
@@ -154,5 +164,23 @@ public class UsersController : ControllerBase
         await _userManager.AddToRoleAsync(user, newRole.Name!);
 
         return Ok();
+    }
+
+    private void SendEmail(string email, string subject, string messageBody)
+    {
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress("FitApp", "FitApp@gmail.com"));
+        message.To.Add(new MailboxAddress("", email));
+        message.Subject = subject;
+        message.Body = new TextPart("plain") { Text = messageBody };
+
+        var senderEmail = _configuration.GetSection("EmailSettings:Email").Value;
+        var senderPassword = _configuration.GetSection("EmailSettings:Password").Value;
+
+        using var client = new MailKit.Net.Smtp.SmtpClient();
+        client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+        client.Authenticate(senderEmail, senderPassword);
+        client.Send(message);
+        client.Disconnect(true);
     }
 }
