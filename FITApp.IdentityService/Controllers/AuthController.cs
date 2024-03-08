@@ -1,6 +1,7 @@
 using FITApp.IdentityService.Contracts.Requests;
 using FITApp.IdentityService.Contracts.Responses;
 using FITApp.IdentityService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.JsonWebTokens;
 
@@ -81,10 +82,17 @@ public class AuthController : ControllerBase
         };
     }
 
+    [Authorize]
     [HttpPost("change-password")]
-    public ActionResult ChangePassword([FromBody] ChangePasswordRequest request)
+    public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
     {
-        // TODO: this endpoint will require authentication
-        throw new NotImplementedException();
+        var email = User.FindFirst(JwtRegisteredClaimNames.Email)?.Value;
+        if (email is null)
+        {
+            return Unauthorized();
+        }
+
+        var success = await _userService.TryChangePasswordAsync(email, request.OldPassword, request.NewPassword);
+        return success ? Ok() : BadRequest();
     }
 }
