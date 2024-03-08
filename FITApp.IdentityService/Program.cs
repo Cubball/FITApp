@@ -1,3 +1,4 @@
+using FITApp.Auth;
 using FITApp.IdentityService.Data;
 using FITApp.IdentityService.Entities;
 using FITApp.IdentityService.Infrastructure;
@@ -13,7 +14,7 @@ builder.Services.AddSwaggerGen();
 
 // NOTE: for now, we only have an SQLite database for development, we'll add another one later
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=app.db"));
-builder.Services.AddIdentity<User, Role>(o =>
+builder.Services.AddIdentityCore<User>(o =>
     {
         o.User.RequireUniqueEmail = true;
 
@@ -23,9 +24,13 @@ builder.Services.AddIdentity<User, Role>(o =>
         o.Password.RequireNonAlphanumeric = false;
         o.Password.RequiredLength = 8;
     })
+    .AddRoles<Role>()
     .AddEntityFrameworkStores<AppDbContext>();
 
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionKey));
+var jwtOptionsSection = builder.Configuration.GetSection(JwtOptions.SectionKey);
+var jwtOptions = jwtOptionsSection.Get<JwtOptions>()!;
+builder.Services.AddJWTAuth(jwtOptions.PublicKey);
+builder.Services.Configure<JwtOptions>(jwtOptionsSection);
 builder.Services.AddSingleton<IClock, SystemClock>();
 builder.Services.AddSingleton<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
