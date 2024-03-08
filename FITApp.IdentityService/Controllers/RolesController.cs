@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using FITApp.Auth;
+using FITApp.Auth.Attributes;
+using FITApp.Auth.Data;
 using FITApp.IdentityService.Contracts.Responses;
 using FITApp.IdentityService.Contracts.Requests;
 using Microsoft.AspNetCore.Identity;

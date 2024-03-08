@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using FITApp.Auth;
+using FITApp.Auth.Data;
 using FITApp.IdentityService.Entities;
 using FITApp.IdentityService.Infrastructure;
 using Microsoft.AspNetCore.Identity;

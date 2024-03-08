@@ -1,4 +1,4 @@
-using FITApp.Auth;
+using FITApp.Auth.Extensions;
 using FITApp.IdentityService.Data;
 using FITApp.IdentityService.Entities;
 using FITApp.IdentityService.Infrastructure;

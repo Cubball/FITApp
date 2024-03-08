@@ -1,6 +1,6 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
-using FITApp.Auth;
+using FITApp.Auth.Data;
 using FITApp.IdentityService.Infrastructure;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;

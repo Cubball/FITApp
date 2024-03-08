@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Security.Claims;
-using FITApp.Auth;
+using FITApp.Auth.Attributes;
+using FITApp.Auth.Data;
 using FITApp.IdentityService.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
