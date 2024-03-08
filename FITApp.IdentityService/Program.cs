@@ -27,6 +27,7 @@ builder.Services.AddIdentityCore<User>(o =>
     .AddRoles<Role>()
     .AddEntityFrameworkStores<AppDbContext>();
 
+// TODO: find a better way to load keys
 var jwtOptionsSection = builder.Configuration.GetSection(JwtOptions.SectionKey);
 var jwtOptions = jwtOptionsSection.Get<JwtOptions>()!;
 builder.Services.AddJWTAuth(jwtOptions.PublicKey);
