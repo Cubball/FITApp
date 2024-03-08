@@ -9,6 +9,7 @@ namespace FITApp.Auth;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
 public class RequiresPermissionAttribute : Attribute, IAuthorizationFilter
 {
+    private const string ExpectedClaimValue = "true";
     private readonly string[] _permissions;
 
     /// <summary>
@@ -27,7 +28,7 @@ public class RequiresPermissionAttribute : Attribute, IAuthorizationFilter
         var hasPermission = false;
         foreach (var permission in _permissions)
         {
-            if (claims.Any(c => c.Type == permission && c.Value == "true"))
+            if (claims.Any(c => c.Type == permission && c.Value == ExpectedClaimValue))
             {
                 hasPermission = true;
                 break;
