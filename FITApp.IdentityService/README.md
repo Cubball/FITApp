@@ -6,9 +6,13 @@ The following options need to be set for the service to work properly:
 - AdminOptions:Email - the email of the admin user that will be created on the first run
 - AdminOptions:Password - the password of the admin user that will be created on the first run
 - AdminOptions:RoleName - the role of the admin user that will be created on the first run
+- EmailSettings:Email - Google Account email address
+- EmailSettings:Password - Google Account App Password that is generated in the Google Account settings
 
-For development purposes, these options are already set in the appsettings.Development.json file.
+For development purposes, JwtOptions and AdminOptions options are already set in the appsettings.Development.json file.
 However, in a production environment, they should be set securely elsewhere.
+
+EmailSettings can be set using dotnet user-secrets.
 
 ## Endpoints
 ### Auth
