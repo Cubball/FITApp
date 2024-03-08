@@ -15,11 +15,13 @@ public class RolesController : ControllerBase
 {
     private readonly RoleManager<Role> _roleManager;
     private readonly AppDbContext _context;
+    private readonly UserManager<User> _userManager;
 
-    public RolesController(RoleManager<Role> roleManager, AppDbContext context)
+    public RolesController(RoleManager<Role> roleManager, AppDbContext context, UserManager<User> userManager)
     {
         _roleManager = roleManager;
         _context = context;
+        _userManager = userManager;
     }
 
     [HttpGet("{id}")]
@@ -76,7 +78,7 @@ public class RolesController : ControllerBase
 
         foreach (var permission in request.Permissions)
         {
-            await _roleManager.AddClaimAsync(role, new Claim(permission, true.ToString()));
+            await _roleManager.AddClaimAsync(role, new Claim(permission, "true"));
         }
 
         return Created();
@@ -89,6 +91,13 @@ public class RolesController : ControllerBase
         if (role == null)
         {
             return NotFound();
+        }
+
+        var users = await _userManager.GetUsersInRoleAsync(role.Name!);
+
+        if (users.Count > 0)
+        {
+            return BadRequest("Role is not empty");
         }
 
         await _roleManager.DeleteAsync(role);
@@ -126,7 +135,7 @@ public class RolesController : ControllerBase
 
         foreach (var permission in request.Permissions)
         {
-            await _roleManager.AddClaimAsync(role, new Claim(permission, true.ToString()));
+            await _roleManager.AddClaimAsync(role, new Claim(permission, "true"));
         }
 
         return Ok();
