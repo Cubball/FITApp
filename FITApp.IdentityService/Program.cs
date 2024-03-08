@@ -39,7 +39,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 var app = builder.Build();
 
 using var scope = app.Services.CreateScope();
-await DbInitializer.InitializeAdminAsync(scope, app.Configuration);
+await DbInitializer.InitializeAsync(scope, app.Configuration);
 
 if (app.Environment.IsDevelopment())
 {
