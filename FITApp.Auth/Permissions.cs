@@ -16,4 +16,16 @@ public static class Permissions
 
     [PermissionDescription("Видалення користувачів")]
     public const string UsersDelete = "users_delete";
+
+    [PermissionDescription("Створення ролей")]
+    public const string RolesCreate = "roles_create";
+
+    [PermissionDescription("Перегляд інформації про ролі")]
+    public const string RolesRead = "roles_read";
+
+    [PermissionDescription("Редагування інформації про ролі")]
+    public const string RolesUpdate = "roles_update";
+
+    [PermissionDescription("Видалення ролей")]
+    public const string RolesDelete = "roles_delete";
 }

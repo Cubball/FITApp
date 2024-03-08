@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using FITApp.Auth;
 using FITApp.IdentityService.Contracts.Responses;
 using FITApp.IdentityService.Contracts.Requests;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +10,7 @@ using FITApp.IdentityService.Data;
 
 namespace FITApp.IdentityService.Controllers;
 
-// NOTE: this controller will require authorazation
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class RolesController : ControllerBase
@@ -24,6 +26,7 @@ public class RolesController : ControllerBase
         _userManager = userManager;
     }
 
+    [RequiresPermission(Permissions.RolesRead, Permissions.All)]
     [HttpGet("{id}")]
     public async Task<ActionResult<FullRoleResponse>> Get(string id)
     {
@@ -43,6 +46,7 @@ public class RolesController : ControllerBase
         });
     }
 
+    [RequiresPermission(Permissions.RolesRead, Permissions.All)]
     [HttpGet]
     public ActionResult<IEnumerable<ShortRoleResponse>> Get()
     {
@@ -56,6 +60,7 @@ public class RolesController : ControllerBase
         return Ok(result);
     }
 
+    [RequiresPermission(Permissions.RolesCreate, Permissions.All)]
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] CreateRoleRequest request)
     {
@@ -84,6 +89,7 @@ public class RolesController : ControllerBase
         return Created();
     }
 
+    [RequiresPermission(Permissions.RolesDelete, Permissions.All)]
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(string id)
     {
@@ -105,6 +111,7 @@ public class RolesController : ControllerBase
         return Ok();
     }
 
+    [RequiresPermission(Permissions.RolesUpdate, Permissions.All)]
     [HttpPut("{id}")]
     public async Task<ActionResult> Put(string id, [FromBody] UpdateRoleRequest request)
     {
@@ -141,6 +148,7 @@ public class RolesController : ControllerBase
         return Ok();
     }
 
+    [RequiresPermission(Permissions.RolesRead, Permissions.All)]
     [HttpGet("permissions")]
     public ActionResult<IEnumerable<Permission>> GetPermissions()
     {
