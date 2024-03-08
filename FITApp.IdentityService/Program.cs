@@ -1,8 +1,7 @@
-using FITApp.Auth;
+using FITApp.Auth.Extensions;
 using FITApp.IdentityService.Data;
 using FITApp.IdentityService.Entities;
 using FITApp.IdentityService.Infrastructure;
-using FITApp.IdentityService.Options;
 using FITApp.IdentityService.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,18 +26,17 @@ builder.Services.AddIdentityCore<User>(o =>
     .AddRoles<Role>()
     .AddEntityFrameworkStores<AppDbContext>();
 
-// TODO: find a better way to load keys
-var jwtOptionsSection = builder.Configuration.GetSection(JwtOptions.SectionKey);
-var jwtOptions = jwtOptionsSection.Get<JwtOptions>()!;
-builder.Services.AddJWTAuth(jwtOptions.PublicKey);
-builder.Services.Configure<JwtOptions>(jwtOptionsSection);
+var jwtPublicKey = builder.Configuration["JwtOptions:PublicKey"] ?? throw new InvalidOperationException("JwtOptions:PublicKey is not set");
+var jwtPrivateKey = builder.Configuration["JwtOptions:PrivateKey"] ?? throw new InvalidOperationException("JwtOptions:PrivateKey is not set");
+builder.Services.AddJWTAuth(jwtPublicKey);
 builder.Services.AddSingleton<IClock, SystemClock>();
-builder.Services.AddSingleton<ITokenService, TokenService>();
+builder.Services.AddSingleton<ITokenService, TokenService>(s => new TokenService(jwtPrivateKey, s.GetRequiredService<IClock>()));
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
-// TODO: initialize the database with the first admin user
+using var scope = app.Services.CreateScope();
+await DbInitializer.InitializeAsync(scope, app.Configuration);
 
 if (app.Environment.IsDevelopment())
 {

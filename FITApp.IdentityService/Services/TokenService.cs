@@ -1,9 +1,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
-using FITApp.Auth;
+using FITApp.Auth.Data;
 using FITApp.IdentityService.Infrastructure;
-using FITApp.IdentityService.Options;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,9 +12,8 @@ public class TokenService : ITokenService
     private readonly RsaSecurityKey _key;
     private readonly IClock _clock;
 
-    public TokenService(IOptions<JwtOptions> options, IClock clock)
+    public TokenService(string key, IClock clock)
     {
-        var key = options.Value.PrivateKey;
         var bytes = Convert.FromBase64String(key);
         var rsa = RSA.Create();
         rsa.ImportRSAPrivateKey(bytes, out _);

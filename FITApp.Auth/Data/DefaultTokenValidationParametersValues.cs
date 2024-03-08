@@ -1,7 +1,10 @@
 using Microsoft.IdentityModel.JsonWebTokens;
 
-namespace FITApp.Auth;
+namespace FITApp.Auth.Data;
 
+/// <summary>
+/// Contains default values for the TokenValidationParameters that are used when adding JWT auth.
+/// </summary>
 public static class DefaultTokenValidationParametersValues
 {
     public static readonly TimeSpan ClockSkew = new(0, 0, 5);

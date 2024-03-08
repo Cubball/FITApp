@@ -1,18 +1,17 @@
+using FITApp.Auth.Attributes;
+using FITApp.Auth.Data;
 using FITApp.IdentityService.Contracts.Responses;
 using FITApp.IdentityService.Contracts.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using FITApp.IdentityService.Entities;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 using MimeKit;
-using System.Net.Mail;
-using MailKit.Net.Smtp;
-using MailKit;
 using MailKit.Security;
 
 namespace FITApp.IdentityService.Controllers;
 
-// NOTE: this controller will require authorazation
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
@@ -27,6 +26,8 @@ public class UsersController : ControllerBase
         _roleManager = roleManager;
         _configuration = configuration;
     }
+
+    [RequiresPermission(Permissions.UsersRead, Permissions.All)]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserResponse>> Get(string id)
     {
@@ -48,6 +49,7 @@ public class UsersController : ControllerBase
         });
     }
 
+    [RequiresPermission(Permissions.UsersRead, Permissions.All)]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserResponse>>> Get()
     {
@@ -72,6 +74,7 @@ public class UsersController : ControllerBase
         return Ok(result);
     }
 
+    [RequiresPermission(Permissions.UsersCreate, Permissions.All)]
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateUserRequest userRequest)
     {
@@ -95,15 +98,13 @@ public class UsersController : ControllerBase
             UserName = userRequest.Email
         };
 
-        await _userManager.CreateAsync(user, password!);
-
         var role = await _roleManager.FindByIdAsync(userRequest.RoleId);
-
         if (role == null)
         {
             return BadRequest("Role not found");
         }
 
+        await _userManager.CreateAsync(user, password!);
         await _userManager.AddToRoleAsync(user, role.Name!);
 
         var subject = "FITApp registration";
@@ -114,6 +115,7 @@ public class UsersController : ControllerBase
         return Created();
     }
 
+    [RequiresPermission(Permissions.UsersUpdate, Permissions.All)]
     [HttpPost("{id}/reset-password")]
     public async Task<ActionResult> ResetPassword(string id)
     {
@@ -135,6 +137,7 @@ public class UsersController : ControllerBase
         return Ok();
     }
 
+    [RequiresPermission(Permissions.UsersDelete, Permissions.All)]
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(string id)
     {
@@ -148,6 +151,7 @@ public class UsersController : ControllerBase
         return Ok();
     }
 
+    [RequiresPermission(Permissions.UsersUpdate, Permissions.All)]
     [HttpPut("{id}/role")]
     public async Task<ActionResult> ChangeRole(string id, [FromBody] ChangeRoleRequest changeRoleRequest)
     {
@@ -161,6 +165,11 @@ public class UsersController : ControllerBase
         if (newRole == null)
         {
             return BadRequest("Role not found");
+        }
+
+        if (!newRole.IsAssignable)
+        {
+            return BadRequest("Role is not assignable");
         }
 
         var oldRole = (await _userManager.GetRolesAsync(user))[0];
