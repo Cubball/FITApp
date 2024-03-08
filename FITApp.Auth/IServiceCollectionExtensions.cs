@@ -18,16 +18,20 @@ public static class IServiceCollectionExtensions
         rsa.ImportRSAPublicKey(bytes, out _);
         var rsaSecurityKey = new RsaSecurityKey(rsa);
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(o => o.TokenValidationParameters = new TokenValidationParameters
+            .AddJwtBearer(o =>
             {
-                ClockSkew = DefaultTokenValidationParametersValues.ClockSkew,
-                ValidateIssuer = DefaultTokenValidationParametersValues.ValidateIssuer,
-                ValidateAudience = DefaultTokenValidationParametersValues.ValidateAudience,
-                ValidateLifetime = DefaultTokenValidationParametersValues.ValidateLifetime,
-                ValidateIssuerSigningKey = DefaultTokenValidationParametersValues.ValidateIssuerSigningKey,
-                NameClaimType = DefaultTokenValidationParametersValues.NameClaimType,
-                RoleClaimType = DefaultTokenValidationParametersValues.RoleClaimType,
-                IssuerSigningKey = rsaSecurityKey,
+                o.MapInboundClaims = false;
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ClockSkew = DefaultTokenValidationParametersValues.ClockSkew,
+                    ValidateIssuer = DefaultTokenValidationParametersValues.ValidateIssuer,
+                    ValidateAudience = DefaultTokenValidationParametersValues.ValidateAudience,
+                    ValidateLifetime = DefaultTokenValidationParametersValues.ValidateLifetime,
+                    ValidateIssuerSigningKey = DefaultTokenValidationParametersValues.ValidateIssuerSigningKey,
+                    NameClaimType = DefaultTokenValidationParametersValues.NameClaimType,
+                    RoleClaimType = DefaultTokenValidationParametersValues.RoleClaimType,
+                    IssuerSigningKey = rsaSecurityKey,
+                };
             });
         services.AddAuthorization();
         return services;
