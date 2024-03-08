@@ -32,6 +32,8 @@ builder.Services.AddJWTAuth(jwtPublicKey);
 builder.Services.AddSingleton<IClock, SystemClock>();
 builder.Services.AddSingleton<ITokenService, TokenService>(s => new TokenService(jwtPrivateKey, s.GetRequiredService<IClock>()));
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPasswordGenerator, FakePasswordGenerator>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 

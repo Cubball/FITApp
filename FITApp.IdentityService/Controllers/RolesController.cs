@@ -52,7 +52,7 @@ public class RolesController : ControllerBase
     public ActionResult<IEnumerable<ShortRoleResponse>> Get()
     {
         var roles = _roleManager.Roles.ToList();
-        var result = roles.Select(r => new ShortRoleResponse
+        var result = roles.Where(r => r.IsAssignable).Select(r => new ShortRoleResponse
         {
             Id = r.Id,
             Name = r.Name
