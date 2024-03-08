@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FITApp.Auth;
 
 /// <summary>
-/// Forbids access to the decorated controller or action if the user does not have any of the specified permissions.
+/// Forbids access to the decorated controller or action if the user does not have any of the specified permissions. This attribute should be used placed after the AuthorizeAttribute since this attribute assumes that the user is already authenticated.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
 public class RequiresPermissionAttribute : Attribute, IAuthorizationFilter
