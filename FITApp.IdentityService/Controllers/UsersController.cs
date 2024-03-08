@@ -8,6 +8,7 @@ using FITApp.IdentityService.Entities;
 using Microsoft.AspNetCore.Identity;
 using MimeKit;
 using MailKit.Security;
+using FITApp.IdentityService.Services;
 
 namespace FITApp.IdentityService.Controllers;
 
@@ -18,13 +19,18 @@ public class UsersController : ControllerBase
 {
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<Role> _roleManager;
-    private readonly IConfiguration _configuration;
+    private readonly IEmailSender _emailSender;
+    private readonly IPasswordGenerator _passwordGenerator;
 
-    public UsersController(UserManager<User> userManager, RoleManager<Role> roleManager, IConfiguration configuration)
+    public UsersController(UserManager<User> userManager,
+    RoleManager<Role> roleManager,
+    IEmailSender emailSender,
+    IPasswordGenerator passwordGenerator)
     {
         _userManager = userManager;
         _roleManager = roleManager;
-        _configuration = configuration;
+        _emailSender = emailSender;
+        _passwordGenerator = passwordGenerator;
     }
 
     [RequiresPermission(Permissions.UsersRead, Permissions.All)]
@@ -90,7 +96,7 @@ public class UsersController : ControllerBase
             return BadRequest("User with this email already exists");
         }
 
-        var password = _configuration.GetSection("DefaultPassword").Value;
+        var password = _passwordGenerator.GeneratePassword();
 
         var user = new User
         {
@@ -104,13 +110,18 @@ public class UsersController : ControllerBase
             return BadRequest("Role not found");
         }
 
+        if (!role.IsAssignable)
+        {
+            return BadRequest("Role is not assignable");
+        }
+
         await _userManager.CreateAsync(user, password!);
         await _userManager.AddToRoleAsync(user, role.Name!);
 
         var subject = "FITApp registration";
         var message = $"You have been registered in FITApp. Your password is {password}";
 
-        SendEmail(userRequest.Email, subject, message);
+        await _emailSender.SendEmail(userRequest.Email, subject, message);
 
         return Created();
     }
@@ -124,7 +135,7 @@ public class UsersController : ControllerBase
         {
             return NotFound();
         }
-        var password = Guid.NewGuid().ToString().Substring(0, 8);
+        var password = _passwordGenerator.GeneratePassword();
 
         await _userManager.RemovePasswordAsync(user);
         await _userManager.AddPasswordAsync(user, password);
@@ -132,7 +143,7 @@ public class UsersController : ControllerBase
         var subject = "FITApp password reset";
         var message = $"Your password has been reset. Your new password is {password}";
 
-        SendEmail(user.Email!, subject, message);
+        await _emailSender.SendEmail(user.Email!, subject, message);
 
         return Ok();
     }
@@ -179,23 +190,5 @@ public class UsersController : ControllerBase
         await _userManager.AddToRoleAsync(user, newRole.Name!);
 
         return Ok();
-    }
-
-    private void SendEmail(string email, string subject, string messageBody)
-    {
-        var message = new MimeMessage();
-        message.From.Add(new MailboxAddress("FitApp", "FitApp@gmail.com"));
-        message.To.Add(new MailboxAddress("", email));
-        message.Subject = subject;
-        message.Body = new TextPart("plain") { Text = messageBody };
-
-        var senderEmail = _configuration.GetSection("EmailSettings:Email").Value;
-        var senderPassword = _configuration.GetSection("EmailSettings:Password").Value;
-
-        using var client = new MailKit.Net.Smtp.SmtpClient();
-        client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-        client.Authenticate(senderEmail, senderPassword);
-        client.Send(message);
-        client.Disconnect(true);
     }
 }
