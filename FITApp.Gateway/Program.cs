@@ -7,7 +7,18 @@ builder.Services.AddReverseProxy()
     .AddTransforms<RequestTransformProvider>()
     .AddTransforms<ResponseTransformProvider>();
 
+var allowedOrigins = builder.Configuration.GetSection("CorsOptions:AllowedOrigins").Get<string[]>()
+    ?? throw new InvalidOperationException("CorsOptions:AllowedOrigins is not set.");
+builder.Services.AddCors(o =>
+        o.AddDefaultPolicy(pb =>
+            pb.WithOrigins(allowedOrigins)
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials()));
+
 var app = builder.Build();
+
+app.UseCors();
 
 app.MapReverseProxy();
 
