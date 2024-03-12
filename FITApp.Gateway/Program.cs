@@ -1,4 +1,5 @@
 using FITApp.Auth.Extensions;
+using FITApp.Gateway.Infrastructure;
 using FITApp.Gateway.Transforms;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 var jwtPublicKey = builder.Configuration["JwtOptions:PublicKey"]
     ?? throw new InvalidOperationException("JwtOptions:PublicKey is not set.");
 builder.Services.AddJWTAuth(jwtPublicKey);
+
+builder.Services.AddSingleton<IClock, SystemClock>();
 
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
