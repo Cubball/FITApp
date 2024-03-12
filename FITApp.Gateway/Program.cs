@@ -1,7 +1,11 @@
+using FITApp.Gateway.Transforms;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
+    .AddTransforms<RequestTransformProvider>()
+    .AddTransforms<ResponseTransformProvider>();
 
 var app = builder.Build();
 
