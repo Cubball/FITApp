@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FITApp.Auth", "FITApp.Auth\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FITApp.IdentityService", "FITApp.IdentityService\FITApp.IdentityService.csproj", "{A8DFD473-70F1-4E60-AC64-85DBA7F835CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FITApp.Gateway", "FITApp.Gateway\FITApp.Gateway.csproj", "{BFFB22F0-E4B2-4B26-8B88-166DAAA34BEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{A8DFD473-70F1-4E60-AC64-85DBA7F835CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8DFD473-70F1-4E60-AC64-85DBA7F835CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8DFD473-70F1-4E60-AC64-85DBA7F835CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFFB22F0-E4B2-4B26-8B88-166DAAA34BEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFFB22F0-E4B2-4B26-8B88-166DAAA34BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFFB22F0-E4B2-4B26-8B88-166DAAA34BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFFB22F0-E4B2-4B26-8B88-166DAAA34BEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
