@@ -6,6 +6,4 @@ namespace FITApp.EmployeesService.Models
         public string Specialization { get; set; }
         public DateOnly DiplomaDateOfIssue { get; set; }
     }
-    
-
 }
