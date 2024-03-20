@@ -4,10 +4,10 @@ namespace FITApp.EmployeesService.Interfaces
 {
     public interface IEmployeesRepository
     {
-        Task<IEnumerable<Employee>> GetTeachers();
-        Task<Employee> GetTeacher(string id);
-        Task<Employee> CreateTeacher(Employee teacher);
-        Task UpdateTeacher(string id, Employee teacher);
-        Task DeleteTeacher(string id);
+        Task<IEnumerable<Employee>> GetEmployees();
+        Task<Employee> GetEmployee(string id);
+        Task<Employee> CreateEmployee(Employee teacher);
+        //Task UpdateEmployee(string id, Employee teacher);
+        Task DeleteEmployee(string id);
     }
 }

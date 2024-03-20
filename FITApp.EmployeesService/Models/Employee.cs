@@ -1,8 +1,11 @@
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 namespace FITApp.EmployeesService.Models
 {
     public class Employee
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId Id { get; set; }
         public User User { get; set; }
         public string FirstName { get; set; }
