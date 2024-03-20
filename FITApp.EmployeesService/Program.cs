@@ -13,6 +13,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBSettings"));
 builder.Services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 var app = builder.Build();
 
 
