@@ -7,7 +7,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<MongoDbSettings>(Configuration.GetSection("MongoDbSettings"));
+builder.Services.AddSingleton<IMongoDbSettings>(serviceProvider =>
+        serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

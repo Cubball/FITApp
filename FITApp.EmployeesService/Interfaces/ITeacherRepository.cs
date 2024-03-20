@@ -1,13 +1,13 @@
 using FITApp.EmployeesService.Models;
 
-namespace FITApp.EmployeesService.Models.Interfaces
+namespace FITApp.EmployeesService.Interfaces
 {
     public interface ITeacherRepository
     {
-        Task<IEnumerable<Teacher>> GetTeachers();
-        Task<Teacher> GetTeacher(string id);
-        Task<Teacher> CreateTeacher(Teacher teacher);
-        Task UpdateTeacher(string id, Teacher teacher);
+        Task<IEnumerable<Employee>> GetTeachers();
+        Task<Employee> GetTeacher(string id);
+        Task<Employee> CreateTeacher(Employee teacher);
+        Task UpdateTeacher(string id, Employee teacher);
         Task DeleteTeacher(string id);
     }
 }
