@@ -2,7 +2,7 @@ using FITApp.EmployeesService.Models;
 
 namespace FITApp.EmployeesService.Interfaces
 {
-    public interface ITeacherRepository
+    public interface IEmployeesRepository
     {
         Task<IEnumerable<Employee>> GetTeachers();
         Task<Employee> GetTeacher(string id);
