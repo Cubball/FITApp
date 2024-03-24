@@ -2,6 +2,7 @@ using FITApp.Auth.Extensions;
 using FITApp.IdentityService.Data;
 using FITApp.IdentityService.Entities;
 using FITApp.IdentityService.Infrastructure;
+using FITApp.IdentityService.Options;
 using FITApp.IdentityService.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +30,8 @@ builder.Services.AddIdentityCore<User>(o =>
 var jwtPublicKey = builder.Configuration["JwtOptions:PublicKey"] ?? throw new InvalidOperationException("JwtOptions:PublicKey is not set");
 var jwtPrivateKey = builder.Configuration["JwtOptions:PrivateKey"] ?? throw new InvalidOperationException("JwtOptions:PrivateKey is not set");
 builder.Services.AddJWTAuth(jwtPublicKey);
+
+builder.Services.Configure<FITAppOptions>(builder.Configuration.GetSection(FITAppOptions.SectionName));
 builder.Services.AddSingleton<IClock, SystemClock>();
 builder.Services.AddSingleton<ITokenService, TokenService>(s => new TokenService(jwtPrivateKey, s.GetRequiredService<IClock>()));
 builder.Services.AddScoped<IUserService, UserService>();
