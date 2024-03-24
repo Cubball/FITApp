@@ -8,8 +8,9 @@ The following options need to be set for the service to work properly:
 - AdminOptions:RoleName - the role of the admin user that will be created on the first run
 - EmailSettings:Email - Google Account email address
 - EmailSettings:Password - Google Account App Password that is generated in the Google Account settings
+- FITAppOptions:BaseUrl - the base URL of the app
 
-For development purposes, JwtOptions and AdminOptions options are already set in the appsettings.Development.json file.
+For development purposes, JwtOptions, AdminOptions and FITAppOptions options are already set in the appsettings.Development.json file.
 However, in a production environment, they should be set securely elsewhere.
 
 EmailSettings can be set using dotnet user-secrets.
