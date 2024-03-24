@@ -49,6 +49,13 @@ public class UserService : IUserService
         }
 
         var result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        if (result.Succeeded)
+        {
+            user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = null;
+            await _userManager.UpdateAsync(user);
+        }
+
         return result.Succeeded;
     }
 
