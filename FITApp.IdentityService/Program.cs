@@ -4,6 +4,7 @@ using FITApp.IdentityService.Entities;
 using FITApp.IdentityService.Infrastructure;
 using FITApp.IdentityService.Options;
 using FITApp.IdentityService.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,7 @@ builder.Services.AddIdentityCore<User>(o =>
         o.Password.RequiredLength = 8;
     })
     .AddRoles<Role>()
+    .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<AppDbContext>();
 
 var jwtPublicKey = builder.Configuration["JwtOptions:PublicKey"] ?? throw new InvalidOperationException("JwtOptions:PublicKey is not set");
