@@ -58,6 +58,28 @@ Returns:
   ```
 - 401: if provided credentials are not correct
 
+#### Resetting the password
+```
+POST /api/auth/reset-password
+```
+Accepts:
+```json
+{
+  "email": "user@example.com"
+}
+```
+Returns:
+- 200
+- 400: if provided data is not correct
+
+#### Confirming the password reset
+```
+GET /api/auth/confirm-reset-password?id=string&token=string
+```
+Returns:
+- 200
+- 400: if provided data is not correct
+
 #### Changing the password (requires authorization)
 ```
 POST /api/auth/change-password
