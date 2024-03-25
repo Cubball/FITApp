@@ -13,4 +13,8 @@ public interface IUserService
     Task<bool> IsRefreshTokenValidAsync(string email, string refreshToken);
 
     Task<bool> UpdateRefreshTokenAsync(string email, string refreshToken);
+
+    Task<bool> TrySendResetPasswordEmailAsync(string email);
+
+    Task<bool> TryResetPasswordAsync(string id, string token);
 }

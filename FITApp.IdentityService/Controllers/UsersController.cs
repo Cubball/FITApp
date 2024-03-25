@@ -137,8 +137,21 @@ public class UsersController : ControllerBase
         }
         var password = _passwordGenerator.GeneratePassword();
 
-        await _userManager.RemovePasswordAsync(user);
-        await _userManager.AddPasswordAsync(user, password);
+        var result = await _userManager.RemovePasswordAsync(user);
+        if (!result.Succeeded)
+        {
+            return BadRequest();
+        }
+
+        result = await _userManager.AddPasswordAsync(user, password);
+        if (!result.Succeeded)
+        {
+            return BadRequest();
+        }
+
+        user.RefreshToken = null;
+        user.RefreshTokenExpiryTime = null;
+        await _userManager.UpdateAsync(user);
 
         var subject = "FITApp password reset";
         var message = $"Your password has been reset. Your new password is {password}";
