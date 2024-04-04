@@ -16,6 +16,13 @@ namespace FITApp.EmployeesService.Dtos
         public List<AcademicDegreeDto> AcademicDegrees { get; set; } = new List<AcademicDegreeDto>();
         public List<AcademicRankDto> AcademicRanks { get; set; } = new List<AcademicRankDto>();
     }
+    public class EmployeeUpdateDto
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Patronymic { get; set; }
+        public DateTime BirthDate { get; set; }
+    }
 
     public class UserDto
     {

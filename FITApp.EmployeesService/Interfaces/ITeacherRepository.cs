@@ -1,4 +1,5 @@
 using FITApp.EmployeesService.Models;
+using MongoDB.Driver;
 
 namespace FITApp.EmployeesService.Interfaces
 {
@@ -6,8 +7,8 @@ namespace FITApp.EmployeesService.Interfaces
     {
         Task<IEnumerable<Employee>> GetEmployees();
         Task<Employee> GetEmployee(string id);
-        Task<Employee> CreateEmployee(Employee teacher);
-        //Task UpdateEmployee(string id, Employee teacher);
+        Task<Employee> CreateEmployee(Employee employee);
+        Task<UpdateResult> UpdateEmployee(string id, UpdateDefinition<Employee> update);
         Task DeleteEmployee(string id);
     }
 }

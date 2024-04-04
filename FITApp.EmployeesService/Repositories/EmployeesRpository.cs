@@ -17,10 +17,10 @@ namespace FITApp.EmployeesService.Repositories
             _employeesCollection = database.GetCollection<Employee>("employee");
         }
 
-        public async Task<Employee> CreateEmployee(Employee teacher)
+        public async Task<Employee> CreateEmployee(Employee employee)
         {
-            await _employeesCollection.InsertOneAsync(teacher);
-            return teacher;
+            await _employeesCollection.InsertOneAsync(employee);
+            return employee;
         }
 
         public async Task DeleteEmployee(string id)
@@ -33,7 +33,7 @@ namespace FITApp.EmployeesService.Repositories
 
         public async Task<Employee> GetEmployee(string id)
         {
-            FilterDefinition<Employee> filter = Builders<Employee>.Filter.Eq("Id", id);
+            var filter = Builders<Employee>.Filter.Eq(a => a.Id, ObjectId.Parse(id));
             return await _employeesCollection.Find(filter).FirstOrDefaultAsync();
         }
 
@@ -42,6 +42,20 @@ namespace FITApp.EmployeesService.Repositories
         {
             return await _employeesCollection.Find(new BsonDocument()).ToListAsync();
         }
+
+        public async Task<UpdateResult> UpdateEmployee(string id, UpdateDefinition<Employee> update)
+        {
+            FilterDefinition<Employee> filter = Builders<Employee>.Filter.
+                Eq(employee => employee.Id, ObjectId.Parse(id));
+
+            return await _employeesCollection.UpdateOneAsync(filter, update);
+        }
+
+        // public async Task UpdateEmployee(Employee employee)
+        // {
+        //     var filter = Builders<Employee>.Filter.Eq("Id", employee.Id);
+        //     await _employeesCollection.ReplaceOneAsync(filter, employee);
+        // }
     }
 
 }
