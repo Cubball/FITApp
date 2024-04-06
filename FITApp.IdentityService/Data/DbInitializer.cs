@@ -19,6 +19,8 @@ public static class DbInitializer
     private static async Task InitializePermissionsAsync(IServiceScope scope)
     {
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        // HACK: temporary hack for docker
+        await context.Database.MigrateAsync();
         var permissionInDb = await context.Permissions.ToListAsync();
         var permissionsClassType = typeof(Permissions);
         var permissions = permissionsClassType
