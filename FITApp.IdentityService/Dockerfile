@@ -12,4 +12,5 @@ RUN dotnet publish -c Release -o /app ./FITApp.IdentityService/
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app .
+ENV ASPNETCORE_HTTP_PORTS=5001
 ENTRYPOINT ["dotnet", "FITApp.IdentityService.dll"]
