@@ -7,7 +7,8 @@ namespace FITApp.EmployeesService.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
+        [BsonElement("_id")]
+        public string Id { get; set; }
         public User User { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

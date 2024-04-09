@@ -23,17 +23,15 @@ namespace FITApp.EmployeesService.Repositories
             return employee;
         }
 
-        public async Task DeleteEmployee(string id)
+        public async Task<DeleteResult> DeleteEmployee(string id)
         {
-            FilterDefinition<Employee> filter = Builders<Employee>.Filter.Eq("Id", id);
-            await _employeesCollection.DeleteOneAsync(filter);
-            return;
-
+            var filterDefinition = Builders<Employee>.Filter.Eq(e => e.Id, id);
+            return await _employeesCollection.DeleteOneAsync(filterDefinition);
         }
 
         public async Task<Employee> GetEmployee(string id)
         {
-            var filter = Builders<Employee>.Filter.Eq(a => a.Id, ObjectId.Parse(id));
+            var filter = Builders<Employee>.Filter.Eq(a => a.Id, id);
             return await _employeesCollection.Find(filter).FirstOrDefaultAsync();
         }
 
@@ -46,7 +44,7 @@ namespace FITApp.EmployeesService.Repositories
         public async Task<UpdateResult> UpdateEmployee(string id, UpdateDefinition<Employee> update)
         {
             FilterDefinition<Employee> filter = Builders<Employee>.Filter.
-                Eq(employee => employee.Id, ObjectId.Parse(id));
+                Eq(employee => employee.Id, id);
 
             return await _employeesCollection.UpdateOneAsync(filter, update);
         }

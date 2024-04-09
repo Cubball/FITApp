@@ -33,7 +33,7 @@ namespace FITApp.EmployeesService.Controllers
             return Ok(employee);
         }
 
-        //TODO: set bether name fir method
+        //TODO: set bether name for method
         [HttpPut("{id}")]
         public async Task<IActionResult> SetFullNameAndBirth(string id, [FromBody] EmployeeUpdateDto employeeUpdateDto)
         {
@@ -46,7 +46,7 @@ namespace FITApp.EmployeesService.Controllers
                 }
                 DateOnly newDateFromDateTime = new DateOnly(employeeUpdateDto.BirthDate.Year,
                                                         employeeUpdateDto.BirthDate.Month,
-                                                        employeeUpdateDto.BirthDate.Day);
+                                                    employeeUpdateDto.BirthDate.Day);
 
                 UpdateDefinition<Employee> update = Builders<Employee>.Update
                     .Set(employee => employee.FirstName, employeeUpdateDto.FirstName)
@@ -59,6 +59,26 @@ namespace FITApp.EmployeesService.Controllers
                 return Ok();
             }
             return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                DeleteResult deleteResult = await _employeeRepository.DeleteEmployee(id);
+
+                if (deleteResult.DeletedCount == 0)
+                {
+                    return NotFound(); // Якщо елемент не знайдено
+                }
+
+                return NoContent(); // Успішний видалення, не потрібно повертати тіло відповіді
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"Помилка сервера: {e.Message}"); // Помилка сервера
+            }
         }
 
 
