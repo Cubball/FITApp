@@ -13,10 +13,12 @@ namespace FITApp.EmployeesService.Controllers
     {
         private readonly IEmployeesRepository _employeeRepository;
         private readonly IMapper _mapper;
-        public EmployeesController(IEmployeesRepository employeeRepository, IMapper mapper)
+        private readonly IEmployeesService _employeeService;
+        public EmployeesController(IEmployeesRepository employeeRepository, IMapper mapper, IEmployeesService employeeService)
         {
             _employeeRepository = employeeRepository;
             _mapper = mapper;
+            _employeeService = employeeService;
         }
 
         [HttpGet]
@@ -29,36 +31,39 @@ namespace FITApp.EmployeesService.Controllers
         public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDto employeeDto)
         {
             var employee = _mapper.Map<Employee>(employeeDto);
-            await _employeeRepository.CreateEmployee(employee);
+            await _employeeRepository.CreateEmployee(employee, _employeeRepository.GetResult());
             return Ok(employee);
         }
 
         //TODO: set bether name for method
         [HttpPut("{id}")]
-        public async Task<IActionResult> SetFullNameAndBirth(string id, [FromBody] EmployeeUpdateDto employeeUpdateDto)
+        public async Task<IActionResult> SetFullNameAndBirth(string id, [FromBody] EmployeeDetailsDto employeeDetails)
         {
-            if (id != null)
+            if (string.IsNullOrEmpty(id))
             {
-                var employee = await _employeeRepository.GetEmployee(id);
-                if (employee == null)
-                {
-                    return NotFound();
-                }
-                DateOnly newDateFromDateTime = new DateOnly(employeeUpdateDto.BirthDate.Year,
-                                                        employeeUpdateDto.BirthDate.Month,
-                                                    employeeUpdateDto.BirthDate.Day);
-
-                UpdateDefinition<Employee> update = Builders<Employee>.Update
-                    .Set(employee => employee.FirstName, employeeUpdateDto.FirstName)
-                    .Set(employee => employee.LastName, employeeUpdateDto.LastName)
-                    .Set(employee => employee.Patronymic, employeeUpdateDto.Patronymic)
-                    .Set(employee => employee.BirthDate, newDateFromDateTime);
-                // _mapper.Map(employeeUpdateDto, employee);    
-
-                await _employeeRepository.UpdateEmployee(id, update);
-                return Ok();
+                return BadRequest("Invalid employee ID.");
             }
-            return BadRequest();
+            try
+            {
+
+                // DateOnly newDateFromDateTime = new(employeeUpdateDto.BirthDate.Year,
+                //                                    employeeUpdateDto.BirthDate.Month,
+                //                                    employeeUpdateDto.BirthDate.Day);
+                // UpdateDefinition<Employee> update = Builders<Employee>.Update
+                //     .Set(employee => employee.FirstName, employeeUpdateDto.FirstName)
+                //     .Set(employee => employee.LastName, employeeUpdateDto.LastName)
+                //     .Set(employee => employee.Patronymic, employeeUpdateDto.Patronymic)
+                //     .Set(employee => employee.BirthDate, newDateFromDateTime);
+
+                UpdateResult updateResult = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
+                return updateResult.ModifiedCount == 0 ? NotFound() : Ok();
+            }
+            catch (Exception ex)
+            {
+                // Обробка помилок
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+
         }
 
         [HttpDelete("{id}")]

@@ -1,6 +1,7 @@
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
 using FITApp.EmployeesService.Repositories;
+using FITApp.EmployeesService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBSettings"));
 builder.Services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
-
+builder.Services.AddSingleton<IEmployeesService, EmployeesService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
