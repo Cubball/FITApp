@@ -16,23 +16,24 @@ namespace FITApp.EmployeesService.Services
 
         public async Task<Employee> CreateEmployee(Employee employee)
         {
-            await _employeeRepository.CreateEmployee(employee, _employeeRepository.GetResult());
+            await _employeeRepository.CreateEmployee(employee);
             return employee;
         }
 
-        public Task<DeleteResult> DeleteEmployee(string id)
+        public async Task<DeleteResult> DeleteEmployee(string id)
         {
-            throw new NotImplementedException();
+            var result = await _employeeRepository.DeleteEmployee(id);
+            return result;
         }
 
-        public Task<Employee> GetEmployee(string id)
+        public async Task<Employee> GetEmployee(string id)
         {
-            throw new NotImplementedException();
+            return await _employeeRepository.GetEmployee(id);
         }
 
-        public Task<IEnumerable<Employee>> GetEmployees()
+        public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            throw new NotImplementedException();
+            return await _employeeRepository.GetEmployees();
         }
 
         public async Task<UpdateResult> UpdateEmployeeDetails(string id, EmployeeDetailsDto employeeDetails)

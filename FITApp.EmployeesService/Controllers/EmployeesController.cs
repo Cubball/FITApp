@@ -11,12 +11,10 @@ namespace FITApp.EmployeesService.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly IEmployeesRepository _employeeRepository;
         private readonly IMapper _mapper;
         private readonly IEmployeesService _employeeService;
-        public EmployeesController(IEmployeesRepository employeeRepository, IMapper mapper, IEmployeesService employeeService)
+        public EmployeesController(IMapper mapper, IEmployeesService employeeService)
         {
-            _employeeRepository = employeeRepository;
             _mapper = mapper;
             _employeeService = employeeService;
         }
@@ -24,14 +22,14 @@ namespace FITApp.EmployeesService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEmployees()
         {
-            var employees = await _employeeRepository.GetEmployees();
+            var employees = await _employeeService.GetEmployees();
             return Ok(employees);
         }
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDto employeeDto)
         {
-            var employee = _mapper.Map<Employee>(employeeDto);
-            await _employeeRepository.CreateEmployee(employee, _employeeRepository.GetResult());
+            Employee employee = _mapper.Map<Employee>(employeeDto);
+            await _employeeService.CreateEmployee(employee);
             return Ok(employee);
         }
 
@@ -45,15 +43,6 @@ namespace FITApp.EmployeesService.Controllers
             }
             try
             {
-
-                // DateOnly newDateFromDateTime = new(employeeUpdateDto.BirthDate.Year,
-                //                                    employeeUpdateDto.BirthDate.Month,
-                //                                    employeeUpdateDto.BirthDate.Day);
-                // UpdateDefinition<Employee> update = Builders<Employee>.Update
-                //     .Set(employee => employee.FirstName, employeeUpdateDto.FirstName)
-                //     .Set(employee => employee.LastName, employeeUpdateDto.LastName)
-                //     .Set(employee => employee.Patronymic, employeeUpdateDto.Patronymic)
-                //     .Set(employee => employee.BirthDate, newDateFromDateTime);
 
                 UpdateResult updateResult = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
                 return updateResult.ModifiedCount == 0 ? NotFound() : Ok();
@@ -71,7 +60,7 @@ namespace FITApp.EmployeesService.Controllers
         {
             try
             {
-                DeleteResult deleteResult = await _employeeRepository.DeleteEmployee(id);
+                DeleteResult deleteResult = await _employeeService.DeleteEmployee(id);
 
                 if (deleteResult.DeletedCount == 0)
                 {
