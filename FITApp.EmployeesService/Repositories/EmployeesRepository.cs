@@ -12,9 +12,9 @@ namespace FITApp.EmployeesService.Repositories
 
         public EmployeesRepository(IOptions<MongoDbSettings> mongoDbSettings)
         {
-            MongoClient client = new MongoClient(mongoDbSettings.Value.ConnectionString);
+            MongoClient client = new(mongoDbSettings.Value.ConnectionString);
             IMongoDatabase database = client.GetDatabase(mongoDbSettings.Value.DatabaseName);
-            _employeesCollection = database.GetCollection<Employee>("employee");
+            _employeesCollection = database.GetCollection<Employee>("employees");
         }
 
         public async Task<Employee> CreateEmployee(Employee employee)
@@ -25,13 +25,13 @@ namespace FITApp.EmployeesService.Repositories
 
         public async Task<DeleteResult> DeleteEmployee(string id)
         {
-            var filterDefinition = Builders<Employee>.Filter.Eq(e => e.Id, id);
+            FilterDefinition<Employee> filterDefinition = Builders<Employee>.Filter.Eq(e => e.Id, id);
             return await _employeesCollection.DeleteOneAsync(filterDefinition);
         }
 
         public async Task<Employee> GetEmployee(string id)
         {
-            var filter = Builders<Employee>.Filter.Eq(a => a.Id, id);
+            FilterDefinition<Employee> filter = Builders<Employee>.Filter.Eq(a => a.Id, id);
             return await _employeesCollection.Find(filter).FirstOrDefaultAsync();
         }
 
