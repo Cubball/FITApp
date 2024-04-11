@@ -1,13 +1,19 @@
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using ThirdParty.Json.LitJson;
 namespace FITApp.EmployeesService.Models
 {
     public class Employee
     {
+        // [BsonId]
+        // // [BsonRepresentation(BsonType.ObjectId)]
+        // // [BsonRepresentation(BsonType.String)]
+        // // [BsonElement("_id")]
+        // [JsonProperty("id")]
+
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        [BsonElement("_id")]
+        [BsonRepresentation(BsonType.String)]
         public string Id { get; set; }
         public User User { get; set; }
         public string FirstName { get; set; }

@@ -1,3 +1,4 @@
+using FITApp.Auth.Extensions;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
 using FITApp.EmployeesService.Repositories;
@@ -11,6 +12,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var jwtPublicKey = builder.Configuration["JwtOptions:PublicKey"] ?? throw new InvalidOperationException("JwtOptions:PublicKey is not set");
+builder.Services.AddJWTAuth(jwtPublicKey);
+
 
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBSettings"));
 builder.Services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
