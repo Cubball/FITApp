@@ -4,6 +4,7 @@ using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace FITApp.EmployeesService.Controllers
 {
@@ -19,12 +20,12 @@ namespace FITApp.EmployeesService.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetEmployees()
-        {
-            var employees = await _employeeService.GetEmployees();
-            return Ok(employees);
-        }
+        // [HttpGet]
+        // public async Task<IActionResult> GetEmployees()
+        // {
+        //     var employees = await _employeeService.GetEmployees();
+        //     return Ok(employees);
+        // }
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDto employeeDto)
         {
@@ -74,6 +75,22 @@ namespace FITApp.EmployeesService.Controllers
                 return StatusCode(500, $"Помилка сервера: {e.Message}"); // Помилка сервера
             }
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetEmployee(string id)
+        {
+            var employee = await _employeeService.GetEmployee(id);
+            return Ok(employee);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetEmployee()
+        {
+            var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            var employee = await _employeeService.GetEmployee(id);
+            return Ok(employee);
+        }
+
+
+
 
 
 
