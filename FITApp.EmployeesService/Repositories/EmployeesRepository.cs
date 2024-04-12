@@ -17,10 +17,9 @@ namespace FITApp.EmployeesService.Repositories
             _employeesCollection = database.GetCollection<Employee>("employees");
         }
 
-        public async Task<Employee> CreateEmployee(Employee employee)
+        public async Task CreateEmployee(Employee employee)
         {
             await _employeesCollection.InsertOneAsync(employee);
-            return employee;
         }
 
         public async Task<DeleteResult> DeleteEmployee(string id)

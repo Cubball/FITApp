@@ -8,7 +8,7 @@ namespace FITApp.EmployeesService.Interfaces
     {
         Task<IEnumerable<Employee>> GetEmployees();
         Task<Employee> GetEmployee(string id);
-        Task<Employee> CreateEmployee(Employee employee);
+        Task CreateEmployee(Employee employee);
         Task<long> DeleteEmployee(string id);
         Task<long> UpdateEmployeeDetails(string id, EmployeeDetailsDto employeeDetails);
 

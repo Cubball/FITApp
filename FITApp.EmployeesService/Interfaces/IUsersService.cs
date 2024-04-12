@@ -3,7 +3,7 @@ using FITApp.EmployeesService.Models;
 
 namespace FITApp.EmployeesService.Interfaces
 {
-    public interface IUserService
+    public interface IUsersService
     {
         Task<long> CreateUser(UserDto user);
         Task<long> DeleteUser(string id);

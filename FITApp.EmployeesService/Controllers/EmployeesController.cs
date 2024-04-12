@@ -31,7 +31,7 @@ namespace FITApp.EmployeesService.Controllers
         {
             Employee employee = _mapper.Map<Employee>(employeeDto);
             await _employeeService.CreateEmployee(employee);
-            return Ok(employee);
+            return Ok();
         }
 
         //TODO: set bether name for method
