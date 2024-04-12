@@ -6,7 +6,7 @@ namespace FITApp.EmployeesService.Dtos
     {
         public string FullName { get; set; }
         public string ShortName { get; set; }
-        public string DeplomanNumber { get; set; }
+        public string DiplomaNumber { get; set; }
         public DateTime DateOfIssue { get; set; }
     }
 }

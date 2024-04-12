@@ -5,7 +5,7 @@ namespace FITApp.EmployeesService.Dtos
     public class AcademicRankDto
     {
         public string Name { get; set; }
-        public string SerteficateNumber { get; set; }
+        public string CertificateNumber { get; set; }
         public DateTime DateOfIssue { get; set; }
     }
 }
