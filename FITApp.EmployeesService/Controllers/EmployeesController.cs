@@ -3,8 +3,8 @@ using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using Microsoft.IdentityModel.JsonWebTokens;
+using MongoDB.Driver;
 
 namespace FITApp.EmployeesService.Controllers
 {
@@ -42,39 +42,26 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
-            try
-            {
 
-                UpdateResult updateResult = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
-                return updateResult.ModifiedCount == 0 ? NotFound() : Ok();
-            }
-            catch (Exception ex)
-            {
-                // Обробка помилок
-                return StatusCode(500, $"An error occurred: {ex.Message}");
-            }
+            UpdateResult updateResult = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
+            return updateResult.ModifiedCount == 0 ? NotFound() : Ok();
 
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            try
-            {
-                DeleteResult deleteResult = await _employeeService.DeleteEmployee(id);
+            DeleteResult deleteResult = await _employeeService.DeleteEmployee(id);
 
-                if (deleteResult.DeletedCount == 0)
-                {
-                    return NotFound(); // Якщо елемент не знайдено
-                }
-
-                return NoContent(); // Успішний видалення, не потрібно повертати тіло відповіді
-            }
-            catch (Exception e)
+            if (deleteResult.DeletedCount == 0)
             {
-                return StatusCode(500, $"Помилка сервера: {e.Message}"); // Помилка сервера
+                return NotFound(); // Якщо елемент не знайдено
             }
+
+            return NoContent(); // Успішний видалення, не потрібно повертати тіло відповіді
         }
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployee(string id)
         {
