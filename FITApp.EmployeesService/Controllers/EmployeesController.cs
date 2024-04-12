@@ -43,17 +43,17 @@ namespace FITApp.EmployeesService.Controllers
                 return BadRequest("Invalid employee ID.");
             }
 
-            UpdateResult updateResult = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
-            return updateResult.ModifiedCount == 0 ? NotFound() : Ok();
+            long updatedCount = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
+            return updatedCount == 0 ? NotFound() : Ok();
 
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            DeleteResult deleteResult = await _employeeService.DeleteEmployee(id);
+            long deletedCount = await _employeeService.DeleteEmployee(id);
 
-            if (deleteResult.DeletedCount == 0)
+            if (deletedCount == 0)
             {
                 return NotFound(); // Якщо елемент не знайдено
             }

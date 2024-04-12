@@ -21,10 +21,10 @@ namespace FITApp.EmployeesService.Services
             return employee;
         }
 
-        public async Task<DeleteResult> DeleteEmployee(string id)
+        public async Task<long> DeleteEmployee(string id)
         {
             var result = await _employeeRepository.DeleteEmployee(id);
-            return result;
+            return result.DeletedCount;
         }
 
         public async Task<Employee> GetEmployee(string id)
@@ -37,7 +37,7 @@ namespace FITApp.EmployeesService.Services
             return await _employeeRepository.GetEmployees();
         }
 
-        public async Task<UpdateResult> UpdateEmployeeDetails(string id, EmployeeDetailsDto employeeDetails)
+        public async Task<long> UpdateEmployeeDetails(string id, EmployeeDetailsDto employeeDetails)
         {
             DateOnly newDateFromDateTime = new(employeeDetails.BirthDate.Year,
                                    employeeDetails.BirthDate.Month,
@@ -47,8 +47,8 @@ namespace FITApp.EmployeesService.Services
                 .Set(employee => employee.LastName, employeeDetails.LastName)
                 .Set(employee => employee.Patronymic, employeeDetails.Patronymic)
                 .Set(employee => employee.BirthDate, newDateFromDateTime);
-
-            return await _employeeRepository.UpdateEmployee(id, update);
+            var result = await _employeeRepository.UpdateEmployee(id, update);
+            return result.ModifiedCount;
         }
     }
 }

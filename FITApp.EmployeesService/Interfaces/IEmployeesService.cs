@@ -6,11 +6,11 @@ namespace FITApp.EmployeesService.Interfaces
 {
     public interface IEmployeesService
     {
-        Task<UpdateResult> UpdateEmployeeDetails(string id, EmployeeDetailsDto employeeDetails);
         Task<IEnumerable<Employee>> GetEmployees();
         Task<Employee> GetEmployee(string id);
         Task<Employee> CreateEmployee(Employee employee);
-        Task<DeleteResult> DeleteEmployee(string id);
+        Task<long> DeleteEmployee(string id);
+        Task<long> UpdateEmployeeDetails(string id, EmployeeDetailsDto employeeDetails);
 
     }
 }
