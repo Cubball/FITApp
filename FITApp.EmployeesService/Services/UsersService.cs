@@ -11,9 +11,8 @@ namespace FITApp.EmployeesService.Services
         public UsersService(IEmployeesRepository employeesRepository)
         {
             _employeesRepository = employeesRepository;
-
         }
-        public async Task<long> CreateUser(UserDto user)
+        public async Task CreateUser(UserDto user)
         {
             var employee = new Employee
             {
@@ -27,7 +26,6 @@ namespace FITApp.EmployeesService.Services
                 }
             };
             await _employeesRepository.CreateEmployee(employee);
-            return 10;
         }
 
         public Task<long> DeleteUser(string id)

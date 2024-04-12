@@ -5,7 +5,7 @@ namespace FITApp.EmployeesService.Interfaces
 {
     public interface IUsersService
     {
-        Task<long> CreateUser(UserDto user);
+        Task CreateUser(UserDto user);
         Task<long> DeleteUser(string id);
         Task<long> UpdateUserDetails(string id, UserUpdateDto userUpdateDto);
     }

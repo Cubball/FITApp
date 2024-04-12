@@ -14,11 +14,19 @@ namespace FITApp.EmployeesService.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IEmployeesService _employeeService;
+
         public EmployeesController(IMapper mapper, IEmployeesService employeeService)
         {
             _mapper = mapper;
             _employeeService = employeeService;
         }
+        // public EmployeesController(IMapper mapper, IEmployeesService employeeService, IUsersService usersService)
+        // {
+        //     _mapper = mapper;
+        //     _employeeService = employeeService;
+        //     _usersService = usersService;
+        // }
+
 
         [HttpGet]
         public async Task<IActionResult> GetEmployees()
@@ -33,6 +41,13 @@ namespace FITApp.EmployeesService.Controllers
             await _employeeService.CreateEmployee(employee);
             return Ok();
         }
+        // [HttpPost]
+        // public async Task<IActionResult> CreateEmployee([FromBody] UserDto userDto)
+        // {
+        //     await _usersService.CreateUser(userDto);
+        //     return Ok();
+        // }
+
 
         //TODO: set bether name for method
         [HttpPut("{id}")]

@@ -1,4 +1,5 @@
 using FITApp.Auth.Extensions;
+using FITApp.EmployeesService;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
 using FITApp.EmployeesService.Repositories;
@@ -20,8 +21,9 @@ builder.Services.AddJWTAuth(jwtPublicKey);
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBSettings"));
 builder.Services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
 builder.Services.AddSingleton<IEmployeesService, EmployeesService>();
+builder.Services.AddSingleton<IUsersService, UsersService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+MongoDbClassMapInitializer.RegisterClassMaps();
 var app = builder.Build();
 
 

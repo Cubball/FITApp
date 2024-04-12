@@ -1,7 +1,6 @@
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace FITApp.EmployeesService.Services
