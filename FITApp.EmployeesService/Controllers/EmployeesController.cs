@@ -41,12 +41,10 @@ namespace FITApp.EmployeesService.Controllers
             await _employeeService.CreateEmployee(employee);
             return Ok();
         }
-        // [HttpPost]
-        // public async Task<IActionResult> CreateEmployee([FromBody] UserDto userDto)
-        // {
-        //     await _usersService.CreateUser(userDto);
-        //     return Ok();
-        // }
+
+
+
+
 
 
         //TODO: set bether name for method

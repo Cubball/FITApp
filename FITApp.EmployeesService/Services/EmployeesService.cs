@@ -8,31 +8,31 @@ namespace FITApp.EmployeesService.Services
 
     public class EmployeesService : IEmployeesService
     {
-        private readonly IEmployeesRepository _employeeRepository;
+        private readonly IEmployeesRepository _employeesRepository;
         public EmployeesService(IEmployeesRepository employeeRepository)
         {
-            _employeeRepository = employeeRepository;
+            _employeesRepository = employeeRepository;
         }
 
         public async Task CreateEmployee(Employee employee)
         {
-            await _employeeRepository.CreateEmployee(employee);
+            await _employeesRepository.CreateEmployee(employee);
         }
 
         public async Task<long> DeleteEmployee(string id)
         {
-            var result = await _employeeRepository.DeleteEmployee(id);
+            var result = await _employeesRepository.DeleteEmployee(id);
             return result.DeletedCount;
         }
 
         public async Task<Employee> GetEmployee(string id)
         {
-            return await _employeeRepository.GetEmployee(id);
+            return await _employeesRepository.GetEmployee(id);
         }
 
         public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            return await _employeeRepository.GetEmployees();
+            return await _employeesRepository.GetEmployees();
         }
 
         public async Task<long> UpdateEmployeeDetails(string id, EmployeeDetailsDto employeeDetails)
@@ -45,7 +45,7 @@ namespace FITApp.EmployeesService.Services
                 .Set(employee => employee.LastName, employeeDetails.LastName)
                 .Set(employee => employee.Patronymic, employeeDetails.Patronymic)
                 .Set(employee => employee.BirthDate, newDateFromDateTime);
-            var result = await _employeeRepository.UpdateEmployee(id, update);
+            var result = await _employeesRepository.UpdateEmployee(id, update);
             return result.ModifiedCount;
         }
     }
