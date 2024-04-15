@@ -6,33 +6,27 @@ using MongoDB.Driver;
 namespace FITApp.EmployeesService.Services
 {
 
-    public class EmployeesService : IEmployeesService
+    public class EmployeesService(IEmployeesRepository employeeRepository) : IEmployeesService
     {
-        private readonly IEmployeesRepository _employeesRepository;
-        public EmployeesService(IEmployeesRepository employeeRepository)
-        {
-            _employeesRepository = employeeRepository;
-        }
-
         public async Task CreateEmployee(Employee employee)
         {
-            await _employeesRepository.CreateEmployee(employee);
+            await employeeRepository.CreateEmployee(employee);
         }
 
         public async Task<long> DeleteEmployee(string id)
         {
-            var result = await _employeesRepository.DeleteEmployee(id);
+            var result = await employeeRepository.DeleteEmployee(id);
             return result.DeletedCount;
         }
 
         public async Task<Employee> GetEmployee(string id)
         {
-            return await _employeesRepository.GetEmployee(id);
+            return await employeeRepository.GetEmployee(id);
         }
 
         public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            return await _employeesRepository.GetEmployees();
+            return await employeeRepository.GetEmployees();
         }
 
         public async Task<long> UpdateEmployeeDetails(string id, EmployeeDetailsDto employeeDetails)
@@ -45,13 +39,13 @@ namespace FITApp.EmployeesService.Services
                 .Set(employee => employee.LastName, employeeDetails.LastName)
                 .Set(employee => employee.Patronymic, employeeDetails.Patronymic)
                 .Set(employee => employee.BirthDate, newDateFromDateTime);
-            var result = await _employeesRepository.UpdateEmployee(id, update);
+            var result = await employeeRepository.UpdateEmployee(id, update);
             return result.ModifiedCount;
         }
         
-        public async Task<long> UpdateEmployeePosition(string id, PositionDto positionDto)
+        public async Task<long> UpdateEmployeePositions(string id, PositionDto positionDto)
         {
-            DateOnly startDate = new DateOnly(positionDto.StartDate.Year,
+            DateOnly startDate = new(positionDto.StartDate.Year,
                 positionDto.StartDate.Month,
                 positionDto.StartDate.Day);
             
@@ -59,7 +53,7 @@ namespace FITApp.EmployeesService.Services
 
             if (positionDto.EndDate.HasValue)
             {
-                DateOnly endDate = new DateOnly(positionDto.EndDate.Value.Year,
+                DateOnly endDate = new(positionDto.EndDate.Value.Year,
                     positionDto.EndDate.Value.Month,
                     positionDto.EndDate.Value.Day);
 
@@ -79,7 +73,7 @@ namespace FITApp.EmployeesService.Services
                 });
             }
 
-            var result = await _employeesRepository.UpdateEmployee(id, update);
+            var result = await employeeRepository.UpdateEmployee(id, update);
             return result.ModifiedCount;
         }
 
