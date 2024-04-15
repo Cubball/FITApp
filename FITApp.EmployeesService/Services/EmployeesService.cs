@@ -48,5 +48,40 @@ namespace FITApp.EmployeesService.Services
             var result = await _employeesRepository.UpdateEmployee(id, update);
             return result.ModifiedCount;
         }
+        
+        public async Task<long> UpdateEmployeePosition(string id, PositionDto positionDto)
+        {
+            DateOnly startDate = new DateOnly(positionDto.StartDate.Year,
+                positionDto.StartDate.Month,
+                positionDto.StartDate.Day);
+            
+            UpdateDefinition<Employee> update;
+
+            if (positionDto.EndDate.HasValue)
+            {
+                DateOnly endDate = new DateOnly(positionDto.EndDate.Value.Year,
+                    positionDto.EndDate.Value.Month,
+                    positionDto.EndDate.Value.Day);
+
+                update = Builders<Employee>.Update.Push(e => e.Positions, new Position
+                {
+                    Name = positionDto.Name,
+                    StartDate = startDate,
+                    EndDate = endDate
+                });
+            }
+            else
+            {
+                update = Builders<Employee>.Update.Push(e => e.Positions, new Position
+                {
+                    Name = positionDto.Name,
+                    StartDate = startDate
+                });
+            }
+
+            var result = await _employeesRepository.UpdateEmployee(id, update);
+            return result.ModifiedCount;
+        }
+
     }
 }
