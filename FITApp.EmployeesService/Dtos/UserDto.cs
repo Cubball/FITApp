@@ -1,10 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace FITApp.EmployeesService.Dtos
 {
-    public class UserDto
+    public class UserDto : UserUpdateDto
     {
+        [Required(ErrorMessage = "UserId is required.")]
         public string UserId { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }
-        public string RoleId { get; set; }
     }
 }
