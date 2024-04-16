@@ -93,6 +93,21 @@ namespace FITApp.EmployeesService.Services
             return result.ModifiedCount; 
         }
         
+        public async Task<long> UpdateEmployeeAcademicRanks(string id, AcademicRankDto academicRankDto)
+        {
+            var academicDegree = mapper.Map<AcademicRank>(academicRankDto);
+
+            var update = Builders<Employee>.Update.Push(e => e.AcademicRanks, new AcademicRank
+            {
+                Name = academicDegree.Name,
+                CertificateNumber = academicDegree.CertificateNumber,
+                DateOfIssue = academicDegree.DateOfIssue
+            });
+            
+            var result = await employeeRepository.UpdateEmployee(id, update);
+            return result.ModifiedCount; 
+        }
+        
         // public async Task<long> UpdateEmployeePositions(string id, PositionDto positionDto)
         // {
         //     DateOnly startDate = new(positionDto.StartDate.Year,
