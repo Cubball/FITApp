@@ -41,7 +41,8 @@ namespace FITApp.EmployeesService.Controllers
             await _employeeService.CreateEmployee(employee);
             return Ok();
         }
-        
+
+
         //TODO: set bether name for method
         [HttpPut("{id}")]
         public async Task<IActionResult> SetFullNameAndBirth(string id, [FromBody] EmployeeDetailsDto employeeDetails)
@@ -101,4 +102,3 @@ namespace FITApp.EmployeesService.Controllers
 
 
     }
-}

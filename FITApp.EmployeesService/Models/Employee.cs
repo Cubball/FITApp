@@ -6,12 +6,6 @@ namespace FITApp.EmployeesService.Models
 {
     public class Employee
     {
-        // [BsonId]
-        // // [BsonRepresentation(BsonType.ObjectId)]
-        // // [BsonRepresentation(BsonType.String)]
-        // // [BsonElement("_id")]
-        // [JsonProperty("id")]
-
         [BsonId]
         [BsonRepresentation(BsonType.String)]
         public string Id { get; set; }
