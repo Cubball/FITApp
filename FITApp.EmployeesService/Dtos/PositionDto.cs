@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace FITApp.EmployeesService.Dtos
 {
     using System;
@@ -5,7 +7,8 @@ namespace FITApp.EmployeesService.Dtos
     public class PositionDto
     {
         public string Name { get; set; }
-        public DateTime StartDate { get; set; }
+        [Required]
+        public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
     }
 }

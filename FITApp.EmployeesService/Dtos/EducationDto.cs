@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace FITApp.EmployeesService.Dtos
 {
     using System;
@@ -6,6 +8,7 @@ namespace FITApp.EmployeesService.Dtos
     {
         public string University { get; set; }
         public string Specialization { get; set; }
-        public DateTime DiplomaDateOfIssue { get; set; }
+        [Required]
+        public DateTime? DiplomaDateOfIssue { get; set; }
     }
 }

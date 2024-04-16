@@ -93,7 +93,19 @@ namespace FITApp.EmployeesService.Controllers
 
             return updatedCount == 0 ? NotFound() : Ok();
         }
+        
+        [HttpPost("{id}/educations")]
+        public async Task<IActionResult> AddEducation(string id, [FromBody] EducationDto educationDto)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Invalid employee ID.");
+            }
 
+            long updatedCount = await _employeeService.UpdateEmployeeEducations(id, educationDto);
+
+            return updatedCount == 0 ? NotFound() : Ok();
+        }
 
 
 
