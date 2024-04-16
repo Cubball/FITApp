@@ -107,7 +107,18 @@ namespace FITApp.EmployeesService.Controllers
             return updatedCount == 0 ? NotFound() : Ok();
         }
 
+        [HttpPost("{id}/academic-degrees")]
+        public async Task<IActionResult> AddAcademicDegree(string id, [FromBody] AcademicDegreeDto educationDto)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Invalid employee ID.");
+            }
 
+            long updatedCount = await _employeeService.UpdateEmployeeAcademicDegrees(id, educationDto);
+
+            return updatedCount == 0 ? NotFound() : Ok();
+        }
 
     }
 }
