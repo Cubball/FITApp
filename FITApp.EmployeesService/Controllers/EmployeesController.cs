@@ -120,6 +120,18 @@ namespace FITApp.EmployeesService.Controllers
             return updatedCount == 0 ? NotFound() : Ok();
         }
 
+        [HttpPost("{id}/academic-ranks")]
+        public async Task<IActionResult> AddAcademicRank(string id, [FromBody] AcademicRankDto academicRankDto)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Invalid employee ID.");
+            }
+
+            long updatedCount = await _employeeService.UpdateEmployeeAcademicRanks(id, academicRankDto);
+
+            return updatedCount == 0 ? NotFound() : Ok();
+        }
     }
 }
 
