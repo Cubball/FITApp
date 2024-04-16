@@ -3,8 +3,6 @@ using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.JsonWebTokens;
-using MongoDB.Driver;
 
 namespace FITApp.EmployeesService.Controllers
 {
@@ -12,12 +10,10 @@ namespace FITApp.EmployeesService.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly IEmployeesService _employeeService;
 
-        public EmployeesController(IMapper mapper, IEmployeesService employeeService)
+        public EmployeesController(IEmployeesService employeeService)
         {
-            _mapper = mapper;
             _employeeService = employeeService;
         }
         // public EmployeesController(IMapper mapper, IEmployeesService employeeService, IUsersService usersService)
@@ -38,8 +34,7 @@ namespace FITApp.EmployeesService.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDto employeeDto)
         {
-            Employee employee = _mapper.Map<Employee>(employeeDto);
-            await _employeeService.CreateEmployee(employee);
+            await _employeeService.CreateEmployee(employeeDto);
             return Ok();
         }
 
@@ -104,3 +99,4 @@ namespace FITApp.EmployeesService.Controllers
 
     }
 }
+

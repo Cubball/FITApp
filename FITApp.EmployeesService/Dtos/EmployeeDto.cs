@@ -36,7 +36,7 @@ namespace FITApp.EmployeesService.Dtos
         [BsonDefaultValue(null)]
         public string? Patronymic { get; set; }
         [BsonIgnoreIfDefault]
-        public DateOnly? BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
         [BsonIgnoreIfNull]
         [BsonDefaultValue(null)]
         public string? Photo { get; set; }

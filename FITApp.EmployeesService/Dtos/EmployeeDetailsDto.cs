@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace FITApp.EmployeesService.Dtos
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     public class EmployeeDetailsDto
     {
