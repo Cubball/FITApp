@@ -85,10 +85,20 @@ namespace FITApp.EmployeesService.Controllers
         //     return Ok(employee);
         // }
 
-
+        [HttpPost("{id}/positions")]
+        public async Task<IActionResult> AddPosition(string id, [FromBody] PositionDto positionDto)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Invalid employee ID.");
+            }
+        
+            long updatedCount = await _employeeService.UpdateEmployeePositions(id, positionDto);
+            
+            return updatedCount == 0 ? NotFound() : Ok();
+        }
 
 
 
 
     }
-}
