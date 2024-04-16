@@ -4,6 +4,8 @@ using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
 using FITApp.EmployeesService.Repositories;
 using FITApp.EmployeesService.Services;
+using FITApp.EmployeesService.Validators;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +19,7 @@ builder.Services.AddSwaggerGen();
 var jwtPublicKey = builder.Configuration["JwtOptions:PublicKey"] ?? throw new InvalidOperationException("JwtOptions:PublicKey is not set");
 builder.Services.AddJWTAuth(jwtPublicKey);
 
-
+builder.Services.AddValidatorsFromAssemblyContaining<PositionDtoValidator>();
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBSettings"));
 builder.Services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
 builder.Services.AddSingleton<IEmployeesService, EmployeesService>();
