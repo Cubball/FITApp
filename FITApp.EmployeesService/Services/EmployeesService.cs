@@ -34,9 +34,9 @@ namespace FITApp.EmployeesService.Services
 
         public async Task<long> UpdateEmployeeDetails(string id, EmployeeDetailsDto employeeDetails)
         {
-            DateOnly newDateFromDateTime = new(employeeDetails.BirthDate.Year,
-                                   employeeDetails.BirthDate.Month,
-                                   employeeDetails.BirthDate.Day);
+            DateOnly newDateFromDateTime = new(employeeDetails.BirthDate!.Value.Year,
+                                   employeeDetails.BirthDate.Value.Month,
+                                   employeeDetails.BirthDate.Value.Day);
             UpdateDefinition<Employee> update = Builders<Employee>.Update
                 .Set(employee => employee.FirstName, employeeDetails.FirstName)
                 .Set(employee => employee.LastName, employeeDetails.LastName)
