@@ -43,10 +43,6 @@ namespace FITApp.EmployeesService.Controllers
         }
 
 
-
-
-
-
         //TODO: set bether name for method
         [HttpPut("{id}")]
         public async Task<IActionResult> SetFullNameAndBirth(string id, [FromBody] EmployeeDetailsDto employeeDetails)
