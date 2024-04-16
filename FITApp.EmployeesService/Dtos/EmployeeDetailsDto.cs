@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace FITApp.EmployeesService.Dtos
 {
     using System;
@@ -7,6 +9,7 @@ namespace FITApp.EmployeesService.Dtos
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Patronymic { get; set; }
-        public DateTime BirthDate { get; set; }
+        [Required(ErrorMessage = "BirthDate is required.")]
+        public DateTime? BirthDate { get; set; }
     }
 }
