@@ -10,9 +10,8 @@ namespace FITApp.EmployeesService.MappingProfiles
         {
 
             CreateMap<Position, PositionDto>().ReverseMap();
-            CreateMap<DateTime, DateOnly>().ConvertUsing(new DateTimeToDateOnlyConverter());
-            CreateMap<DateOnly, DateTime>().ConvertUsing(date => new DateTime(date.Year, date.Month, date.Day));
-
+            // CreateMap<DateTime, DateOnly>().ConvertUsing(new DateTimeToDateOnlyConverter());
+            // CreateMap<DateOnly, DateTime>().ConvertUsing(date => new DateTime(date.Year, date.Month, date.Day));
         }
     }
 
