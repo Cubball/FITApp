@@ -34,6 +34,7 @@ namespace FITApp.EmployeesService.Controllers
             var employees = await _employeeService.GetEmployees();
             return Ok(employees);
         }
+
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDto employeeDto)
         {
@@ -92,9 +93,9 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
-        
+
             long updatedCount = await _employeeService.UpdateEmployeePositions(id, positionDto);
-            
+
             return updatedCount == 0 ? NotFound() : Ok();
         }
 
@@ -102,3 +103,4 @@ namespace FITApp.EmployeesService.Controllers
 
 
     }
+}
