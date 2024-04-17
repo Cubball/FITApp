@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen();
 var jwtPublicKey = builder.Configuration["JwtOptions:PublicKey"] ?? throw new InvalidOperationException("JwtOptions:PublicKey is not set");
 builder.Services.AddJWTAuth(jwtPublicKey);
 
-builder.Services.AddValidatorsFromAssemblyContaining<PositionDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<PositionDtoValidator>(ServiceLifetime.Transient);
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBSettings"));
 builder.Services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
 builder.Services.AddSingleton<IEmployeesService, EmployeesService>();

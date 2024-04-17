@@ -2,6 +2,7 @@ using AutoMapper;
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FITApp.EmployeesService.Controllers
@@ -88,10 +89,18 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            try
+            {
+                long updatedCount = await _employeeService.UpdateEmployeePositions(id, positionDto);
+                return updatedCount == 0 ? NotFound() : Ok();
 
-            long updatedCount = await _employeeService.UpdateEmployeePositions(id, positionDto);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+                throw;
+            }
 
-            return updatedCount == 0 ? NotFound() : Ok();
         }
 
 
@@ -99,4 +108,3 @@ namespace FITApp.EmployeesService.Controllers
 
     }
 }
-
