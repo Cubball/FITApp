@@ -2,12 +2,14 @@ using AutoMapper;
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
+using FluentValidation;
 using MongoDB.Driver;
 
 namespace FITApp.EmployeesService.Services
 { 
     public class EmployeesService(IEmployeesRepository employeeRepository,
-                                  IMapper mapper) : IEmployeesService
+                                  IMapper mapper,
+                                  IValidator<PositionDto> positionValidator) : IEmployeesService
     {
         public async Task CreateEmployee(EmployeeDto employeeDto)
         {
@@ -47,6 +49,12 @@ namespace FITApp.EmployeesService.Services
 
         public async Task<long> UpdateEmployeePositions(string id, PositionDto positionDto)
         {
+            var validationResult = await positionValidator.ValidateAsync(positionDto);
+            // Check if the validation failed
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException("PositionDto validation failed.", validationResult.Errors);
+            }
             var position = mapper.Map<Position>(positionDto);
 
             var update = Builders<Employee>.Update.Push(e => e.Positions, new Position
