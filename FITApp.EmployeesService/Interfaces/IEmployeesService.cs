@@ -15,5 +15,6 @@ namespace FITApp.EmployeesService.Interfaces
         Task<long> UpdateEmployeeEducations(string id, EducationDto educationDto);
         Task<long> UpdateEmployeeAcademicDegrees(string id, AcademicDegreeDto academicDegreeDto);
         Task<long> UpdateEmployeeAcademicRanks(string id, AcademicRankDto academicRankDto);
+        Task<long> RemoveEmployeeAcademicRankByIndex(string id, int index);
     }
 }

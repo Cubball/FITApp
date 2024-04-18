@@ -72,11 +72,11 @@ namespace FITApp.EmployeesService.Services
                 Specialization = education.Specialization,
                 DiplomaDateOfIssue = education.DiplomaDateOfIssue
             });
-            
+
             var result = await employeeRepository.UpdateEmployee(id, update);
-            return result.ModifiedCount; 
+            return result.ModifiedCount;
         }
-        
+
         public async Task<long> UpdateEmployeeAcademicDegrees(string id, AcademicDegreeDto academicDegreeDto)
         {
             var academicDegree = mapper.Map<AcademicDegree>(academicDegreeDto);
@@ -88,11 +88,11 @@ namespace FITApp.EmployeesService.Services
                 DiplomaNumber = academicDegree.DiplomaNumber,
                 DateOfIssue = academicDegree.DateOfIssue
             });
-            
+
             var result = await employeeRepository.UpdateEmployee(id, update);
-            return result.ModifiedCount; 
+            return result.ModifiedCount;
         }
-        
+
         public async Task<long> UpdateEmployeeAcademicRanks(string id, AcademicRankDto academicRankDto)
         {
             var academicDegree = mapper.Map<AcademicRank>(academicRankDto);
@@ -103,11 +103,22 @@ namespace FITApp.EmployeesService.Services
                 CertificateNumber = academicDegree.CertificateNumber,
                 DateOfIssue = academicDegree.DateOfIssue
             });
-            
+
             var result = await employeeRepository.UpdateEmployee(id, update);
-            return result.ModifiedCount; 
+            return result.ModifiedCount;
         }
-        
+
+
+        public async Task<long> RemoveEmployeeAcademicRankByIndex(string id, int index)
+        {
+            var result = await employeeRepository.RemoveArrayElementByIndex<AcademicRank>(id,
+                                        index,
+                                        employee => employee.AcademicRanks,
+                                        e => e.AcademicRanks);
+            return result.ModifiedCount;
+        }
+
+
         // public async Task<long> UpdateEmployeePositions(string id, PositionDto positionDto)
         // {
         //     DateOnly startDate = new(positionDto.StartDate.Year,

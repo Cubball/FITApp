@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
 using Microsoft.Extensions.Options;
@@ -47,6 +48,40 @@ namespace FITApp.EmployeesService.Repositories
 
             return await _employeesCollection.UpdateOneAsync(filter, update);
         }
+
+        public async Task<List<AcademicRank>> GetAcademicRanksByEmployeeId(string id)
+        {
+            var employee = await GetEmployee(id);
+
+            return employee.AcademicRanks;
+        }
+        public async Task<UpdateResult> RemoveArrayElementByIndex<TElement>(
+                                                                string id,
+                                                                int index,
+                                                                Func<Employee, List<TElement>> selector,
+                                                                Expression<Func<Employee, object>> expression)
+        {
+            if (index < 0)
+            {
+                return new UpdateResult.Acknowledged(0, 0, null);
+            }
+
+            var employee = await GetEmployee(id);
+            var elements = selector(employee);
+            if (index >= elements.Count)
+            {
+                return new UpdateResult.Acknowledged(0, 0, null);
+            }
+
+            elements.RemoveAt(index);
+            var update = elements.Count > 0
+                ? Builders<Employee>.Update.Set(expression, elements)
+                : Builders<Employee>.Update.Unset(expression);
+            var result = await UpdateEmployee(id, update);
+            return result;
+        }
+
+
 
         // public async Task UpdateEmployee(Employee employee)
         // {

@@ -93,7 +93,7 @@ namespace FITApp.EmployeesService.Controllers
 
             return updatedCount == 0 ? NotFound() : Ok();
         }
-        
+
         [HttpPost("{id}/educations")]
         public async Task<IActionResult> AddEducation(string id, [FromBody] EducationDto educationDto)
         {
@@ -132,6 +132,19 @@ namespace FITApp.EmployeesService.Controllers
 
             return updatedCount == 0 ? NotFound() : Ok();
         }
+        [HttpDelete("{id}/academic-ranks/{index}")]
+        public async Task<IActionResult> RemoveEmployeeAcademicRank(string id, int index)
+        {
+            var result = await _employeeService.RemoveEmployeeAcademicRankByIndex(id, index);
+
+            if (result > 0)
+            {
+                return Ok($"Academic rank at index {index} has been removed.");
+            }
+            else
+            {
+                return NotFound($"No academic rank found at index {index}.");
+            }
+        }
     }
 }
-
