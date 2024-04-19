@@ -6,6 +6,7 @@ using FITApp.IdentityService.Options;
 using FITApp.IdentityService.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,13 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordGenerator, FakePasswordGenerator>();
 builder.Services.AddScoped<IEmailSender, FakeEmailSender>();
 
+var employeeServiceBaseUrl = builder.Configuration["FITAppOptions:EmployeeServiceBaseUrl"] ?? throw new InvalidOperationException("FITAppOptions:EmployeeServiceBaseUrl is not set");
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddHeaderPropagation(o => o.Headers.Add(HeaderNames.Authorization));
+builder.Services
+    .AddHttpClient<IEmployeeService, EmployeeService>(o => o.BaseAddress = new Uri(employeeServiceBaseUrl))
+    .AddHeaderPropagation();
+
 var app = builder.Build();
 
 using var scope = app.Services.CreateScope();
@@ -50,6 +58,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseHeaderPropagation();
 
 app.UseAuthorization();
 
