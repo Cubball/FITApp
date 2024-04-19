@@ -1,14 +1,12 @@
 using FITApp.Auth.Attributes;
 using FITApp.Auth.Data;
-using FITApp.IdentityService.Contracts.Responses;
 using FITApp.IdentityService.Contracts.Requests;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using FITApp.IdentityService.Contracts.Responses;
 using FITApp.IdentityService.Entities;
-using Microsoft.AspNetCore.Identity;
-using MimeKit;
-using MailKit.Security;
 using FITApp.IdentityService.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FITApp.IdentityService.Controllers;
 
@@ -21,16 +19,20 @@ public class UsersController : ControllerBase
     private readonly RoleManager<Role> _roleManager;
     private readonly IEmailSender _emailSender;
     private readonly IPasswordGenerator _passwordGenerator;
+    private readonly IEmployeeService _employeeService;
 
-    public UsersController(UserManager<User> userManager,
-    RoleManager<Role> roleManager,
-    IEmailSender emailSender,
-    IPasswordGenerator passwordGenerator)
+    public UsersController(
+        UserManager<User> userManager,
+        RoleManager<Role> roleManager,
+        IEmailSender emailSender,
+        IPasswordGenerator passwordGenerator,
+        IEmployeeService employeeService)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _emailSender = emailSender;
         _passwordGenerator = passwordGenerator;
+        _employeeService = employeeService;
     }
 
     [RequiresPermission(Permissions.UsersRead, Permissions.All)]
@@ -100,6 +102,7 @@ public class UsersController : ControllerBase
 
         var user = new User
         {
+            Id = Guid.NewGuid().ToString(),
             Email = userRequest.Email,
             UserName = userRequest.Email
         };
@@ -113,6 +116,19 @@ public class UsersController : ControllerBase
         if (!role.IsAssignable)
         {
             return BadRequest("Role is not assignable");
+        }
+
+        var createEmployeeRequest = new CreateEmployeeRequest
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Role = role.Name!,
+            RoleId = role.Id,
+        };
+        var employeeCreated = await _employeeService.CreateAsync(createEmployeeRequest);
+        if (!employeeCreated)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         await _userManager.CreateAsync(user, password!);
@@ -168,7 +184,16 @@ public class UsersController : ControllerBase
         var user = await _userManager.FindByIdAsync(id);
         if (user == null)
         {
+            // HACK: this is a fire-and-forget to handle the deletion of users that are in the employee service, but not in this one
+            // very bad, poor design choices have finally got me
+            _ = _employeeService.DeleteAsync(id);
             return NotFound();
+        }
+
+        var employeeDeleted = await _employeeService.DeleteAsync(id);
+        if (!employeeDeleted)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         await _userManager.DeleteAsync(user);
@@ -194,6 +219,19 @@ public class UsersController : ControllerBase
         if (!newRole.IsAssignable)
         {
             return BadRequest("Role is not assignable");
+        }
+
+        var updateEmployeeRequest = new UpdateEmployeeRequest
+        {
+            Id = user.Id,
+            Email = user.Email!,
+            Role = newRole.Name!,
+            RoleId = newRole.Id,
+        };
+        var employeeUpdated = await _employeeService.UpdateAsync(updateEmployeeRequest);
+        if (!employeeUpdated)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         var oldRole = (await _userManager.GetRolesAsync(user))[0];
