@@ -24,13 +24,6 @@ namespace FITApp.EmployeesService.Controllers
         // }
 
 
-        [HttpGet]
-        public async Task<IActionResult> GetEmployees()
-        {
-            var employees = await _employeeService.GetEmployees();
-            return Ok(employees);
-        }
-
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDto employeeDto)
         {
@@ -160,23 +153,16 @@ namespace FITApp.EmployeesService.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Employee>> GetEmployees(int page = 1, int pageSize = 10)
+        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployeesAsync(int page = 1, int pageSize = 10)
         {
-            var total = _employeesCollection.CountDocuments(FilterDefinition<Employee>.Empty);
-            var employees = _employeesCollection.Find(FilterDefinition<Employee>.Empty)
-                                                .Skip((page - 1) * pageSize)
-                                                .Limit(pageSize)
-                                                .ToList();
-
-            var response = new
-            {
-                page,
-                pageSize,
-                total,
-                employees
-            };
-
+            var response = await _employeeService.GetEmployeesPagination(page, pageSize);
             return Ok(response);
         }
+        // [HttpGet]
+        // public async Task<IActionResult> GetEmployees()
+        // {
+        //     var employees = await _employeeService.GetEmployees();
+        //     return Ok(employees);
+        // }
     }
 }

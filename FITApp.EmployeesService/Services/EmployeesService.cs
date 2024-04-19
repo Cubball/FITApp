@@ -145,6 +145,23 @@ namespace FITApp.EmployeesService.Services
             return result.ModifiedCount;
         }
 
+        public async Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize)
+        {
+            var total = await employeeRepository.TotalCounDocument();
+
+            var employees = employeeRepository.GetEmployeesByPage(page, pageSize);
+
+            var employeesDto = mapper.Map<IEnumerable<EmployeeDto>>(employees);
+            EmployeesPaginationReedDto response = new EmployeesPaginationReedDto
+            {
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = total,
+                Employees = employeesDto,
+            };
+            return response;
+        }
+
 
         // public async Task<long> UpdateEmployeePositions(string id, PositionDto positionDto)
         // {

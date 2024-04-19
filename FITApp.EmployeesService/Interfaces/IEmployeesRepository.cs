@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Models;
 using MongoDB.Driver;
 
@@ -17,6 +18,8 @@ namespace FITApp.EmployeesService.Interfaces
                                                                 int index,
                                                                 Func<Employee, List<TElement>> selector,
                                                                 Expression<Func<Employee, object>> expression);
+        Task<long> TotalCounDocument();
+        List<Employee> GetEmployeesByPage(int page, int pageSize);
 
     }
 }

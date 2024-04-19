@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
 using Microsoft.Extensions.Options;
@@ -79,6 +80,24 @@ namespace FITApp.EmployeesService.Repositories
                 : Builders<Employee>.Update.Unset(expression);
             var result = await UpdateEmployee(id, update);
             return result;
+        }
+
+        public async Task<long> TotalCounDocument()
+        {
+            var total = await _employeesCollection.CountDocumentsAsync(FilterDefinition<Employee>.Empty);
+            return total;
+        }
+
+        public List<Employee> GetEmployeesByPage(int page, int pageSize)
+        {
+
+            var employees = _employeesCollection.Find(FilterDefinition<Employee>.Empty)
+                                                .Skip((page - 1) * pageSize)
+                                                .Limit(pageSize)
+                                                .ToList();
+
+            return employees;
+
         }
 
 

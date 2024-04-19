@@ -19,5 +19,6 @@ namespace FITApp.EmployeesService.Interfaces
         Task<long> RemoveEmployeePositionByIndex(string id, int index);
         Task<long> RemoveEmployeeEducationByIndex(string id, int index);
         Task<long> RemoveEmployeeAcademicDegreeByIndex(string id, int index);
+        Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize);
     }
 }
