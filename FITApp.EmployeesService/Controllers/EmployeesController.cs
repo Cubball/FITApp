@@ -158,5 +158,25 @@ namespace FITApp.EmployeesService.Controllers
             var result = await _employeeService.RemoveEmployeeAcademicDegreeByIndex(id, index);
             return result == 0 ? NotFound() : Ok();
         }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Employee>> GetEmployees(int page = 1, int pageSize = 10)
+        {
+            var total = _employeesCollection.CountDocuments(FilterDefinition<Employee>.Empty);
+            var employees = _employeesCollection.Find(FilterDefinition<Employee>.Empty)
+                                                .Skip((page - 1) * pageSize)
+                                                .Limit(pageSize)
+                                                .ToList();
+
+            var response = new
+            {
+                page,
+                pageSize,
+                total,
+                employees
+            };
+
+            return Ok(response);
+        }
     }
 }
