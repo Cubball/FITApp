@@ -6,8 +6,7 @@ using FluentValidation;
 using MongoDB.Driver;
 
 namespace FITApp.EmployeesService.Services
-{
-
+{ 
     public class EmployeesService(IEmployeesRepository employeeRepository,
                                   IMapper mapper,
                                   IValidator<PositionDto> positionValidator,
@@ -70,39 +69,155 @@ namespace FITApp.EmployeesService.Services
             var result = await employeeRepository.UpdateEmployee(id, update);
             return result.ModifiedCount;
         }
-        // public async Task<long> UpdateEmployeePositions(string id, PositionDto positionDto)
-        // {
-        //     DateOnly startDate = new(positionDto.StartDate.Year,
-        //         positionDto.StartDate.Month,
-        //         positionDto.StartDate.Day);
-        //     
-        //     UpdateDefinition<Employee> update;
-        //
-        //     if (positionDto.EndDate.HasValue)
-        //     {
-        //         DateOnly endDate = new(positionDto.EndDate.Value.Year,
-        //             positionDto.EndDate.Value.Month,
-        //             positionDto.EndDate.Value.Day);
-        //
-        //         update = Builders<Employee>.Update.Push(e => e.Positions, new Position
-        //         {
-        //             Name = positionDto.Name,
-        //             StartDate = startDate,
-        //             EndDate = endDate
-        //         });
-        //     }
-        //     else
-        //     {
-        //         update = Builders<Employee>.Update.Push(e => e.Positions, new Position
-        //         {
-        //             Name = positionDto.Name,
-        //             StartDate = startDate
-        //         });
-        //     }
-        //
-        //     var result = await employeeRepository.UpdateEmployee(id, update);
-        //     return result.ModifiedCount;
-        // }
 
+        public async Task<long> UpdateEmployeeEducations(string id, EducationDto educationDto)
+        {
+            var education = mapper.Map<Education>(educationDto);
+
+            var update = Builders<Employee>.Update.Push(e => e.Educations, new Education
+            {
+                University = education.University,
+                Specialization = education.Specialization,
+                DiplomaDateOfIssue = education.DiplomaDateOfIssue
+            });
+
+            var result = await employeeRepository.UpdateEmployee(id, update);
+            return result.ModifiedCount;
+        }
+
+        public async Task<long> UpdateEmployeeAcademicDegrees(string id, AcademicDegreeDto academicDegreeDto)
+        {
+            var academicDegree = mapper.Map<AcademicDegree>(academicDegreeDto);
+
+            var update = Builders<Employee>.Update.Push(e => e.AcademicDegrees, new AcademicDegree
+            {
+                FullName = academicDegree.FullName,
+                ShortName = academicDegree.ShortName,
+                DiplomaNumber = academicDegree.DiplomaNumber,
+                DateOfIssue = academicDegree.DateOfIssue
+            });
+
+            var result = await employeeRepository.UpdateEmployee(id, update);
+            return result.ModifiedCount;
+        }
+
+        public async Task<long> UpdateEmployeeAcademicRanks(string id, AcademicRankDto academicRankDto)
+        {
+            var academicDegree = mapper.Map<AcademicRank>(academicRankDto);
+
+            var update = Builders<Employee>.Update.Push(e => e.AcademicRanks, new AcademicRank
+            {
+                Name = academicDegree.Name,
+                CertificateNumber = academicDegree.CertificateNumber,
+                DateOfIssue = academicDegree.DateOfIssue
+            });
+
+            var result = await employeeRepository.UpdateEmployee(id, update);
+            return result.ModifiedCount;
+        }
+
+
+        public async Task<long> RemoveEmployeeAcademicRankByIndex(string id, int index)
+        {
+            var result = await employeeRepository.RemoveArrayElementByIndex<AcademicRank>(id,
+                                        index,
+                                        employee => employee.AcademicRanks,
+                                        e => e.AcademicRanks);
+            return result.ModifiedCount;
+        }
+
+        public async Task<long> RemoveEmployeePositionByIndex(string id, int index)
+        {
+            var result = await employeeRepository.RemoveArrayElementByIndex<Position>(id,
+                                        index,
+                                        employee => employee.Positions,
+                                        e => e.Positions);
+            return result.ModifiedCount;
+        }
+
+        public async Task<long> RemoveEmployeeEducationByIndex(string id, int index)
+        {
+            var result = await employeeRepository.RemoveArrayElementByIndex<Education>(id,
+                                        index,
+                                        employee => employee.Educations,
+                                        e => e.Educations);
+            return result.ModifiedCount;
+        }
+
+        public async Task<long> RemoveEmployeeAcademicDegreeByIndex(string id, int index)
+        {
+            var result = await employeeRepository.RemoveArrayElementByIndex<AcademicDegree>(id,
+                                        index,
+                                        employee => employee.AcademicDegrees,
+                                        e => e.AcademicDegrees);
+            return result.ModifiedCount;
+        }
+
+        // public async Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize)
+        // {
+        //     var total = 
+        //         await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
+        //
+        //     var employees = 
+        //         await employeeRepository.GetEmployeesByPage(FilterDefinition<Employee>.Empty, page, pageSize);
+        //
+        //     var employeesDto = mapper.Map<IEnumerable<EmployeeDto>>(employees);
+        //     
+        //     EmployeesPaginationReedDto response = new EmployeesPaginationReedDto
+        //     {
+        //         Page = page,
+        //         PageSize = pageSize,
+        //         TotalCount = total,
+        //         Employees = employeesDto
+        //     };
+        //     return response;
+        // }
+        
+        // public async Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize)
+        // {
+        //     var total = 
+        //         await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
+        //
+        //     var employees = 
+        //         await employeeRepository.GetEmployeesByPage2(FilterDefinition<Employee>.Empty, page, pageSize);
+        //
+        //     // var employeesDto = mapper.Map<IEnumerable<SimpleEmployeeDto>>(employees);
+        //     
+        //     EmployeesPaginationReedDto response = new EmployeesPaginationReedDto
+        //     {
+        //         Page = page,
+        //         PageSize = pageSize,
+        //         TotalCount = total,
+        //         Employees = employees
+        //     };
+        //     return response;
+        // }
+        
+        public async Task<EmployeesPaginationDto> GetEmployeesPagination(int page, int pageSize)
+        {
+            var total = 
+                await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
+
+            var projection = Builders<Employee>.Projection
+                .Exclude(e => e.Id)
+                .Include(e => e.FirstName)
+                .Include(e => e.LastName)
+                .Include(e => e.Patronymic)
+                .Include(e => e.User.Email)
+                .Include(e => e.User.Role);
+            
+            var bsonDocuments = 
+                await employeeRepository.GetEmployeesByPage(FilterDefinition<Employee>.Empty, projection, page, pageSize);
+
+            var employees = mapper.Map<IEnumerable<SimpleEmployeeDto>>(bsonDocuments);
+            
+            EmployeesPaginationDto response = new()
+            {
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = total,
+                Employees = employees
+            };
+            return response;
+        }
     }
-}
