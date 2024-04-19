@@ -118,6 +118,33 @@ namespace FITApp.EmployeesService.Services
             return result.ModifiedCount;
         }
 
+        public async Task<long> RemoveEmployeePositionByIndex(string id, int index)
+        {
+            var result = await employeeRepository.RemoveArrayElementByIndex<Position>(id,
+                                        index,
+                                        employee => employee.Positions,
+                                        e => e.Positions);
+            return result.ModifiedCount;
+        }
+
+        public async Task<long> RemoveEmployeeEducationByIndex(string id, int index)
+        {
+            var result = await employeeRepository.RemoveArrayElementByIndex<Education>(id,
+                                        index,
+                                        employee => employee.Educations,
+                                        e => e.Educations);
+            return result.ModifiedCount;
+        }
+
+        public async Task<long> RemoveEmployeeAcademicDegreeByIndex(string id, int index)
+        {
+            var result = await employeeRepository.RemoveArrayElementByIndex<AcademicDegree>(id,
+                                        index,
+                                        employee => employee.AcademicDegrees,
+                                        e => e.AcademicDegrees);
+            return result.ModifiedCount;
+        }
+
 
         // public async Task<long> UpdateEmployeePositions(string id, PositionDto positionDto)
         // {

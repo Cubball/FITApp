@@ -136,15 +136,27 @@ namespace FITApp.EmployeesService.Controllers
         public async Task<IActionResult> RemoveEmployeeAcademicRank(string id, int index)
         {
             var result = await _employeeService.RemoveEmployeeAcademicRankByIndex(id, index);
+            return result == 0 ? NotFound() : Ok();
+        }
+        [HttpDelete("{id}/positions/{index}")]
+        public async Task<IActionResult> RemoveEmployeePosition(string id, int index)
+        {
+            var result = await _employeeService.RemoveEmployeePositionByIndex(id, index);
+            return result == 0 ? NotFound() : Ok();
+        }
 
-            if (result > 0)
-            {
-                return Ok($"Academic rank at index {index} has been removed.");
-            }
-            else
-            {
-                return NotFound($"No academic rank found at index {index}.");
-            }
+        [HttpDelete("{id}/educations/{index}")]
+        public async Task<IActionResult> RemoveEmployeeEducation(string id, int index)
+        {
+            var result = await _employeeService.RemoveEmployeeEducationByIndex(id, index);
+            return result == 0 ? NotFound() : Ok();
+        }
+
+        [HttpDelete("{id}/academic-degrees/{index}")]
+        public async Task<IActionResult> RemoveEmployeeAcademicDegree(string id, int index)
+        {
+            var result = await _employeeService.RemoveEmployeeAcademicDegreeByIndex(id, index);
+            return result == 0 ? NotFound() : Ok();
         }
     }
 }
