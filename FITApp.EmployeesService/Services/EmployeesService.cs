@@ -5,8 +5,7 @@ using FITApp.EmployeesService.Models;
 using MongoDB.Driver;
 
 namespace FITApp.EmployeesService.Services
-{
-
+{ 
     public class EmployeesService(IEmployeesRepository employeeRepository,
                                   IMapper mapper) : IEmployeesService
     {
@@ -145,57 +144,72 @@ namespace FITApp.EmployeesService.Services
             return result.ModifiedCount;
         }
 
-        public async Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize)
+        // public async Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize)
+        // {
+        //     var total = 
+        //         await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
+        //
+        //     var employees = 
+        //         await employeeRepository.GetEmployeesByPage(FilterDefinition<Employee>.Empty, page, pageSize);
+        //
+        //     var employeesDto = mapper.Map<IEnumerable<EmployeeDto>>(employees);
+        //     
+        //     EmployeesPaginationReedDto response = new EmployeesPaginationReedDto
+        //     {
+        //         Page = page,
+        //         PageSize = pageSize,
+        //         TotalCount = total,
+        //         Employees = employeesDto
+        //     };
+        //     return response;
+        // }
+        
+        // public async Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize)
+        // {
+        //     var total = 
+        //         await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
+        //
+        //     var employees = 
+        //         await employeeRepository.GetEmployeesByPage2(FilterDefinition<Employee>.Empty, page, pageSize);
+        //
+        //     // var employeesDto = mapper.Map<IEnumerable<SimpleEmployeeDto>>(employees);
+        //     
+        //     EmployeesPaginationReedDto response = new EmployeesPaginationReedDto
+        //     {
+        //         Page = page,
+        //         PageSize = pageSize,
+        //         TotalCount = total,
+        //         Employees = employees
+        //     };
+        //     return response;
+        // }
+        
+        public async Task<EmployeesPaginationDto> GetEmployeesPagination(int page, int pageSize)
         {
-            var total = await employeeRepository.TotalCounDocument();
+            var total = 
+                await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
 
-            var employees = employeeRepository.GetEmployeesByPage(page, pageSize);
+            var projection = Builders<Employee>.Projection
+                .Exclude(e => e.Id)
+                .Include(e => e.FirstName)
+                .Include(e => e.LastName)
+                .Include(e => e.Patronymic)
+                .Include(e => e.User.Email)
+                .Include(e => e.User.Role);
+            
+            var bsonDocuments = 
+                await employeeRepository.GetEmployeesByPage(FilterDefinition<Employee>.Empty, projection, page, pageSize);
 
-            var employeesDto = mapper.Map<IEnumerable<EmployeeDto>>(employees);
-            EmployeesPaginationReedDto response = new EmployeesPaginationReedDto
+            var employees = mapper.Map<IEnumerable<SimpleEmployeeDto>>(bsonDocuments);
+            
+            EmployeesPaginationDto response = new()
             {
                 Page = page,
                 PageSize = pageSize,
                 TotalCount = total,
-                Employees = employeesDto,
+                Employees = employees
             };
             return response;
         }
-
-
-        // public async Task<long> UpdateEmployeePositions(string id, PositionDto positionDto)
-        // {
-        //     DateOnly startDate = new(positionDto.StartDate.Year,
-        //         positionDto.StartDate.Month,
-        //         positionDto.StartDate.Day);
-        //     
-        //     UpdateDefinition<Employee> update;
-        //
-        //     if (positionDto.EndDate.HasValue)
-        //     {
-        //         DateOnly endDate = new(positionDto.EndDate.Value.Year,
-        //             positionDto.EndDate.Value.Month,
-        //             positionDto.EndDate.Value.Day);
-        //
-        //         update = Builders<Employee>.Update.Push(e => e.Positions, new Position
-        //         {
-        //             Name = positionDto.Name,
-        //             StartDate = startDate,
-        //             EndDate = endDate
-        //         });
-        //     }
-        //     else
-        //     {
-        //         update = Builders<Employee>.Update.Push(e => e.Positions, new Position
-        //         {
-        //             Name = positionDto.Name,
-        //             StartDate = startDate
-        //         });
-        //     }
-        //
-        //     var result = await employeeRepository.UpdateEmployee(id, update);
-        //     return result.ModifiedCount;
-        // }
-
     }
 }
