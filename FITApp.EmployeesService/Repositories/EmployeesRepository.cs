@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
 using Microsoft.Extensions.Options;
@@ -82,23 +81,52 @@ namespace FITApp.EmployeesService.Repositories
             return result;
         }
 
-        public async Task<long> TotalCounDocument()
+        public async Task<long> TotalCountDocuments(FilterDefinition<Employee> filter) => 
+            await _employeesCollection.CountDocumentsAsync(filter);
+
+        // public async Task<IEnumerable<Employee>> GetEmployeesByPage(FilterDefinition<Employee> filter, int page, int pageSize)
+        // {
+        //     var employees = await _employeesCollection.Find(filter)
+        //                                         .Skip((page - 1) * pageSize)
+        //                                         .Limit(pageSize)
+        //                                         .ToListAsync();
+        //     return employees;
+        // }
+        //
+        // public async Task<IEnumerable<SimpleEmployeeDto>> GetEmployeesByPage2(FilterDefinition<Employee> filter, int page, int pageSize)
+        // {
+        //     var employeesProjection = _employeesCollection.Find(filter)
+        //         .Project(e => new SimpleEmployeeDto
+        //         {
+        //             Id = e.Id,
+        //             FirstName = e.FirstName,
+        //             LastName = e.LastName,
+        //             Patronymic = e.Patronymic,
+        //             Email = e.User.Email,
+        //             Role = e.User.Role
+        //         })
+        //         .Skip((page - 1) * pageSize)
+        //         .Limit(pageSize);
+        //
+        //     return await employeesProjection.ToListAsync();
+        // }
+        
+        public async Task<IEnumerable<BsonDocument>> GetEmployeesByPage(
+            FilterDefinition<Employee> filter, 
+            ProjectionDefinition<Employee> projection, 
+            int page, 
+            int pageSize)
         {
-            var total = await _employeesCollection.CountDocumentsAsync(FilterDefinition<Employee>.Empty);
-            return total;
+            var employeesProjection = _employeesCollection.Find(filter)
+                .Project<BsonDocument>(projection)
+                .Skip((page - 1) * pageSize)
+                .Limit(pageSize);
+
+            return await employeesProjection.ToListAsync();
         }
 
-        public List<Employee> GetEmployeesByPage(int page, int pageSize)
-        {
 
-            var employees = _employeesCollection.Find(FilterDefinition<Employee>.Empty)
-                                                .Skip((page - 1) * pageSize)
-                                                .Limit(pageSize)
-                                                .ToList();
 
-            return employees;
-
-        }
 
 
 
