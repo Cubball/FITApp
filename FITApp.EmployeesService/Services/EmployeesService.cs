@@ -10,7 +10,8 @@ namespace FITApp.EmployeesService.Services
 
     public class EmployeesService(IEmployeesRepository employeeRepository,
                                   IMapper mapper,
-                                  IValidator<PositionDto> positionValidator) : IEmployeesService
+                                  IValidator<PositionDto> positionValidator,
+                                  IValidator<EducationDto> educationValidator) : IEmployeesService
     {
         public async Task CreateEmployee(EmployeeDto employeeDto)
         {
