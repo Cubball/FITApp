@@ -8,7 +8,7 @@ const QUERY_LINK_OFFSET = 0;
 export class HttpService {
   constructor(
     private readonly fetchingService: IHttpClient,
-    private readonly baseUrl: string = process.env.REACT_APP_BACKEND_URL!,
+    private readonly baseUrl: string = process.env.BACKEND_URL!,
   ) {
     this.fetchingService = fetchingService;
     this.baseUrl = baseUrl;

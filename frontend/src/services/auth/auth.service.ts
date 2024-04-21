@@ -8,7 +8,7 @@ class AuthService {
         this.httpService = httpService;
     }
 
-    private readonly module = '/api/auth'
+    private readonly module = 'api/auth'
 
     public async login(email: string, password: string): Promise<IAuth> {
         return this.httpService.post(`${this.module}/login`, {email, password})

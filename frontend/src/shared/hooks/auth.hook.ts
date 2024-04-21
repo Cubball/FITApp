@@ -28,13 +28,13 @@ export const useAuth = (): IUseAuthReturn => {
     const {data: authData, isLoading: isRefreshLoading} = useQuery(
         [QUERY_KEYS.AUTH],
         async () => authService.refresh(),
-        {onSuccess,onError}
+        {onSuccess,onError, retry: false}
     );
 
     const {mutateAsync: handleLogin, isLoading: isLoginLoading} = useMutation(
         [QUERY_KEYS.AUTH],
         ({email, password}: IAuthData) => authService.login(email, password),
-        {onSuccess,onError}
+        {onSuccess,onError, retry: false}
      )
 
     return {authData, isRefreshLoading, handleLogin, isLoginLoading}
