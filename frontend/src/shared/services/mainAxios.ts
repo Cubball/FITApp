@@ -1,6 +1,6 @@
 import type {AxiosResponse} from 'axios';
 import axios from 'axios';
-import { STORAGE_KEYS } from '../keys/storage_keys';
+import { STORAGE_KEYS } from '../keys/storage-keys';
 
 export const mainAxios = axios.create({
   withCredentials: true,

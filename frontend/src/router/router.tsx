@@ -1,10 +1,12 @@
 import { RouterProvider } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "./routes";
+import { useAuth } from "../shared/hooks/auth.hook";
 
 const Router = () => {
-    const isAuth = false;
+    const {authData} = useAuth();
+
     return (
-        <RouterProvider router={isAuth ? privateRoutes : publicRoutes} />
+        <RouterProvider router={authData?.accessToken ? privateRoutes : publicRoutes} />
     );
 }
 

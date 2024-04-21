@@ -1,4 +1,4 @@
-import { STORAGE_KEYS } from '../keys/storage_keys';
+import { STORAGE_KEYS } from '../keys/storage-keys';
 import type {HttpService} from './http.service';
 import type {IHttpConfig, IMap} from './types';
 
