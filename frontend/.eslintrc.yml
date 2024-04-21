@@ -104,6 +104,8 @@ rules:
   # We don't need consistent returns
   consistent-return: 'off'
 
+  react/react-in-jsx-scope: 'off'
+
   # ⭐ JSX-A11Y rules
   jsx-a11y/no-noninteractive-element-interactions: 'off'
   jsx-a11y/click-events-have-key-events: 'off'

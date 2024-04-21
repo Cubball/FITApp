@@ -1,14 +1,12 @@
 /* eslint-disable no-extra-boolean-cast */
-import {HttpStatusCode, type IHttpClient} from './types';
-import type {IHttpConfig, IMap, IResponse} from './types';
-
+import { HttpStatusCode, IHttpClient, IHttpConfig, IMap, IResponse } from './types';
 
 const QUERY_LINK_OFFSET = 0;
 
 export class HttpService {
   constructor(
     private readonly fetchingService: IHttpClient,
-    private readonly baseUrl: string = process.env.BACKEND_URL!,
+    private readonly baseUrl: string = process.env.BACKEND_URL!
   ) {
     this.fetchingService = fetchingService;
     this.baseUrl = baseUrl;
@@ -35,67 +33,55 @@ export class HttpService {
         ...config,
         headers: {
           ...config?.headers,
-          ...this.populateContentTypeHeaderConfig(),
-        },
+          ...this.populateContentTypeHeaderConfig()
+        }
       })
-      .then(result => {
+      .then((result) => {
         this.checkResponseStatus(result);
         return result.data;
       });
   }
 
-  public async post<T, TD>(
-    url: string,
-    data: TD,
-    config?: IHttpConfig,
-  ): Promise<T> {
+  public async post<T, TD>(url: string, data: TD, config?: IHttpConfig): Promise<T> {
     return this.fetchingService
       .post<IResponse<T>, TD>(this.getFullApiUrl(url), data, {
         ...config,
         headers: {
           ...this.populateContentTypeHeaderConfig(),
-          ...config?.headers,
-        },
+          ...config?.headers
+        }
       })
-      .then(result => {
+      .then((result) => {
         this.checkResponseStatus(result);
         return result.data;
       });
   }
 
-  public async put<T, TD>(
-    url: string,
-    data: TD,
-    config?: IHttpConfig,
-  ): Promise<T> {
+  public async put<T, TD>(url: string, data: TD, config?: IHttpConfig): Promise<T> {
     return this.fetchingService
       .put<IResponse<T>, TD>(this.getFullApiUrl(url), data, {
         ...config,
         headers: {
           ...this.populateContentTypeHeaderConfig(),
-          ...config?.headers,
-        },
+          ...config?.headers
+        }
       })
-      .then(result => {
+      .then((result) => {
         this.checkResponseStatus(result);
         return result.data;
       });
   }
 
-  public async patch<T, TD>(
-    url: string,
-    data: TD,
-    config?: IHttpConfig,
-  ): Promise<T> {
+  public async patch<T, TD>(url: string, data: TD, config?: IHttpConfig): Promise<T> {
     return this.fetchingService
       .patch<IResponse<T>, TD>(this.getFullApiUrl(url), data, {
         ...config,
         headers: {
           ...this.populateContentTypeHeaderConfig(),
-          ...config?.headers,
-        },
+          ...config?.headers
+        }
       })
-      .then(result => {
+      .then((result) => {
         this.checkResponseStatus(result);
         return result.data;
       });
@@ -107,10 +93,10 @@ export class HttpService {
         ...config,
         headers: {
           ...config?.headers,
-          ...this.populateContentTypeHeaderConfig(),
-        },
+          ...this.populateContentTypeHeaderConfig()
+        }
       })
-      .then(result => {
+      .then((result) => {
         this.checkResponseStatus(result);
         return result.data;
       });
@@ -118,7 +104,7 @@ export class HttpService {
 
   public populateContentTypeHeaderConfig(): Record<string, string> {
     return {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     };
   }
 
@@ -132,8 +118,8 @@ export class HttpService {
       const errorData = {
         response: {
           status: result.status,
-          data: result.data,
-        },
+          data: result.data
+        }
       };
 
       throw new Error(JSON.stringify(errorData));

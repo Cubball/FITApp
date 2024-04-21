@@ -1,6 +1,6 @@
 import { STORAGE_KEYS } from '../keys/storage-keys';
-import type {HttpService} from './http.service';
-import type {IHttpConfig, IMap} from './types';
+import type { HttpService } from './http.service';
+import type { IHttpConfig, IMap } from './types';
 
 export class EnhancedWithAuthHttpService {
   constructor(private readonly httpService: HttpService) {
@@ -15,40 +15,16 @@ export class EnhancedWithAuthHttpService {
     return this.httpService.get<T>(url, await this.attachAuthHeader(config));
   }
 
-  public async post<T, TD>(
-    url: string,
-    data: TD,
-    config: IHttpConfig = {},
-  ): Promise<T> {
-    return this.httpService.post<T, TD>(
-      url,
-      data,
-      await this.attachAuthHeader(config),
-    );
+  public async post<T, TD>(url: string, data: TD, config: IHttpConfig = {}): Promise<T> {
+    return this.httpService.post<T, TD>(url, data, await this.attachAuthHeader(config));
   }
 
-  public async put<T, TD>(
-    url: string,
-    data: TD,
-    config: IHttpConfig = {},
-  ): Promise<T> {
-    return this.httpService.put<T, TD>(
-      url,
-      data,
-      await this.attachAuthHeader(config),
-    );
+  public async put<T, TD>(url: string, data: TD, config: IHttpConfig = {}): Promise<T> {
+    return this.httpService.put<T, TD>(url, data, await this.attachAuthHeader(config));
   }
 
-  public async patch<T, TD>(
-    url: string,
-    data: TD,
-    config: IHttpConfig = {},
-  ): Promise<T> {
-    return this.httpService.patch<T, TD>(
-      url,
-      data,
-      await this.attachAuthHeader(config),
-    );
+  public async patch<T, TD>(url: string, data: TD, config: IHttpConfig = {}): Promise<T> {
+    return this.httpService.patch<T, TD>(url, data, await this.attachAuthHeader(config));
   }
 
   public async delete<T>(url: string, config: IHttpConfig = {}): Promise<T> {
@@ -61,15 +37,15 @@ export class EnhancedWithAuthHttpService {
       ...config,
       headers: {
         ...config.headers,
-        ...token,
-      },
+        ...token
+      }
     };
   }
 
   private async populateTokenToHeaderConfig(): Promise<object> {
     const token = localStorage.getItem(STORAGE_KEYS.JWT_TOKEN);
     return {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     };
   }
 }

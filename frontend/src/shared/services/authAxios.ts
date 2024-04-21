@@ -1,6 +1,6 @@
-import axios from "axios";
-import { authService } from "../../services/auth/auth.service";
-import { HttpStatusCode } from "./types";
+import axios from 'axios';
+import { authService } from '../../services/auth/auth.service';
+import { HttpStatusCode } from './types';
 
 const authAxios = axios.create();
 

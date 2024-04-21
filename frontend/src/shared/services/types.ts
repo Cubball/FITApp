@@ -137,7 +137,7 @@ export enum HttpStatusCode {
 
   NOT_EXTENDED = 510,
 
-  NETWORK_AUTHENTICATION_REQUIRED = 511,
+  NETWORK_AUTHENTICATION_REQUIRED = 511
 }
 
 export interface IResponse<T = object | Array<object>> {
@@ -145,10 +145,11 @@ export interface IResponse<T = object | Array<object>> {
   data: T;
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export enum CONFIRM_MESSAGES {
   SENDED = 'Sended',
   DELETED = 'Deleted',
   COMPLITED = 'Complited',
   DONE = 'Done',
-  CONFIRMED = 'Confirmed',
+  CONFIRMED = 'Confirmed'
 }
