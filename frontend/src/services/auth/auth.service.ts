@@ -15,8 +15,12 @@ class AuthService {
   }
 
   public async refresh(): Promise<IAuth> {
-    const refresh = localStorage.getItem(STORAGE_KEYS.JWT_TOKEN);
-    return this.httpService.post(`${this.module}/refresh`, { refreshToken: refresh || '' });
+    const jwt = localStorage.getItem(STORAGE_KEYS.JWT_TOKEN);
+    return this.httpService.post(
+      `${this.module}/refresh`,
+      {},
+      { headers: { Authorization: `Bearer ${jwt}` } }
+    );
   }
 }
 export const authService = new AuthService(new HttpFactoryService().createHttpService());
