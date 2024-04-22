@@ -9,12 +9,11 @@ namespace FITApp.EmployeesService.Validators
         {
 
             RuleFor(dto => dto.Name)
-            .NotEmpty().WithMessage("Name is required.")
-            .MaximumLength(100).WithMessage("Name must not exceed 100 characters.");
-
+                .NotEmpty().WithMessage("Name is required.")
+                .Length(3, 250);
             RuleFor(dto => dto.StartDate)
-                        .NotEmpty().WithMessage("Start date is required.")
-                        .LessThanOrEqualTo(DateTime.Now).WithMessage("Start date must be in the past or today.");
+                .NotEmpty().WithMessage("Start date is required.")
+                .LessThanOrEqualTo(DateTime.Now).WithMessage("Start date must be in the past or today.");
 
             RuleFor(dto => dto.EndDate)
                 .Must((dto, endDate) => endDate == null || endDate >= dto.StartDate)

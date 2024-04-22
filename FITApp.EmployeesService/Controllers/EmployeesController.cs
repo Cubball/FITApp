@@ -103,8 +103,17 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            try
+            {
+                long updatedCount = await _employeeService.UpdateEmployeeEducations(id, educationDto);
+                return updatedCount == 0 ? NotFound() : Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+                throw;
+            }
 
-            long updatedCount = await _employeeService.UpdateEmployeeEducations(id, educationDto);
 
         }
 
@@ -115,10 +124,18 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            try
+            {
+                long updatedCount = await _employeeService.UpdateEmployeeAcademicDegrees(id, educationDto);
+                return updatedCount == 0 ? NotFound() : Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+                throw;
+            }
 
-            long updatedCount = await _employeeService.UpdateEmployeeAcademicDegrees(id, educationDto);
 
-            return updatedCount == 0 ? NotFound() : Ok();
         }
 
         [HttpPost("{id}/academic-ranks")]
@@ -128,10 +145,17 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            try
+            {
+                long updatedCount = await _employeeService.UpdateEmployeeAcademicRanks(id, academicRankDto);
+                return updatedCount == 0 ? NotFound() : Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+                throw;
+            }
 
-            long updatedCount = await _employeeService.UpdateEmployeeAcademicRanks(id, academicRankDto);
-
-            return updatedCount == 0 ? NotFound() : Ok();
         }
         [HttpDelete("{id}/academic-ranks/{index}")]
         public async Task<IActionResult> RemoveEmployeeAcademicRank(string id, int index)

@@ -15,8 +15,7 @@ public class DateValidator<T> : PropertyValidator<T, DateTime>
         _maxDate = maxDate;
     }
 
-    public override string Name => throw new NotImplementedException();
-
+    public override string Name => "DateValidator";
     public override bool IsValid(ValidationContext<T> context, DateTime value)
     {
 
@@ -29,4 +28,6 @@ public class DateValidator<T> : PropertyValidator<T, DateTime>
 
         return true;
     }
+    protected override string GetDefaultMessageTemplate(string errorCode)
+        => "The value of {PropertyName} must be between {MinDate} and {MaxDate}.";
 }
