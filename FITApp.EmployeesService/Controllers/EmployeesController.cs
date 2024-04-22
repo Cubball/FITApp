@@ -106,7 +106,6 @@ namespace FITApp.EmployeesService.Controllers
 
             long updatedCount = await _employeeService.UpdateEmployeeEducations(id, educationDto);
 
-            return updatedCount == 0 ? NotFound() : Ok();
         }
 
         [HttpPost("{id}/academic-degrees")]
