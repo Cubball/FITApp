@@ -184,13 +184,13 @@ namespace FITApp.EmployeesService.Services
         //     return response;
         // }
         
-        public async Task<EmployeesPaginationDto> GetEmployeesPagination(int page, int pageSize)
+        public async Task<EmployeesPaginationDto> GetEmployeesPagination(uint page, uint pageSize)
         {
             var total = 
                 await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
 
             var projection = Builders<Employee>.Projection
-                .Exclude(e => e.Id)
+                .Include(e => e.Id)
                 .Include(e => e.FirstName)
                 .Include(e => e.LastName)
                 .Include(e => e.Patronymic)
@@ -200,7 +200,7 @@ namespace FITApp.EmployeesService.Services
             var bsonDocuments = 
                 await employeeRepository.GetEmployeesByPage(FilterDefinition<Employee>.Empty, projection, page, pageSize);
 
-            var employees = mapper.Map<IEnumerable<SimpleEmployeeDto>>(bsonDocuments);
+            var employees = mapper.Map<List<SimpleEmployeeDto>>(bsonDocuments);
             
             EmployeesPaginationDto response = new()
             {

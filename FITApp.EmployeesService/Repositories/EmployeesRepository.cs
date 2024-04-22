@@ -114,13 +114,13 @@ namespace FITApp.EmployeesService.Repositories
         public async Task<IEnumerable<BsonDocument>> GetEmployeesByPage(
             FilterDefinition<Employee> filter, 
             ProjectionDefinition<Employee> projection, 
-            int page, 
-            int pageSize)
+            uint page, 
+            uint pageSize)
         {
             var employeesProjection = _employeesCollection.Find(filter)
                 .Project<BsonDocument>(projection)
-                .Skip((page - 1) * pageSize)
-                .Limit(pageSize);
+                .Skip((int?)((page - 1) * pageSize))
+                .Limit((int?)pageSize);
 
             return await employeesProjection.ToListAsync();
         }

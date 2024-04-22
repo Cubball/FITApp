@@ -26,6 +26,6 @@ namespace FITApp.EmployeesService.Interfaces
         //     IProjection<Employee> projection, int page, int pageSize);
 
         Task<IEnumerable<BsonDocument>> GetEmployeesByPage(FilterDefinition<Employee> filter,
-            ProjectionDefinition<Employee> projection, int page, int pageSize);
+            ProjectionDefinition<Employee> projection, uint page, uint pageSize);
     }
 }
