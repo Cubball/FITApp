@@ -1,5 +1,6 @@
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FITApp.EmployeesService.Controllers
@@ -18,8 +19,16 @@ namespace FITApp.EmployeesService.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserDto userDto)
         {
-            await _usersService.CreateUser(userDto);
-            return Ok();
+            try
+            {
+                await _usersService.CreateUser(userDto);
+                return Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+                throw;
+            }
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
@@ -48,5 +57,4 @@ namespace FITApp.EmployeesService.Controllers
         }
     }
 }
-
 

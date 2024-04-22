@@ -27,5 +27,6 @@ namespace FITApp.EmployeesService.Interfaces
 
         Task<IEnumerable<BsonDocument>> GetEmployeesByPage(FilterDefinition<Employee> filter,
             ProjectionDefinition<Employee> projection, int page, int pageSize);
+        Task<bool> CheckIfEmployeeExists(string id);
     }
 }

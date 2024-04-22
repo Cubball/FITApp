@@ -125,6 +125,13 @@ namespace FITApp.EmployeesService.Repositories
             return await employeesProjection.ToListAsync();
         }
 
+        public async Task<bool> CheckIfEmployeeExists(string id)
+        {
+           FilterDefinition<Employee> filter = Builders<Employee>.Filter.Eq(e => e.Id, id); 
+           var count = await _employeesCollection.CountDocumentsAsync(filter);
+           return count > 0;
+        }
+
 
 
 
