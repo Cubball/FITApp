@@ -4,7 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        comfortaa: ['"TT Firs Neue Trl"', 'sans-seris']
+        comfortaa: ['"TT Firs Neue Trl"', 'sans-serif'],
+        montserrat: ['"Montserrat"', 'sans-serif']
       },
       backgroundImage: {
         document: 'url("./src/assets/document.svg")'
