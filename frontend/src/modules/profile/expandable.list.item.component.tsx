@@ -5,7 +5,7 @@ const ExpandableListItem = ({ element, index, canExpand, onDeleteClick }) => {
     <>
       <div className="flex items-center justify-between p-3">
         {element}
-        <button onClick={() => onDeleteClick(index)}>
+        <button onClick={() => onDeleteClick(index)} className="min-w-fit">
           <img src={TrashIcon} />
         </button>
       </div>

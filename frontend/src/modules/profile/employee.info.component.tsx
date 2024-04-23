@@ -12,7 +12,7 @@ const EmployeeInfo = ({ employee }: { employee: IEmployeeData }) => {
           <img src={EditIcon} className="inline" />
         </button>
       </div>
-      <div className="flex flex-wrap py-5">
+      <div className="flex flex-wrap py-5 gap-5 md:gap-0">
         <div className="flex grow basis-1/2">
           <div className="grow basis-1/6">
             <img

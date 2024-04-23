@@ -8,20 +8,22 @@ const SidebarItem = ({ icon, text, route }) => {
       className={({ isActive }) => {
         return (
           'mr-1 flex items-center justify-between p-4 pr-2' +
-          (isActive ? ' rounded-r-full bg-link-active shadow shadow-gray-400' : '')
+          (isActive ? ' bg-link-active shadow shadow-gray-400 md:rounded-r-full' : '')
         );
       }}
     >
       {({ isActive }) => {
         return (
           <>
-            <div>
+            <div className="">
               <img src={icon} className="mb-1 inline" />
               <span className={isActive ? 'font-medium' : ''}>{text}</span>
             </div>
             <img
               src={RightArrowIcon}
-              className={'inline px-3 py-2.5' + (isActive ? ' rounded-full bg-white' : '')}
+              className={
+                'hidden px-3 py-2.5 md:inline' + (isActive ? ' rounded-full bg-white' : '')
+              }
             />
           </>
         );
