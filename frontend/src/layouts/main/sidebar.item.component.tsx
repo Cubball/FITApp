@@ -15,7 +15,7 @@ const SidebarItem = ({ icon, text, route }) => {
       {({ isActive }) => {
         return (
           <>
-            <div className="">
+            <div>
               <img src={icon} className="mb-1 inline" />
               <span className={isActive ? 'font-medium' : ''}>{text}</span>
             </div>
