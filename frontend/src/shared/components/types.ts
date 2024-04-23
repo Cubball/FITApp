@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, InputHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, InputHTMLAttributes } from 'react';
 
 export interface IInputAttributes extends InputHTMLAttributes<HTMLInputElement> {
   label: string;

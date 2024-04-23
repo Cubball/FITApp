@@ -1,6 +1,6 @@
-import { Form, Formik } from "formik";
-import Input from "../../shared/components/input";
-import Button from "../../shared/components/button";
+import { Form, Formik } from 'formik';
+import Input from '../../shared/components/input';
+import Button from '../../shared/components/button';
 
 const LoginForm = ({ onSubmit, isLoginLoading }) => {
   return (

@@ -17,7 +17,7 @@ const LoginScreen = () => {
           FITApp
         </h1>
         <div className="flex grow flex-col justify-center">
-          <LoginForm onSubmit={onFormSubmit} isLoginLoading={isLoginLoading}/>
+          <LoginForm onSubmit={onFormSubmit} isLoginLoading={isLoginLoading} />
         </div>
       </div>
     </div>
