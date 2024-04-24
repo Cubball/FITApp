@@ -1,3 +1,4 @@
+using CloudinaryDotNet.Actions;
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Models;
 using MongoDB.Driver;
@@ -15,10 +16,12 @@ namespace FITApp.EmployeesService.Interfaces
         Task<long> UpdateEmployeeEducations(string id, EducationDto educationDto);
         Task<long> UpdateEmployeeAcademicDegrees(string id, AcademicDegreeDto academicDegreeDto);
         Task<long> UpdateEmployeeAcademicRanks(string id, AcademicRankDto academicRankDto);
+        Task <long> UpdateEmployeePhoto(string id, EmployeeDto employeeDto, IFormFile file);
         Task<long> RemoveEmployeeAcademicRankByIndex(string id, int index);
         Task<long> RemoveEmployeePositionByIndex(string id, int index);
         Task<long> RemoveEmployeeEducationByIndex(string id, int index);
         Task<long> RemoveEmployeeAcademicDegreeByIndex(string id, int index);
+        Task<long> RemoveEmployeePhoto(string photoId);
         Task<EmployeesPaginationDto> GetEmployeesPagination(int page, int pageSize);
     }
 }

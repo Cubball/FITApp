@@ -1,19 +1,66 @@
 using AutoMapper;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
 using FluentValidation;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace FITApp.EmployeesService.Services
 {
-    public class EmployeesService(IEmployeesRepository employeeRepository,
-                                  IMapper mapper,
-                                  IValidator<PositionDto> positionValidator,
-                                  IValidator<EducationDto> educationValidator,
-                                  IValidator<AcademicDegreeDto> academicDegreeDtoValidator,
-                                  IValidator<AcademicRankDto> academicRankDtoValidator) : IEmployeesService
+    //public class EmployeesService(IEmployeesRepository employeeRepository,
+    //                              IMapper mapper,
+    //                              IValidator<PositionDto> positionValidator,
+    //                              IValidator<EducationDto> educationValidator,
+    //                              IValidator<AcademicDegreeDto> academicDegreeDtoValidator,
+    //                              IValidator<AcademicRankDto> academicRankDtoValidator) : IEmployeesService
+    //{
+    //private readonly Cloudinary _cloudinary;
+    //public EmployeesService(IOptions<CloudinarySettings> config)
+    //{
+    //    var acc = new Account(
+    //        config.Value.CloudName,
+    //        config.Value.ApiKey,
+    //        config.Value.ApiSecret
+    //        );
+    //    _cloudinary = new Cloudinary(acc);
+    //}
+    public class EmployeesService : IEmployeesService
     {
+        private readonly IEmployeesRepository employeeRepository;
+        private readonly IMapper mapper;
+        private readonly IValidator<PositionDto> positionValidator;
+        private readonly IValidator<EducationDto> educationValidator;
+        private readonly IValidator<AcademicDegreeDto> academicDegreeDtoValidator;
+        private readonly IValidator<AcademicRankDto> academicRankDtoValidator;
+        private readonly Cloudinary _cloudinary;
+
+        public EmployeesService(
+            IEmployeesRepository employeeRepository,
+            IMapper mapper,
+            IValidator<PositionDto> positionValidator,
+            IValidator<EducationDto> educationValidator,
+            IValidator<AcademicDegreeDto> academicDegreeDtoValidator,
+            IValidator<AcademicRankDto> academicRankDtoValidator,
+            IOptions<CloudinarySettings> config)
+        {
+            this.employeeRepository = employeeRepository;
+            this.mapper = mapper;
+            this.positionValidator = positionValidator;
+            this.educationValidator = educationValidator;
+            this.academicDegreeDtoValidator = academicDegreeDtoValidator;
+            this.academicRankDtoValidator = academicRankDtoValidator;
+
+            var acc = new Account(
+                config.Value.CloudName,
+                config.Value.ApiKey,
+                config.Value.ApiSecret
+            );
+            _cloudinary = new Cloudinary(acc);
+        }
+
         public async Task CreateEmployee(EmployeeDto employeeDto)
         {
             Employee employee = mapper.Map<Employee>(employeeDto);
@@ -173,46 +220,6 @@ namespace FITApp.EmployeesService.Services
             return result.ModifiedCount;
         }
 
-        // public async Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize)
-        // {
-        //     var total = 
-        //         await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
-        //
-        //     var employees = 
-        //         await employeeRepository.GetEmployeesByPage(FilterDefinition<Employee>.Empty, page, pageSize);
-        //
-        //     var employeesDto = mapper.Map<IEnumerable<EmployeeDto>>(employees);
-        //     
-        //     EmployeesPaginationReedDto response = new EmployeesPaginationReedDto
-        //     {
-        //         Page = page,
-        //         PageSize = pageSize,
-        //         TotalCount = total,
-        //         Employees = employeesDto
-        //     };
-        //     return response;
-        // }
-
-        // public async Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize)
-        // {
-        //     var total = 
-        //         await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
-        //
-        //     var employees = 
-        //         await employeeRepository.GetEmployeesByPage2(FilterDefinition<Employee>.Empty, page, pageSize);
-        //
-        //     // var employeesDto = mapper.Map<IEnumerable<SimpleEmployeeDto>>(employees);
-        //     
-        //     EmployeesPaginationReedDto response = new EmployeesPaginationReedDto
-        //     {
-        //         Page = page,
-        //         PageSize = pageSize,
-        //         TotalCount = total,
-        //         Employees = employees
-        //     };
-        //     return response;
-        // }
-
         public async Task<EmployeesPaginationDto> GetEmployeesPagination(int page, int pageSize)
         {
             var total =
@@ -239,6 +246,34 @@ namespace FITApp.EmployeesService.Services
                 Employees = employees
             };
             return response;
+        }
+
+        public Task<long> RemoveEmployeePhoto(string photoId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<long> UpdateEmployeePhoto(string id, EmployeeDto employeeDto, IFormFile file)
+        {
+            Employee employee = mapper.Map<Employee>(employeeDto);
+
+            var uploadResult = new ImageUploadResult();
+            if (file.Length > 0)
+            {
+                using var stream = file.OpenReadStream();
+                var uploadParams = new ImageUploadParams
+                {
+                    File = new FileDescription(file.FileName, stream),
+                    Transformation = new Transformation().Height(500).Width(500).Crop("fill").Gravity("face") // зміна розміру фото
+                };
+                uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            }
+            var urlPhoto = uploadResult.Url.ToString();
+
+            var update = Builders<Employee>.Update.Set(e => e.Photo, urlPhoto);
+
+            var result = await employeeRepository.UpdateEmployee(id, update);
+            return result.ModifiedCount;
         }
     }
 }
