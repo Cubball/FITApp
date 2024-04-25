@@ -4,6 +4,7 @@ using CloudinaryDotNet.Actions;
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
+using FITApp.EmployeesService.Validators;
 using FluentValidation;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -14,12 +15,15 @@ namespace FITApp.EmployeesService.Services
     {
         private readonly IEmployeesRepository employeeRepository;
         private readonly IMapper mapper;
+        private readonly IValidator<EmployeePhotoUploadDto> validator;
         private readonly Cloudinary _cloudinary;
 
-        public PhotoService(IEmployeesRepository employeeRepository,IMapper mapper,IValidator<PositionDto> positionValidator, IOptions<CloudinarySettings> config)
+        public PhotoService(IEmployeesRepository employeeRepository,IMapper mapper, IOptions<CloudinarySettings> config, IValidator<EmployeePhotoUploadDto> validator)
         {
+
             this.employeeRepository = employeeRepository;
             this.mapper = mapper;
+            this.validator = validator;
 
             var acc = new Account(
                 config.Value.CloudName,
@@ -31,6 +35,12 @@ namespace FITApp.EmployeesService.Services
 
         public async Task<long> UpdateEmployeePhoto(string id, EmployeePhotoUploadDto photoUploadDto)
         {
+            var validationResult = await validator.ValidateAsync(photoUploadDto);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException("Photo validation failed.", validationResult.Errors);
+            }
             var employee = mapper.Map<EmployeePhotoUpload>(photoUploadDto);
             var file = photoUploadDto.File;
 
