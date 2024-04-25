@@ -215,5 +215,25 @@ namespace FITApp.EmployeesService.Controllers
                 throw;
             }
         }
+
+        [HttpDelete("{id}/photo")]
+        public async Task<IActionResult> RemovePhoto(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Invalid employee ID.");
+            }
+
+            try
+            {
+                long updatedCount = await _employeeService.RemoveEmployeePhoto(id);
+                return updatedCount == 0 ? NotFound() : Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while removing the employee's photo.");
+            }
+        }
+
     }
 }

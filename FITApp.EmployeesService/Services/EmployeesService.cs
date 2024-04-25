@@ -248,11 +248,6 @@ namespace FITApp.EmployeesService.Services
             return response;
         }
 
-        public Task<long> RemoveEmployeePhoto(string photoId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<long> UpdateEmployeePhoto(string id, EmployeePhotoUploadDto photoUploadDto)
         {
             var employee = mapper.Map<EmployeePhotoUpload>(photoUploadDto);
@@ -276,6 +271,40 @@ namespace FITApp.EmployeesService.Services
 
             var result = await employeeRepository.UpdateEmployee(id, update);
             return result.ModifiedCount;
+        }
+        public async Task<long> RemoveEmployeePhoto(string id)
+        {
+            var employee = await employeeRepository.GetEmployee(id);
+
+            if (employee != null && !string.IsNullOrEmpty(employee.Photo))
+            {
+                var publicId = GetPublicIdFromUrl(employee.Photo);
+
+                var deletionParams = new DeletionParams(publicId);
+                var deletionResult = await _cloudinary.DestroyAsync(deletionParams);
+
+                if (deletionResult.Result == "ok")
+                {
+                    var update = Builders<Employee>.Update.Unset(e => e.Photo);
+                    var result = await employeeRepository.UpdateEmployee(id, update);
+                    return result.ModifiedCount;
+                }
+                else
+                {
+                    throw new Exception("Failed to delete photo from Cloudinary.");
+                }
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        private string GetPublicIdFromUrl(string url)
+        {
+            var startIndex = url.LastIndexOf("/") + 1;
+            var endIndex = url.LastIndexOf(".") - startIndex;
+            return url.Substring(startIndex, endIndex);
         }
     }
 }
