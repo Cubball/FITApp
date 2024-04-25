@@ -253,11 +253,13 @@ namespace FITApp.EmployeesService.Services
             throw new NotImplementedException();
         }
 
-        public async Task<long> UpdateEmployeePhoto(string id, EmployeeDto employeeDto, IFormFile file)
+        public async Task<long> UpdateEmployeePhoto(string id, EmployeePhotoUploadDto photoUploadDto)
         {
-            Employee employee = mapper.Map<Employee>(employeeDto);
+            var employee = mapper.Map<EmployeePhotoUpload>(photoUploadDto);
+            var file = photoUploadDto.File;
 
             var uploadResult = new ImageUploadResult();
+
             if (file.Length > 0)
             {
                 using var stream = file.OpenReadStream();
