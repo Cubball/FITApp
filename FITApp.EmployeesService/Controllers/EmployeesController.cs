@@ -196,5 +196,24 @@ namespace FITApp.EmployeesService.Controllers
         //     var employees = await _employeeService.GetEmployees();
         //     return Ok(employees);
         // }
+
+        [HttpPut("{id}/photo")]
+        public async Task<IActionResult> AddPhoto(string id, [FromForm] EmployeePhotoUploadDto employeePhotoUploadDto)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Invalid employee ID.");
+            }
+            try
+            {
+                long updatedCount = await _employeeService.UpdateEmployeePhoto(id, employeePhotoUploadDto);
+                return updatedCount == 0 ? NotFound() : Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+                throw;
+            }
+        }
     }
 }
