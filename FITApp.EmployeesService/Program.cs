@@ -25,6 +25,7 @@ builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection(
 builder.Services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
 builder.Services.AddSingleton<IEmployeesService, EmployeesService>();
 builder.Services.AddSingleton<IUsersService, UsersService>();
+builder.Services.AddSingleton<IPhotoService, PhotoService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 MongoDbClassMapInitializer.RegisterClassMaps();
 var app = builder.Build();

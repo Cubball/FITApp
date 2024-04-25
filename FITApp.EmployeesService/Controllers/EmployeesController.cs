@@ -13,16 +13,13 @@ namespace FITApp.EmployeesService.Controllers
     {
         private readonly IEmployeesService _employeeService;
 
-        public EmployeesController(IEmployeesService employeeService)
+        private readonly IPhotoService _photoService;
+
+        public EmployeesController(IEmployeesService employeeService, IPhotoService photoService)
         {
             _employeeService = employeeService;
+            _photoService = photoService;
         }
-        // public EmployeesController(IMapper mapper, IEmployeesService employeeService, IUsersService usersService)
-        // {
-        //     _mapper = mapper;
-        //     _employeeService = employeeService;
-        //     _usersService = usersService;
-        // }
 
 
         [HttpPost]
@@ -206,7 +203,7 @@ namespace FITApp.EmployeesService.Controllers
             }
             try
             {
-                long updatedCount = await _employeeService.UpdateEmployeePhoto(id, employeePhotoUploadDto);
+                long updatedCount = await _photoService.UpdateEmployeePhoto(id, employeePhotoUploadDto);
                 return updatedCount == 0 ? NotFound() : Ok();
             }
             catch (ValidationException ex)
@@ -226,7 +223,7 @@ namespace FITApp.EmployeesService.Controllers
 
             try
             {
-                long updatedCount = await _employeeService.RemoveEmployeePhoto(id);
+                long updatedCount = await _photoService.RemoveEmployeePhoto(id);
                 return updatedCount == 0 ? NotFound() : Ok();
             }
             catch (Exception ex)
