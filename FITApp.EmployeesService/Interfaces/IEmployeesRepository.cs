@@ -13,12 +13,14 @@ namespace FITApp.EmployeesService.Interfaces
         Task<UpdateResult> UpdateEmployee(string id, UpdateDefinition<Employee> update);
         Task<DeleteResult> DeleteEmployee(string id);
         Task<List<AcademicRank>> GetAcademicRanksByEmployeeId(string id);
+
         Task<UpdateResult> RemoveArrayElementByIndex<TElement>(string id,
-                                                                int index,
-                                                                Func<Employee, List<TElement>> selector,
-                                                                Expression<Func<Employee, object>> expression);
+            int index,
+            Func<Employee, List<TElement>> selector,
+            Expression<Func<Employee, object>> expression);
+
         Task<long> TotalCountDocuments(FilterDefinition<Employee> filter);
-        
+
         // Task<IEnumerable<Employee>> GetEmployeesByPage(FilterDefinition<Employee> filter, int page, int pageSize);
         // Task<IEnumerable<SimpleEmployeeDto>> GetEmployeesByPage2(FilterDefinition<Employee> filter, int page, int pageSize);
 
@@ -27,4 +29,8 @@ namespace FITApp.EmployeesService.Interfaces
 
         Task<IEnumerable<BsonDocument>> GetEmployeesByPage(FilterDefinition<Employee> filter,
             ProjectionDefinition<Employee> projection, uint page, uint pageSize);
+
+        Task<bool> CheckIfEmployeeExists(string id);
+
     }
+}

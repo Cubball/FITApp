@@ -7,12 +7,13 @@ using MongoDB.Driver;
 
 namespace FITApp.EmployeesService.Services
 {
-    public class EmployeesService(IEmployeesRepository employeeRepository,
-                                  IMapper mapper,
-                                  IValidator<PositionDto> positionValidator,
-                                  IValidator<EducationDto> educationValidator,
-                                  IValidator<AcademicDegreeDto> academicDegreeDtoValidator,
-                                  IValidator<AcademicRankDto> academicRankDtoValidator) : IEmployeesService
+    public class EmployeesService(
+        IEmployeesRepository employeeRepository,
+        IMapper mapper,
+        IValidator<PositionDto> positionValidator,
+        IValidator<EducationDto> educationValidator,
+        IValidator<AcademicDegreeDto> academicDegreeDtoValidator,
+        IValidator<AcademicRankDto> academicRankDtoValidator) : IEmployeesService
     {
         public async Task CreateEmployee(EmployeeDto employeeDto)
         {
@@ -39,8 +40,8 @@ namespace FITApp.EmployeesService.Services
         public async Task<long> UpdateEmployeeDetails(string id, EmployeeDetailsDto employeeDetails)
         {
             DateOnly newDateFromDateTime = new(employeeDetails.BirthDate!.Value.Year,
-                                   employeeDetails.BirthDate.Value.Month,
-                                   employeeDetails.BirthDate.Value.Day);
+                employeeDetails.BirthDate.Value.Month,
+                employeeDetails.BirthDate.Value.Day);
             UpdateDefinition<Employee> update = Builders<Employee>.Update
                 .Set(employee => employee.FirstName, employeeDetails.FirstName)
                 .Set(employee => employee.LastName, employeeDetails.LastName)
@@ -58,14 +59,11 @@ namespace FITApp.EmployeesService.Services
             {
                 throw new ValidationException("PositionDto validation failed.", validationResult.Errors);
             }
+
             var position = mapper.Map<Position>(positionDto);
 
-            var update = Builders<Employee>.Update.Push(e => e.Positions, new Position
-            {
-                Name = position.Name,
-                StartDate = position.StartDate,
-                EndDate = position.EndDate
-            });
+            var update = Builders<Employee>.Update.Push(e => e.Positions,
+                new Position { Name = position.Name, StartDate = position.StartDate, EndDate = position.EndDate });
 
 
             var result = await employeeRepository.UpdateEmployee(id, update);
@@ -80,14 +78,16 @@ namespace FITApp.EmployeesService.Services
             {
                 throw new ValidationException("EducationDto validation failed.", validationResult.Errors);
             }
+
             var education = mapper.Map<Education>(educationDto);
 
-            var update = Builders<Employee>.Update.Push(e => e.Educations, new Education
-            {
-                University = education.University,
-                Specialization = education.Specialization,
-                DiplomaDateOfIssue = education.DiplomaDateOfIssue
-            });
+            var update = Builders<Employee>.Update.Push(e => e.Educations,
+                new Education
+                {
+                    University = education.University,
+                    Specialization = education.Specialization,
+                    DiplomaDateOfIssue = education.DiplomaDateOfIssue
+                });
 
             var result = await employeeRepository.UpdateEmployee(id, update);
             return result.ModifiedCount;
@@ -101,15 +101,17 @@ namespace FITApp.EmployeesService.Services
             {
                 throw new ValidationException("AcademicDegreeDto validation failed.", validationResult.Errors);
             }
+
             var academicDegree = mapper.Map<AcademicDegree>(academicDegreeDto);
 
-            var update = Builders<Employee>.Update.Push(e => e.AcademicDegrees, new AcademicDegree
-            {
-                FullName = academicDegree.FullName,
-                ShortName = academicDegree.ShortName,
-                DiplomaNumber = academicDegree.DiplomaNumber,
-                DateOfIssue = academicDegree.DateOfIssue
-            });
+            var update = Builders<Employee>.Update.Push(e => e.AcademicDegrees,
+                new AcademicDegree
+                {
+                    FullName = academicDegree.FullName,
+                    ShortName = academicDegree.ShortName,
+                    DiplomaNumber = academicDegree.DiplomaNumber,
+                    DateOfIssue = academicDegree.DateOfIssue
+                });
 
             var result = await employeeRepository.UpdateEmployee(id, update);
             return result.ModifiedCount;
@@ -125,12 +127,13 @@ namespace FITApp.EmployeesService.Services
 
             var academicDegree = mapper.Map<AcademicRank>(academicRankDto);
 
-            var update = Builders<Employee>.Update.Push(e => e.AcademicRanks, new AcademicRank
-            {
-                Name = academicDegree.Name,
-                CertificateNumber = academicDegree.CertificateNumber,
-                DateOfIssue = academicDegree.DateOfIssue
-            });
+            var update = Builders<Employee>.Update.Push(e => e.AcademicRanks,
+                new AcademicRank
+                {
+                    Name = academicDegree.Name,
+                    CertificateNumber = academicDegree.CertificateNumber,
+                    DateOfIssue = academicDegree.DateOfIssue
+                });
 
             var result = await employeeRepository.UpdateEmployee(id, update);
             return result.ModifiedCount;
@@ -140,36 +143,36 @@ namespace FITApp.EmployeesService.Services
         public async Task<long> RemoveEmployeeAcademicRankByIndex(string id, int index)
         {
             var result = await employeeRepository.RemoveArrayElementByIndex<AcademicRank>(id,
-                                        index,
-                                        employee => employee.AcademicRanks,
-                                        e => e.AcademicRanks);
+                index,
+                employee => employee.AcademicRanks,
+                e => e.AcademicRanks);
             return result.ModifiedCount;
         }
 
         public async Task<long> RemoveEmployeePositionByIndex(string id, int index)
         {
             var result = await employeeRepository.RemoveArrayElementByIndex<Position>(id,
-                                        index,
-                                        employee => employee.Positions,
-                                        e => e.Positions);
+                index,
+                employee => employee.Positions,
+                e => e.Positions);
             return result.ModifiedCount;
         }
 
         public async Task<long> RemoveEmployeeEducationByIndex(string id, int index)
         {
             var result = await employeeRepository.RemoveArrayElementByIndex<Education>(id,
-                                        index,
-                                        employee => employee.Educations,
-                                        e => e.Educations);
+                index,
+                employee => employee.Educations,
+                e => e.Educations);
             return result.ModifiedCount;
         }
 
         public async Task<long> RemoveEmployeeAcademicDegreeByIndex(string id, int index)
         {
             var result = await employeeRepository.RemoveArrayElementByIndex<AcademicDegree>(id,
-                                        index,
-                                        employee => employee.AcademicDegrees,
-                                        e => e.AcademicDegrees);
+                index,
+                employee => employee.AcademicDegrees,
+                e => e.AcademicDegrees);
             return result.ModifiedCount;
         }
 
@@ -227,16 +230,14 @@ namespace FITApp.EmployeesService.Services
                 .Include(e => e.User.Role);
 
             var bsonDocuments =
-                await employeeRepository.GetEmployeesByPage(FilterDefinition<Employee>.Empty, projection, page, pageSize);
+                await employeeRepository.GetEmployeesByPage(FilterDefinition<Employee>.Empty, projection, page,
+                    pageSize);
 
             var employees = mapper.Map<List<SimpleEmployeeDto>>(bsonDocuments);
 
             EmployeesPaginationDto response = new()
             {
-                Page = page,
-                PageSize = pageSize,
-                TotalCount = total,
-                Employees = employees
+                Page = page, PageSize = pageSize, TotalCount = total, Employees = employees
             };
             return response;
         }
