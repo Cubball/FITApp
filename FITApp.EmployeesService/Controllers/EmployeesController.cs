@@ -67,14 +67,6 @@ namespace FITApp.EmployeesService.Controllers
             var employee = await _employeeService.GetEmployee(id);
             return Ok(employee);
         }
-        // [HttpGet]
-        // public async Task<IActionResult> GetEmployee()
-        // {
-        //     var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        //     var employee = await _employeeService.GetEmployee(id);
-        //     return Ok(employee);
-        // }
-
         [HttpPost("{id}/positions")]
         public async Task<IActionResult> AddPosition(string id, [FromBody] PositionDto positionDto)
         {

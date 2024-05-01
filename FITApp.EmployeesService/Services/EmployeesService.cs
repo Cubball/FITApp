@@ -212,7 +212,7 @@ namespace FITApp.EmployeesService.Services
         //     };
         //     return response;
         // }
-        
+
         public async Task<EmployeesPaginationDto> GetEmployeesPagination(uint page, uint pageSize)
         {
             var total =
@@ -230,7 +230,7 @@ namespace FITApp.EmployeesService.Services
                 await employeeRepository.GetEmployeesByPage(FilterDefinition<Employee>.Empty, projection, page, pageSize);
 
             var employees = mapper.Map<List<SimpleEmployeeDto>>(bsonDocuments);
-            
+
             EmployeesPaginationDto response = new()
             {
                 Page = page,
@@ -241,3 +241,4 @@ namespace FITApp.EmployeesService.Services
             return response;
         }
     }
+}
