@@ -1,6 +1,7 @@
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
+using FluentValidation;
 using MongoDB.Driver;
 
 namespace FITApp.EmployeesService.Services
@@ -14,7 +15,14 @@ namespace FITApp.EmployeesService.Services
             _employeesRepository = employeesRepository;
         }
         public async Task CreateUser(UserDto user)
-        {
+        { 
+            var isUserExist = await _employeesRepository.CheckIfEmployeeExists(user.UserId);
+            if (isUserExist)
+            {
+                throw new ValidationException("User already exists");
+            }
+
+
             var employee = new Employee
             {
                 Id = user.UserId,

@@ -2,6 +2,7 @@ using AutoMapper;
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FITApp.EmployeesService.Controllers
@@ -81,10 +82,18 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            try
+            {
+                long updatedCount = await _employeeService.UpdateEmployeePositions(id, positionDto);
+                return updatedCount == 0 ? NotFound() : Ok();
 
-            long updatedCount = await _employeeService.UpdateEmployeePositions(id, positionDto);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+                throw;
+            }
 
-            return updatedCount == 0 ? NotFound() : Ok();
         }
 
         [HttpPost("{id}/educations")]
@@ -94,10 +103,18 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            try
+            {
+                long updatedCount = await _employeeService.UpdateEmployeeEducations(id, educationDto);
+                return updatedCount == 0 ? NotFound() : Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+                throw;
+            }
 
-            long updatedCount = await _employeeService.UpdateEmployeeEducations(id, educationDto);
 
-            return updatedCount == 0 ? NotFound() : Ok();
         }
 
         [HttpPost("{id}/academic-degrees")]
@@ -107,10 +124,18 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            try
+            {
+                long updatedCount = await _employeeService.UpdateEmployeeAcademicDegrees(id, educationDto);
+                return updatedCount == 0 ? NotFound() : Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+                throw;
+            }
 
-            long updatedCount = await _employeeService.UpdateEmployeeAcademicDegrees(id, educationDto);
 
-            return updatedCount == 0 ? NotFound() : Ok();
         }
 
         [HttpPost("{id}/academic-ranks")]
@@ -120,10 +145,17 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            try
+            {
+                long updatedCount = await _employeeService.UpdateEmployeeAcademicRanks(id, academicRankDto);
+                return updatedCount == 0 ? NotFound() : Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+                throw;
+            }
 
-            long updatedCount = await _employeeService.UpdateEmployeeAcademicRanks(id, academicRankDto);
-
-            return updatedCount == 0 ? NotFound() : Ok();
         }
         [HttpDelete("{id}/academic-ranks/{index}")]
         public async Task<IActionResult> RemoveEmployeeAcademicRank(string id, int index)
