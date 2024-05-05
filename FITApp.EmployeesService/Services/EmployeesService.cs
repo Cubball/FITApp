@@ -237,7 +237,10 @@ namespace FITApp.EmployeesService.Services
 
             EmployeesPaginationDto response = new()
             {
-                Page = page, PageSize = pageSize, TotalCount = total, Employees = employees
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = total,
+                Employees = employees
             };
             return response;
         }
