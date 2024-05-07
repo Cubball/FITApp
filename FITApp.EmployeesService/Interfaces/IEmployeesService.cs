@@ -1,6 +1,5 @@
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Models;
-using MongoDB.Driver;
 
 namespace FITApp.EmployeesService.Interfaces
 {

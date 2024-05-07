@@ -1,7 +1,3 @@
-using FITApp.EmployeesService.Models;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
 namespace FITApp.EmployeesService.Dtos
 {
 

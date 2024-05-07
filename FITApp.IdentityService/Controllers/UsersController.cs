@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using FITApp.IdentityService.Entities;
 using Microsoft.AspNetCore.Identity;
-using MimeKit;
-using MailKit.Security;
 using FITApp.IdentityService.Services;
 
 namespace FITApp.IdentityService.Controllers;

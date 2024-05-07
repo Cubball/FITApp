@@ -1,5 +1,4 @@
 using FITApp.EmployeesService.Dtos;
-using FITApp.EmployeesService.Models;
 
 namespace FITApp.EmployeesService.Interfaces
 {

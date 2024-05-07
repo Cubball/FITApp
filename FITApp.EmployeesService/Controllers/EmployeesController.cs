@@ -1,4 +1,3 @@
-using AutoMapper;
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
