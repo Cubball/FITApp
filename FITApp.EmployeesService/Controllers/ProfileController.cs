@@ -41,7 +41,7 @@ public class ProfileController : ControllerBase
 
     }
 
-    [HttpPost("{id}/positions")]
+    [HttpPost("positions")]
     public async Task<IActionResult> AddPosition([FromBody] PositionDto positionDto)
     {
 
@@ -63,7 +63,7 @@ public class ProfileController : ControllerBase
         }
 
     }
-    [HttpPost("{id}/educations")]
+    [HttpPost("educations")]
     public async Task<IActionResult> AddEducation([FromBody] EducationDto educationDto)
     {
         var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
@@ -90,7 +90,7 @@ public class ProfileController : ControllerBase
 
     }
 
-    [HttpPost("{id}/academic-degrees")]
+    [HttpPost("academic-degrees")]
     public async Task<IActionResult> AddAcademicDegree([FromBody] AcademicDegreeDto educationDto)
     {
         var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
@@ -117,7 +117,7 @@ public class ProfileController : ControllerBase
 
     }
 
-    [HttpPost("{id}/academic-ranks")]
+    [HttpPost("academic-ranks")]
     public async Task<IActionResult> AddAcademicRank([FromBody] AcademicRankDto academicRankDto)
     {
         var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
@@ -142,7 +142,7 @@ public class ProfileController : ControllerBase
         }
 
     }
-    [HttpDelete("{id}/academic-ranks/{index}")]
+    [HttpDelete("academic-ranks/{index}")]
     public async Task<IActionResult> RemoveEmployeeAcademicRank(int index)
     {
         var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
@@ -154,7 +154,7 @@ public class ProfileController : ControllerBase
         var result = await _employeeService.RemoveEmployeeAcademicRankByIndex(id, index);
         return result == 0 ? NotFound() : Ok();
     }
-    [HttpDelete("{id}/positions/{index}")]
+    [HttpDelete("positions/{index}")]
     public async Task<IActionResult> RemoveEmployeePosition(int index)
     {
         var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
@@ -167,7 +167,7 @@ public class ProfileController : ControllerBase
         return result == 0 ? NotFound() : Ok();
     }
 
-    [HttpDelete("{id}/educations/{index}")]
+    [HttpDelete("educations/{index}")]
     public async Task<IActionResult> RemoveEmployeeEducation(int index)
     {
         var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
@@ -180,7 +180,7 @@ public class ProfileController : ControllerBase
         return result == 0 ? NotFound() : Ok();
     }
 
-    [HttpDelete("{id}/academic-degrees/{index}")]
+    [HttpDelete("academic-degrees/{index}")]
     public async Task<IActionResult> RemoveEmployeeAcademicDegree(int index)
     {
         var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
