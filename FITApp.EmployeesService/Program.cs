@@ -25,7 +25,9 @@ builder.Services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
 builder.Services.AddSingleton<IEmployeesService, EmployeesService>();
 builder.Services.AddSingleton<IUsersService, UsersService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 MongoDbClassMapInitializer.RegisterClassMaps();
+MongoDbClassMapInitializer.AddConventionPack();
 var app = builder.Build();
 
 
