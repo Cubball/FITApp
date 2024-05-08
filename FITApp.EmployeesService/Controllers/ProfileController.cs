@@ -2,12 +2,14 @@ using System.IdentityModel.Tokens.Jwt;
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FITApp.EmployeesService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ProfileController : ControllerBase
 {
     private readonly IEmployeesService _employeeService;
