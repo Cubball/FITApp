@@ -198,9 +198,10 @@ public class ProfileController : ControllerBase
         return result == 0 ? NotFound() : Ok();
     }
 
-    [HttpPut("{id}/photo")]
-    public async Task<IActionResult> AddPhoto(string id, [FromForm] EmployeePhotoUploadDto employeePhotoUploadDto)
+    [HttpPut("photo")]
+    public async Task<IActionResult> AddPhoto([FromForm] EmployeePhotoUploadDto employeePhotoUploadDto)
     {
+        var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
         if (string.IsNullOrEmpty(id))
         {
             return BadRequest("Invalid employee ID.");
@@ -217,9 +218,10 @@ public class ProfileController : ControllerBase
         }
     }
 
-    [HttpDelete("{id}/photo")]
-    public async Task<IActionResult> RemovePhoto(string id)
+    [HttpDelete("photo")]
+    public async Task<IActionResult> RemovePhoto()
     {
+        var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
         if (string.IsNullOrEmpty(id))
         {
             return BadRequest("Invalid employee ID.");
@@ -230,7 +232,7 @@ public class ProfileController : ControllerBase
             long updatedCount = await _photoService.RemoveEmployeePhoto(id);
             return updatedCount == 0 ? NotFound() : Ok();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return StatusCode(500, "An error occurred while removing the employee's photo.");
         }
