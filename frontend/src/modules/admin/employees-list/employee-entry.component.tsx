@@ -2,9 +2,13 @@ import { IEmployeeShortInfo } from './employees-list.component';
 import TrashIcon from './../../../assets/icons/trash-icon.svg';
 import { NavLink } from 'react-router-dom';
 
-const EmployeeEntry = ({ employee }: { employee: IEmployeeShortInfo }) => {
+interface EmployeeEntryProps {
+  employee: IEmployeeShortInfo;
+}
+
+const EmployeeEntry = ({ employee }: EmployeeEntryProps) => {
   // TODO:
-  const onDeleteClick = () => {}
+  const onDeleteClick = () => {};
 
   return (
     <div className="my-2 flex items-center justify-between rounded-lg bg-accent-background p-3">
@@ -16,7 +20,7 @@ const EmployeeEntry = ({ employee }: { employee: IEmployeeShortInfo }) => {
         <span className="md:basis-[15%]">{employee.role}</span>
       </NavLink>
       <div className="flex items-center justify-between gap-1 md:gap-3">
-        <button className='mr-1' onClick={onDeleteClick}>
+        <button className="mr-1" onClick={onDeleteClick}>
           <img src={TrashIcon} />
         </button>
       </div>

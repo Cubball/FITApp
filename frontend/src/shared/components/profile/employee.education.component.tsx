@@ -1,6 +1,10 @@
-import { IEducation } from "../../../services/profile/profile.types";
+import { IEducation } from '../../../services/profile/profile.types';
 
-const EmployeeEducation = ({ education }: { education: IEducation }) => {
+interface EmployeeEducationProps {
+  education: IEducation;
+}
+
+const EmployeeEducation = ({ education }: EmployeeEducationProps) => {
   return (
     <div>
       <h3 className="text-md font-semibold">{education.university}</h3>

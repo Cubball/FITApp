@@ -10,10 +10,16 @@ import EmployeeAcademicRank from './employee.academic.rank.component';
 import EmployeePosition from './employee.position.component';
 import { IEmployee } from '../../../services/profile/profile.types';
 
-const Profile = ({ employee, canEdit, isOwnProfile }: { employee: IEmployee, canEdit: boolean, isOwnProfile: boolean }) => {
+interface ProfileProps {
+  employee: IEmployee;
+  canEdit: boolean;
+  isOwnProfile: boolean;
+}
+
+const Profile = ({ employee, canEdit, isOwnProfile }: ProfileProps) => {
   return (
     <div className="px-10 py-5">
-      <EmployeeInfo employee={employee} canEdit={canEdit}/>
+      <EmployeeInfo employee={employee} canEdit={canEdit} />
       <ExpandableList
         title="Освіта"
         icon={EducationIcon}

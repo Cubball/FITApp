@@ -1,6 +1,10 @@
-import { IAcademicRank } from "../../../services/profile/profile.types";
+import { IAcademicRank } from '../../../services/profile/profile.types';
 
-const EmployeeAcademicRank = ({ academicRank }: { academicRank: IAcademicRank }) => {
+interface EmployeeAcademicRankProps {
+  academicRank: IAcademicRank;
+}
+
+const EmployeeAcademicRank = ({ academicRank }: EmployeeAcademicRankProps) => {
   return (
     <div>
       <h3 className="text-md font-semibold">{academicRank.name}</h3>

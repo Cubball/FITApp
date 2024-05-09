@@ -1,6 +1,10 @@
-import { IPosition } from "../../../services/profile/profile.types";
+import { IPosition } from '../../../services/profile/profile.types';
 
-const EmployeePosition = ({ position }: { position: IPosition }) => {
+interface EmployeePositionProps {
+  position: IPosition;
+}
+
+const EmployeePosition = ({ position }: EmployeePositionProps) => {
   return (
     <div>
       <h3 className="text-md font-semibold">{position.name}</h3>

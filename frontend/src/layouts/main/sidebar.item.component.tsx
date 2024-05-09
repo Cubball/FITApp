@@ -1,7 +1,13 @@
 import { NavLink } from 'react-router-dom';
 import RightArrowIcon from '../../assets/icons/right-arrow.svg';
 
-const SidebarItem = ({ icon, text, route }) => {
+interface SidebarItemProps {
+  icon: string;
+  text: string;
+  route: string;
+}
+
+const SidebarItem = ({ icon, text, route }: SidebarItemProps) => {
   return (
     <NavLink
       to={route}

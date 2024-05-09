@@ -1,6 +1,21 @@
+import { ReactNode } from 'react';
 import TrashIcon from '../../../assets/icons/trash-icon.svg';
 
-const ExpandableListItem = ({ element, index, canExpand, onDeleteClick, canEdit }) => {
+interface ExpandableListItemProps {
+  element: ReactNode;
+  index: number;
+  canExpand: boolean;
+  canEdit: boolean;
+  onDeleteClick: (index: number) => void;
+}
+
+const ExpandableListItem = ({
+  element,
+  index,
+  canExpand,
+  onDeleteClick,
+  canEdit
+}: ExpandableListItemProps) => {
   return (
     <>
       <div className="flex items-center justify-between p-3">

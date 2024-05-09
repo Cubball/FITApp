@@ -2,15 +2,13 @@ import { NavLink } from 'react-router-dom';
 
 const MAX_PAGES_AROUND = 3;
 
-const Pagination = ({
-  page,
-  totalPages,
-  link
-}: {
+interface PaginationProps {
   page: number;
   totalPages: number;
   link: string;
-}) => {
+}
+
+const Pagination = ({ page, totalPages, link }: PaginationProps) => {
   if (!page || page > totalPages) {
     page = 1;
   }

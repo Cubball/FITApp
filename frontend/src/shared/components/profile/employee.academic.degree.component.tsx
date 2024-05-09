@@ -1,10 +1,10 @@
-import { IAcademicDegree } from "../../../services/profile/profile.types";
+import { IAcademicDegree } from '../../../services/profile/profile.types';
 
-const EmployeeAcademicDegree = ({
-  academicDegree
-}: {
+interface EmployeeAcademicDegreeProps {
   academicDegree: IAcademicDegree;
-}) => {
+}
+
+const EmployeeAcademicDegree = ({ academicDegree }: EmployeeAcademicDegreeProps) => {
   return (
     <div>
       <h3 className="text-md font-semibold">{academicDegree.fullName}</h3>

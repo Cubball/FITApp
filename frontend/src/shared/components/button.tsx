@@ -1,6 +1,10 @@
-import { IButtonAttributes } from './types';
+import { ButtonHTMLAttributes } from 'react';
 
-const Button = ({ text, ...props }: IButtonAttributes) => {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  text: string;
+}
+
+const Button = ({ text, ...props }: ButtonProps) => {
   return (
     <button
       className={

@@ -1,7 +1,12 @@
 import { IEmployee } from '../../../services/profile/profile.types';
 import EditIcon from '../../../assets/icons/edit-icon.svg';
 
-const EmployeeInfo = ({ employee, canEdit }: { employee: IEmployee; canEdit: boolean }) => {
+interface EmployeeInfoProps {
+  employee: IEmployee;
+  canEdit: boolean;
+}
+
+const EmployeeInfo = ({ employee, canEdit }: EmployeeInfoProps) => {
   return (
     <div className="p-1">
       <div className="flex justify-between">
@@ -28,18 +33,18 @@ const EmployeeInfo = ({ employee, canEdit }: { employee: IEmployee; canEdit: boo
             <div>{employee.birthDate.toLocaleDateString('uk-UA')}</div>
           </div>
         </div>
-          <div className="flex grow basis-1/2 items-center justify-end gap-8">
+        <div className="flex grow basis-1/2 items-center justify-end gap-8">
           {canEdit ? (
-          <>
-            <button className="h-fit grow rounded-lg bg-main-text px-1 py-3 text-center font-semibold text-white shadow shadow-gray-400 md:max-w-[40%]">
-              Завантажити фото
-            </button>
-            <button className="h-fit grow rounded-lg border border-main-text px-1 py-3 text-center font-semibold shadow shadow-gray-400 md:max-w-[40%]">
-              Видалити
-            </button>
+            <>
+              <button className="h-fit grow rounded-lg bg-main-text px-1 py-3 text-center font-semibold text-white shadow shadow-gray-400 md:max-w-[40%]">
+                Завантажити фото
+              </button>
+              <button className="h-fit grow rounded-lg border border-main-text px-1 py-3 text-center font-semibold shadow shadow-gray-400 md:max-w-[40%]">
+                Видалити
+              </button>
             </>
-            ) : null}
-          </div>
+          ) : null}
+        </div>
       </div>
       <hr />
     </div>

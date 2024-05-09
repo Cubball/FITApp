@@ -1,8 +1,23 @@
-import { Children, useState } from 'react';
+import { Children, PropsWithChildren, useState } from 'react';
 import PlusIcon from '../../../assets/icons/plus-icon.svg';
 import ExpandableListItem from './expandable.list.item.component';
 
-const ExpandableList = ({ title, icon, children, onAddClick, onDeleteClick, canEdit }) => {
+interface ExpandableListProps extends PropsWithChildren {
+  title: string;
+  icon: string;
+  canEdit: boolean;
+  onAddClick: () => void;
+  onDeleteClick: (index: number) => void;
+}
+
+const ExpandableList = ({
+  children,
+  title,
+  icon,
+  canEdit,
+  onAddClick,
+  onDeleteClick
+}: ExpandableListProps) => {
   const childrenArray = Children.toArray(children);
   const canExpand = childrenArray.length > 1;
   const [expanded, setExpanded] = useState(false);
