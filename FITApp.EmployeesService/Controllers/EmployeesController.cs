@@ -206,6 +206,7 @@ namespace FITApp.EmployeesService.Controllers
         //     return Ok(employees);
         // }
 
+        [RequiresPermission(Permissions.UsersRead, Permissions.All)]
         [HttpPut("{id}/photo")]
         public async Task<IActionResult> AddPhoto(string id, [FromForm] EmployeePhotoUploadDto employeePhotoUploadDto)
         {
@@ -225,6 +226,7 @@ namespace FITApp.EmployeesService.Controllers
             }
         }
 
+        [RequiresPermission(Permissions.UsersUpdate, Permissions.All)]
         [HttpDelete("{id}/photo")]
         public async Task<IActionResult> RemovePhoto(string id)
         {
@@ -238,7 +240,7 @@ namespace FITApp.EmployeesService.Controllers
                 long updatedCount = await _photoService.RemoveEmployeePhoto(id);
                 return updatedCount == 0 ? NotFound() : Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, "An error occurred while removing the employee's photo.");
             }
