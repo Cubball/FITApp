@@ -1,4 +1,4 @@
-import { IEducation } from '../../../services/profile/profile.types';
+import { IEducation } from '../../../../services/profile/profile.types';
 
 interface EmployeeEducationProps {
   education: IEducation;

@@ -1,4 +1,4 @@
-import { IAcademicDegree } from '../../../services/profile/profile.types';
+import { IAcademicDegree } from '../../../../services/profile/profile.types';
 
 interface EmployeeAcademicDegreeProps {
   academicDegree: IAcademicDegree;

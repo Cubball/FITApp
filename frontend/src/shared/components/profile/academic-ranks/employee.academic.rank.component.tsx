@@ -1,4 +1,4 @@
-import { IAcademicRank } from '../../../services/profile/profile.types';
+import { IAcademicRank } from '../../../../services/profile/profile.types';
 
 interface EmployeeAcademicRankProps {
   academicRank: IAcademicRank;

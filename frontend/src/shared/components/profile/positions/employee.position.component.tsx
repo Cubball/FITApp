@@ -1,4 +1,4 @@
-import { IPosition } from '../../../services/profile/profile.types';
+import { IPosition } from '../../../../services/profile/profile.types';
 
 interface EmployeePositionProps {
   position: IPosition;
