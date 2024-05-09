@@ -19,7 +19,7 @@ public class ProfileController : ControllerBase
     public ProfileController(IEmployeesService employeeService, IPhotoService photoService)
     {
         _employeeService = employeeService;
-        _photoService = photoService;   
+        _photoService = photoService;
     }
     [HttpGet]
     public async Task<IActionResult> GetEmployee()
@@ -235,3 +235,4 @@ public class ProfileController : ControllerBase
             return StatusCode(500, "An error occurred while removing the employee's photo.");
         }
     }
+}
