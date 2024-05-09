@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
-using FITApp.EmployeesService.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
