@@ -13,10 +13,13 @@ namespace FITApp.EmployeesService.Controllers;
 public class ProfileController : ControllerBase
 {
     private readonly IEmployeesService _employeeService;
+    private readonly IPhotoService _photoService;
 
-    public ProfileController(IEmployeesService employeeService)
+
+    public ProfileController(IEmployeesService employeeService, IPhotoService photoService)
     {
         _employeeService = employeeService;
+        _photoService = photoService;   
     }
     [HttpGet]
     public async Task<IActionResult> GetEmployee()
@@ -195,9 +198,40 @@ public class ProfileController : ControllerBase
         return result == 0 ? NotFound() : Ok();
     }
 
+    [HttpPut("{id}/photo")]
+    public async Task<IActionResult> AddPhoto(string id, [FromForm] EmployeePhotoUploadDto employeePhotoUploadDto)
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            return BadRequest("Invalid employee ID.");
+        }
+        try
+        {
+            long updatedCount = await _photoService.UpdateEmployeePhoto(id, employeePhotoUploadDto);
+            return updatedCount == 0 ? NotFound() : Ok();
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Errors);
+            throw;
+        }
+    }
 
+    [HttpDelete("{id}/photo")]
+    public async Task<IActionResult> RemovePhoto(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            return BadRequest("Invalid employee ID.");
+        }
 
-
-
-
-}
+        try
+        {
+            long updatedCount = await _photoService.RemoveEmployeePhoto(id);
+            return updatedCount == 0 ? NotFound() : Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "An error occurred while removing the employee's photo.");
+        }
+    }
