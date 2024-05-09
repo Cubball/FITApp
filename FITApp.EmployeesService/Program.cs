@@ -21,9 +21,11 @@ builder.Services.AddJWTAuth(jwtPublicKey);
 
 builder.Services.AddValidatorsFromAssemblyContaining<PositionDtoValidator>(ServiceLifetime.Transient);
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBSettings"));
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
 builder.Services.AddSingleton<IEmployeesService, EmployeesService>();
 builder.Services.AddSingleton<IUsersService, UsersService>();
+builder.Services.AddSingleton<IPhotoService, PhotoService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 MongoDbClassMapInitializer.RegisterClassMaps();

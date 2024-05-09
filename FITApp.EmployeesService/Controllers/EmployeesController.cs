@@ -16,16 +16,13 @@ namespace FITApp.EmployeesService.Controllers
     {
         private readonly IEmployeesService _employeeService;
 
-        public EmployeesController(IEmployeesService employeeService)
+        private readonly IPhotoService _photoService;
+
+        public EmployeesController(IEmployeesService employeeService, IPhotoService photoService)
         {
             _employeeService = employeeService;
+            _photoService = photoService;
         }
-        // public EmployeesController(IMapper mapper, IEmployeesService employeeService, IUsersService usersService)
-        // {
-        //     _mapper = mapper;
-        //     _employeeService = employeeService;
-        //     _usersService = usersService;
-        // }
 
 
         [RequiresPermission(Permissions.UsersCreate, Permissions.All)]
@@ -208,5 +205,44 @@ namespace FITApp.EmployeesService.Controllers
         //     var employees = await _employeeService.GetEmployees();
         //     return Ok(employees);
         // }
+
+        [HttpPut("{id}/photo")]
+        public async Task<IActionResult> AddPhoto(string id, [FromForm] EmployeePhotoUploadDto employeePhotoUploadDto)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Invalid employee ID.");
+            }
+            try
+            {
+                long updatedCount = await _photoService.UpdateEmployeePhoto(id, employeePhotoUploadDto);
+                return updatedCount == 0 ? NotFound() : Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+                throw;
+            }
+        }
+
+        [HttpDelete("{id}/photo")]
+        public async Task<IActionResult> RemovePhoto(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Invalid employee ID.");
+            }
+
+            try
+            {
+                long updatedCount = await _photoService.RemoveEmployeePhoto(id);
+                return updatedCount == 0 ? NotFound() : Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while removing the employee's photo.");
+            }
+        }
+
     }
 }

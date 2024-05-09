@@ -1,4 +1,6 @@
 using AutoMapper;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
@@ -15,6 +17,8 @@ namespace FITApp.EmployeesService.Services
         IValidator<AcademicDegreeDto> academicDegreeDtoValidator,
         IValidator<AcademicRankDto> academicRankDtoValidator) : IEmployeesService
     {
+        private readonly Cloudinary _cloudinary;
+
         public async Task CreateEmployee(EmployeeDto employeeDto)
         {
             Employee employee = mapper.Map<Employee>(employeeDto);
