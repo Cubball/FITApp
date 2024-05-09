@@ -1,6 +1,0 @@
-@FITApp.EmployeesService_HostAddress = http://localhost:5226
-
-GET {{FITApp.EmployeesService_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
