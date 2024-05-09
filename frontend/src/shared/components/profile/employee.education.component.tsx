@@ -1,6 +1,6 @@
-import { IEmployeeEducation } from './types';
+import { IEducation } from "../../../services/profile/profile.types";
 
-const EmployeeEducation = ({ education }: { education: IEmployeeEducation }) => {
+const EmployeeEducation = ({ education }: { education: IEducation }) => {
   return (
     <div>
       <h3 className="text-md font-semibold">{education.university}</h3>

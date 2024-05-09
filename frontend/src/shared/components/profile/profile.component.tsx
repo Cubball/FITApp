@@ -1,74 +1,27 @@
 import EmployeeInfo from './employee.info.component';
 import ExpandableList from './expandable.list.component';
-import EducationIcon from '../../assets/icons/education-icon.svg';
+import EducationIcon from '../../../assets/icons/education-icon.svg';
 import EmployeeEducation from './employee.education.component';
-import AcademicRankIcon from '../../assets/icons/academic-rank-icon.svg';
-import AcademicDegreeIcon from '../../assets/icons/academic-degree-icon.svg';
-import PositionIcon from '../../assets/icons/position-icon.svg';
-import { IEmployeeData } from './types';
+import AcademicRankIcon from '../../../assets/icons/academic-rank-icon.svg';
+import AcademicDegreeIcon from '../../../assets/icons/academic-degree-icon.svg';
+import PositionIcon from '../../../assets/icons/position-icon.svg';
 import EmployeeAcademicDegree from './employee.academic.degree.component';
 import EmployeeAcademicRank from './employee.academic.rank.component';
 import EmployeePosition from './employee.position.component';
+import { IEmployee } from '../../../services/profile/profile.types';
 
-const date = new Date('4/20/2024');
-const fakeEmployee: IEmployeeData = {
-  id: '123',
-  firstName: 'Іван',
-  lastName: 'Острозький',
-  patronymic: 'Іванович',
-  role: 'Викладач',
-  birthDate: date,
-  photoUrl:
-    'https://static9.depositphotos.com/1729220/1229/i/950/depositphotos_12294106-stock-photo-chimpanzee-sitting-in-bed-on.jpg',
-  email: 'foo@bar.baz',
-  educations: [
-    {
-      specialty: 'Менеджмент',
-      university: 'КНУ',
-      diplomaDateOfIssue: date
-    },
-    {
-      specialty: 'Кодер тупий',
-      university: 'КНУ',
-      diplomaDateOfIssue: date
-    }
-  ],
-  positions: [
-    {
-      name: 'Доцент',
-      startDate: date,
-      endDate: date
-    }
-  ],
-  academicRanks: [
-    {
-      name: 'Foo',
-      dateOfIssue: date,
-      certificateNumber: '#SD1233208'
-    }
-  ],
-  academicDegrees: [
-    {
-      fullName: 'Foo bar baz',
-      shortName: 'foo',
-      dateOfIssue: date,
-      diplomaNumber: '#SD1233208'
-    }
-  ]
-};
-
-const Profile = () => {
+const Profile = ({ employee, canEdit, isOwnProfile }: { employee: IEmployee, canEdit: boolean, isOwnProfile: boolean }) => {
   return (
-    // TODO: this component probably should take employee's id or smth to reuse it for admin
     <div className="px-10 py-5">
-      <EmployeeInfo employee={fakeEmployee} />
+      <EmployeeInfo employee={employee} canEdit={canEdit}/>
       <ExpandableList
         title="Освіта"
         icon={EducationIcon}
         onAddClick={() => console.log('add')}
         onDeleteClick={(index: number) => console.log('delete ' + index)}
+        canEdit={canEdit}
       >
-        {fakeEmployee.educations.map((education, index) => (
+        {employee.educations.map((education, index) => (
           <EmployeeEducation education={education} key={index} />
         ))}
       </ExpandableList>
@@ -77,8 +30,9 @@ const Profile = () => {
         icon={AcademicDegreeIcon}
         onAddClick={() => console.log('add')}
         onDeleteClick={(index: number) => console.log('delete ' + index)}
+        canEdit={canEdit}
       >
-        {fakeEmployee.academicDegrees.map((academicDegree, index) => (
+        {employee.academicDegrees.map((academicDegree, index) => (
           <EmployeeAcademicDegree academicDegree={academicDegree} key={index} />
         ))}
       </ExpandableList>
@@ -87,8 +41,9 @@ const Profile = () => {
         icon={AcademicRankIcon}
         onAddClick={() => console.log('add')}
         onDeleteClick={(index: number) => console.log('delete ' + index)}
+        canEdit={canEdit}
       >
-        {fakeEmployee.academicRanks.map((academicRank, index) => (
+        {employee.academicRanks.map((academicRank, index) => (
           <EmployeeAcademicRank academicRank={academicRank} key={index} />
         ))}
       </ExpandableList>
@@ -97,8 +52,9 @@ const Profile = () => {
         icon={PositionIcon}
         onAddClick={() => console.log('add')}
         onDeleteClick={(index: number) => console.log('delete ' + index)}
+        canEdit={canEdit}
       >
-        {fakeEmployee.positions.map((position, index) => (
+        {employee.positions.map((position, index) => (
           <EmployeePosition position={position} key={index} />
         ))}
       </ExpandableList>

@@ -1,9 +1,9 @@
-import { IEmployeeAcademicDegree } from './types';
+import { IAcademicDegree } from "../../../services/profile/profile.types";
 
 const EmployeeAcademicDegree = ({
   academicDegree
 }: {
-  academicDegree: IEmployeeAcademicDegree;
+  academicDegree: IAcademicDegree;
 }) => {
   return (
     <div>
