@@ -4,6 +4,7 @@ import EmployeeAcademicDegrees from './academic-degrees/employee-academic-degree
 import EmployeeAcademicRanks from './academic-ranks/employee-academic-ranks.component';
 import EmployeePositions from './positions/employee-positions.component';
 import { useProfile } from '../../../hooks/profile/profile.hook';
+import { useParams } from 'react-router-dom';
 
 interface ProfileProps {
   canEdit: boolean;
@@ -11,6 +12,12 @@ interface ProfileProps {
 }
 
 const Profile = ({ canEdit, isOwnProfile }: ProfileProps) => {
+  let id: string | undefined = undefined;
+  if (!isOwnProfile) {
+    const { employeeId } = useParams();
+    id = employeeId;
+  }
+
   const {
     profile,
     updateProfile,
@@ -25,7 +32,7 @@ const Profile = ({ canEdit, isOwnProfile }: ProfileProps) => {
     deletePosition,
     uploadPhoto,
     deletePhoto
-  } = useProfile(isOwnProfile ? undefined : undefined);
+  } = useProfile(id);
 
   if (isLoading) return <p>Loading...</p>;
 
