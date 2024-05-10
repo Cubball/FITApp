@@ -95,4 +95,18 @@ public class AuthController : ControllerBase
         var success = await _userService.TryChangePasswordAsync(email, request.OldPassword, request.NewPassword);
         return success ? Ok() : BadRequest();
     }
+
+    [HttpPost("reset-password")]
+    public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+    {
+        var success = await _userService.TrySendResetPasswordEmailAsync(request.Email);
+        return success ? Ok() : BadRequest();
+    }
+
+    [HttpGet("reset-password-confirm")]
+    public async Task<ActionResult> ResetPasswordConfirm(string id, string token)
+    {
+        var success = await _userService.TryResetPasswordAsync(id, token);
+        return success ? Ok() : BadRequest();
+    }
 }
