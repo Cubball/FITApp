@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import EducationIcon from '../../../../assets/icons/education-icon.svg';
-import { IEmployee } from '../../../../services/profile/profile.types';
+import { IAddEducationBody, IEmployee } from '../../../../services/profile/profile.types';
 import ExpandableList from '../expandable.list.component';
 import EmployeeEducation from './employee.education.component';
 import AddEducationModal from './add-education-modal.component';
@@ -8,10 +8,11 @@ import AddEducationModal from './add-education-modal.component';
 interface EmployeeEducationsProps {
   employee: IEmployee;
   canEdit: boolean;
-  isOwnProfile: boolean;
+  onSubmit: (body: IAddEducationBody) => void;
+  onDelete: (index: number) => void;
 }
 
-const EmployeeEducations = ({ employee, canEdit, isOwnProfile }: EmployeeEducationsProps) => {
+const EmployeeEducations = ({ employee, canEdit, onSubmit, onDelete }: EmployeeEducationsProps) => {
   const [addModalOpen, setAddModalOpen] = useState(false);
 
   return (
@@ -19,13 +20,13 @@ const EmployeeEducations = ({ employee, canEdit, isOwnProfile }: EmployeeEducati
       <AddEducationModal
         isOpen={addModalOpen}
         onClose={() => setAddModalOpen(false)}
-        onSubmit={() => console.log('foo')}
+        onSubmit={onSubmit}
       />
       <ExpandableList
         title="Освіта"
         icon={EducationIcon}
         onAddClick={() => setAddModalOpen(true)}
-        onDeleteClick={(index: number) => console.log('delete ' + index)}
+        onDeleteClick={onDelete}
         canEdit={canEdit}
       >
         {employee.educations.map((education, index) => (

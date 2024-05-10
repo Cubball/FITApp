@@ -9,7 +9,12 @@ interface EditInfoModalProps {
   onSubmit: any;
 }
 
-const EditInfoModal = ({ employee, isOpen, onClose, onSubmit }: EditInfoModalProps) => {
+const EditInfoModal = ({
+  employee,
+  isOpen,
+  onClose,
+  onSubmit
+}: EditInfoModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <h2 className="border-b border-gray-500 p-2 text-center text-lg font-semibold">

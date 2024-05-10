@@ -1,4 +1,4 @@
-import { IEmployee } from '../../../../services/profile/profile.types';
+import { IAddAcademicDegreesBody, IEmployee } from '../../../../services/profile/profile.types';
 import ExpandableList from '../expandable.list.component';
 import EmployeeAcademicDegree from './employee.academic.degree.component';
 import AcademicDegreeIcon from '../../../../assets/icons/academic-degree-icon.svg';
@@ -8,13 +8,15 @@ import { useState } from 'react';
 interface EmployeeAcademicDegreesProps {
   employee: IEmployee;
   canEdit: boolean;
-  isOwnProfile: boolean;
+  onSubmit: (body: IAddAcademicDegreesBody) => void;
+  onDelete: (index: number) => void;
 }
 
 const EmployeeAcademicDegrees = ({
   employee,
   canEdit,
-  isOwnProfile
+  onSubmit,
+  onDelete
 }: EmployeeAcademicDegreesProps) => {
   const [addModalOpen, setAddModalOpen] = useState(false);
 
@@ -23,13 +25,13 @@ const EmployeeAcademicDegrees = ({
       <AddAcademicDegreeModal
         isOpen={addModalOpen}
         onClose={() => setAddModalOpen(false)}
-        onSubmit={() => console.log('foo')}
+        onSubmit={onSubmit}
       />
       <ExpandableList
         title="Наукові ступені"
         icon={AcademicDegreeIcon}
         onAddClick={() => setAddModalOpen(true)}
-        onDeleteClick={(index: number) => console.log('delete ' + index)}
+        onDeleteClick={onDelete}
         canEdit={canEdit}
       >
         {employee.academicDegrees.map((academicDegree, index) => (

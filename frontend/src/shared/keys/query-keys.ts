@@ -1,3 +1,4 @@
 export enum QUERY_KEYS {
-  AUTH = 'AUTH'
+  AUTH = 'AUTH',
+  PROFILE = 'PROFILE'
 }

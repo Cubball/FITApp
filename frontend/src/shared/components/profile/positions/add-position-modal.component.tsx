@@ -33,7 +33,6 @@ const AddPositionModal = ({ isOpen, onClose, onSubmit }: AddPositionModalProps) 
               id="isCurrentPosition"
               name="isCurrentPosition"
               type="checkbox"
-              required
               className="h-5 w-5 rounded-md border border-gray-300 p-2"
               onChange={(e) => setIsCurrentPosition(e.target.checked)}
             />

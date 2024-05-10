@@ -1,4 +1,4 @@
-import { IEmployee } from '../../../../services/profile/profile.types';
+import { IEmployee, IUpdateEmployeeBody } from '../../../../services/profile/profile.types';
 import EditIcon from '../../../../assets/icons/edit-icon.svg';
 import EditInfoModal from './edit-info-modal.component';
 import { useState } from 'react';
@@ -7,10 +7,10 @@ import ConfirmModal from '../../confirm-modal';
 interface EmployeeInfoProps {
   employee: IEmployee;
   canEdit: boolean;
-  isOwnProfile: boolean;
+  onSumbit: (body: IUpdateEmployeeBody) => void;
 }
 
-const EmployeeInfo = ({ employee, canEdit, isOwnProfile }: EmployeeInfoProps) => {
+const EmployeeInfo = ({ employee, canEdit, onSumbit }: EmployeeInfoProps) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   let displayName = "<ім'я не вказано>";
@@ -23,7 +23,7 @@ const EmployeeInfo = ({ employee, canEdit, isOwnProfile }: EmployeeInfoProps) =>
       <EditInfoModal
         employee={employee}
         isOpen={editModalOpen}
-        onSubmit={() => console.log('f')}
+        onSubmit={onSumbit}
         onClose={() => setEditModalOpen(false)}
       />
       <ConfirmModal

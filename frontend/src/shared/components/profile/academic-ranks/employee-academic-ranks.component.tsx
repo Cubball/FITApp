@@ -1,4 +1,4 @@
-import { IEmployee } from '../../../../services/profile/profile.types';
+import { IAddAcademicRank, IEmployee } from '../../../../services/profile/profile.types';
 import ExpandableList from '../expandable.list.component';
 import EmployeeAcademicRank from './employee.academic.rank.component';
 import AcademicRankIcon from '../../../../assets/icons/academic-rank-icon.svg';
@@ -8,24 +8,30 @@ import { useState } from 'react';
 interface EmployeeAcademicRanksProps {
   employee: IEmployee;
   canEdit: boolean;
-  isOwnProfile: boolean;
+  onSubmit: (body: IAddAcademicRank) => void;
+  onDelete: (index: number) => void;
 }
 
-const EmployeeAcademicRanks = ({ employee, canEdit, isOwnProfile }: EmployeeAcademicRanksProps) => {
+const EmployeeAcademicRanks = ({
+  employee,
+  canEdit,
+  onSubmit,
+  onDelete
+}: EmployeeAcademicRanksProps) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   return (
     <>
       <AddAcademicRankModal
         isOpen={editModalOpen}
-        onSubmit={() => console.log('foo')}
+        onSubmit={onSubmit}
         onClose={() => setEditModalOpen(false)}
       />
       <ExpandableList
         title="Наукові звання"
         icon={AcademicRankIcon}
         onAddClick={() => setEditModalOpen(true)}
-        onDeleteClick={(index: number) => console.log('delete ' + index)}
+        onDeleteClick={onDelete}
         canEdit={canEdit}
       >
         {employee.academicRanks.map((academicRank, index) => (

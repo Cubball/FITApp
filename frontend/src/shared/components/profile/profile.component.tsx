@@ -1,24 +1,62 @@
 import EmployeeInfo from './info/employee.info.component';
-import { IEmployee } from '../../../services/profile/profile.types';
 import EmployeeEducations from './educations/employee-educations.component';
 import EmployeeAcademicDegrees from './academic-degrees/employee-academic-degrees.component';
 import EmployeeAcademicRanks from './academic-ranks/employee-academic-ranks.component';
 import EmployeePositions from './positions/employee-positions.component';
+import { useProfile } from '../../../hooks/profile/profile.hook';
 
 interface ProfileProps {
-  employee: IEmployee;
   canEdit: boolean;
   isOwnProfile: boolean;
 }
 
-const Profile = ({ employee, canEdit, isOwnProfile }: ProfileProps) => {
+const Profile = ({ canEdit, isOwnProfile }: ProfileProps) => {
+  const {
+    profile,
+    updateProfile,
+    isLoading,
+    addAcademicRank,
+    deleteAcademicRank,
+    addAcademicDegree,
+    deleteAcademicDegree,
+    addEducation,
+    deleteEducation,
+    addPosition,
+    deletePosition
+  } = useProfile(isOwnProfile ? undefined : undefined);
+
+  if (isLoading) return <p>Loading...</p>
+
+  // TODO: stub
+  if (!profile) return null;
+
   return (
     <div className="px-10 py-5">
-      <EmployeeInfo employee={employee} canEdit={canEdit} isOwnProfile={isOwnProfile} />
-      <EmployeeEducations employee={employee} canEdit={canEdit} isOwnProfile={isOwnProfile} />
-      <EmployeeAcademicDegrees employee={employee} canEdit={canEdit} isOwnProfile={isOwnProfile} />
-      <EmployeeAcademicRanks employee={employee} canEdit={canEdit} isOwnProfile={isOwnProfile} />
-      <EmployeePositions employee={employee} canEdit={canEdit} isOwnProfile={isOwnProfile} />
+      <EmployeeInfo employee={profile} canEdit={canEdit} onSumbit={updateProfile} />
+      <EmployeeEducations
+        employee={profile}
+        canEdit={canEdit}
+        onSubmit={addEducation}
+        onDelete={deleteEducation}
+      />
+      <EmployeeAcademicDegrees
+        employee={profile}
+        canEdit={canEdit}
+        onSubmit={addAcademicDegree}
+        onDelete={deleteAcademicDegree}
+      />
+      <EmployeeAcademicRanks
+        employee={profile}
+        canEdit={canEdit}
+        onSubmit={addAcademicRank}
+        onDelete={deleteAcademicRank}
+      />
+      <EmployeePositions
+        employee={profile}
+        canEdit={canEdit}
+        onSubmit={addPosition}
+        onDelete={deletePosition}
+      />
     </div>
   );
 };
