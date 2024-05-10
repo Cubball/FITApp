@@ -18,18 +18,23 @@ namespace FITApp.EmployeesService.Services
         private readonly IValidator<EmployeePhotoUploadDto> validator;
         private readonly Cloudinary _cloudinary;
 
-        public PhotoService(IEmployeesRepository employeeRepository,IMapper mapper, IOptions<CloudinarySettings> config, IValidator<EmployeePhotoUploadDto> validator)
+        public PhotoService(IEmployeesRepository employeeRepository,
+                IMapper mapper,
+                IOptions<CloudinarySettings> config,
+                IValidator<EmployeePhotoUploadDto> validator)
         {
 
             this.employeeRepository = employeeRepository;
             this.mapper = mapper;
             this.validator = validator;
 
+            // Отримання даних з dotnet user-secrets
+            var cloudinarySettings = config.Value;
+
             var acc = new Account(
-                config.Value.CloudName,
-                config.Value.ApiKey,
-                config.Value.ApiSecret
-            );
+                cloudinarySettings.CloudName,
+                cloudinarySettings.ApiKey,
+                cloudinarySettings.ApiSecret);
             _cloudinary = new Cloudinary(acc);
         }
 
