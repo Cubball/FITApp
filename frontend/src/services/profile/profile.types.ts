@@ -37,7 +37,7 @@ export interface IEmployee {
   lastName: string;
   patronymic: string;
   birthDate: string;
-  photoUrl: string;
+  photo: string;
   positions: IPosition[];
   educations: IEducation[];
   academicDegrees: IAcademicDegree[];

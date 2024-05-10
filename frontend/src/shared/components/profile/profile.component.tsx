@@ -22,17 +22,25 @@ const Profile = ({ canEdit, isOwnProfile }: ProfileProps) => {
     addEducation,
     deleteEducation,
     addPosition,
-    deletePosition
+    deletePosition,
+    uploadPhoto,
+    deletePhoto
   } = useProfile(isOwnProfile ? undefined : undefined);
 
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading) return <p>Loading...</p>;
 
   // TODO: stub
   if (!profile) return null;
 
   return (
     <div className="px-10 py-5">
-      <EmployeeInfo employee={profile} canEdit={canEdit} onSumbit={updateProfile} />
+      <EmployeeInfo
+        employee={profile}
+        canEdit={canEdit}
+        onSumbit={updateProfile}
+        onPhotoUpload={uploadPhoto}
+        onPhotoDelete={deletePhoto}
+      />
       <EmployeeEducations
         employee={profile}
         canEdit={canEdit}

@@ -62,5 +62,17 @@ class ProfileService {
   public deleteAcademicRank(index: string) {
     return this.httpService.delete(`${this.module}/academic-ranks/${index}`);
   }
+
+  public uploadPhoto(photo: File) {
+    return this.httpService.put(`${this.module}/photo`, { file: photo }, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+  }
+
+  public deletePhoto() {
+    return this.httpService.delete(`${this.module}/photo`);
+  }
 }
 export const authService = new ProfileService(new HttpFactoryService().createAuthHttpService());

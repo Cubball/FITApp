@@ -12,4 +12,6 @@ export interface IUseProfileReturn {
   deleteAcademicDegree: (index: number) => void;
   addPosition: (body: IAddPositionBody) => void;
   deletePosition: (index: number) => void;
+  uploadPhoto: (photo: File) => void;
+  deletePhoto: () => void;
 }

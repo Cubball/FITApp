@@ -78,6 +78,18 @@ export const useMyProfile = (): IUseProfileReturn => {
     onError: createOnError('Не вдалося видалити посаду')
   });
 
+  const { mutateAsync: uploadPhoto } = useMutation({
+    mutationFn: (photo: File) => authService.uploadPhoto(photo),
+    onSuccess: () => queryClient.invalidateQueries(queryKey),
+    onError: createOnError('Не вдалося додати фото')
+  });
+
+  const { mutateAsync: deletePhoto } = useMutation({
+    mutationFn: () => authService.deletePhoto(),
+    onSuccess: () => queryClient.invalidateQueries(queryKey),
+    onError: createOnError('Не вдалося видалити фото')
+  });
+
   return {
     profile: data,
     isLoading,
@@ -89,6 +101,8 @@ export const useMyProfile = (): IUseProfileReturn => {
     addAcademicDegree,
     deleteAcademicDegree,
     addPosition,
-    deletePosition
+    deletePosition,
+    uploadPhoto,
+    deletePhoto,
   };
 };

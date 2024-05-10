@@ -8,9 +8,17 @@ interface EmployeeInfoProps {
   employee: IEmployee;
   canEdit: boolean;
   onSumbit: (body: IUpdateEmployeeBody) => void;
+  onPhotoUpload: (photo: File) => void;
+  onPhotoDelete: () => void;
 }
 
-const EmployeeInfo = ({ employee, canEdit, onSumbit }: EmployeeInfoProps) => {
+const EmployeeInfo = ({
+  employee,
+  canEdit,
+  onSumbit,
+  onPhotoUpload,
+  onPhotoDelete
+}: EmployeeInfoProps) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   let displayName = "<ім'я не вказано>";
@@ -30,7 +38,7 @@ const EmployeeInfo = ({ employee, canEdit, onSumbit }: EmployeeInfoProps) => {
         isOpen={confirmModalOpen}
         onClose={() => setConfirmModalOpen(false)}
         text="Ви впевнені, що хочете видалити фото?"
-        onConfirm={() => console.log('f')}
+        onConfirm={onPhotoDelete}
       />
       <div className="p-1">
         <div className="flex justify-between">
@@ -46,9 +54,9 @@ const EmployeeInfo = ({ employee, canEdit, onSumbit }: EmployeeInfoProps) => {
         <div className="flex flex-wrap gap-5 py-5 md:gap-0">
           <div className="flex grow basis-1/2">
             <div className="grow basis-1/6">
-              {employee.photoUrl ? (
+              {employee.photo ? (
                 <img
-                  src={employee.photoUrl}
+                  src={employee.photo}
                   className="aspect-square rounded-full border-4 border-white object-cover shadow shadow-gray-400"
                 />
               ) : (
@@ -68,9 +76,23 @@ const EmployeeInfo = ({ employee, canEdit, onSumbit }: EmployeeInfoProps) => {
           <div className="flex grow basis-1/2 items-center justify-end gap-8">
             {canEdit ? (
               <>
-                <button className="h-fit grow rounded-lg bg-main-text px-1 py-3 text-center font-semibold text-white shadow shadow-gray-400 md:max-w-[40%]">
+                <label
+                  htmlFor="upload-photo"
+                  className="h-fit grow cursor-pointer rounded-lg bg-main-text px-1 py-3 text-center font-semibold text-white shadow shadow-gray-400 md:max-w-[40%]"
+                >
                   Завантажити фото
-                </button>
+                </label>
+                <input
+                  type="file"
+                  className="hidden"
+                  id="upload-photo"
+                  accept="image/png, image/jpeg"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      onPhotoUpload(e.target.files[0]);
+                    }
+                  }}
+                />
                 <button
                   className="h-fit grow rounded-lg border border-main-text px-1 py-3 text-center font-semibold shadow shadow-gray-400 md:max-w-[40%]"
                   onClick={() => setConfirmModalOpen(true)}
