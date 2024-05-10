@@ -1,9 +1,9 @@
 import { HttpFactoryService } from '../../shared/services/http-factory.service';
 import { EnhancedWithAuthHttpService } from '../../shared/services/http-auth.service.ts';
-import { ICreateRoleRequest, IRolesResponse } from './role.types.ts';
+import { ICreateRoleRequest, IRole, IRolesResponse } from './role.types.ts';
 
 class RoleService {
-  httpService: EnhancedWithAuthHttpService;
+  private readonly httpService: EnhancedWithAuthHttpService;
 
   constructor(httpService: EnhancedWithAuthHttpService) {
     this.httpService = httpService;
@@ -11,8 +11,9 @@ class RoleService {
 
   private readonly module = '/roles';
 
-  public async getRoles(): Promise<IRolesResponse> {
-    return this.httpService.get(this.module);
+  public async getRoles(): Promise<Array<IRole>> {
+    const response = await this.httpService.get<IRolesResponse>(this.module);
+    return response.roles;
   }
 
   public async createRole(data: ICreateRoleRequest): Promise<null> {
@@ -27,4 +28,4 @@ class RoleService {
     return this.httpService.delete(`${this.module}/${id}`);
   }
 }
-export const authService = new RoleService(new HttpFactoryService().createAuthHttpService());
+export const roleService = new RoleService(new HttpFactoryService().createAuthHttpService());

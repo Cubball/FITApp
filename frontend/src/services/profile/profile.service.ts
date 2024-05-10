@@ -10,7 +10,7 @@ import {
 } from './profile.types.ts';
 
 class ProfileService {
-  httpService: EnhancedWithAuthHttpService;
+  private readonly httpService: EnhancedWithAuthHttpService;
 
   constructor(httpService: EnhancedWithAuthHttpService) {
     this.httpService = httpService;
