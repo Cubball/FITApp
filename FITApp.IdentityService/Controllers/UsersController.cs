@@ -120,7 +120,7 @@ public class UsersController : ControllerBase
 
         var createEmployeeRequest = new CreateEmployeeRequest
         {
-            Id = user.Id,
+            UserId = user.Id,
             Email = user.Email,
             Role = role.Name!,
             RoleId = role.Id,
