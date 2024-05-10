@@ -1,12 +1,5 @@
 name: fitapp
 services:
-  identity-service:
-    container_name: identity-service
-    build:
-      context: .
-      dockerfile: FITApp.IdentityService/Dockerfile
-    env_file:
-        - .env
   gateway:
     container_name: gateway
     build:
@@ -16,3 +9,52 @@ services:
       - "7000:8080"
     env_file:
         - .env
+  identity-service:
+    container_name: identity-service
+    build:
+      context: .
+      dockerfile: FITApp.IdentityService/Dockerfile
+    env_file:
+        - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      employees-service:
+        condition: service_started
+  employees-service:
+    container_name: employees-service
+    build:
+      context: .
+      dockerfile: FITApp.EmployeesService/Dockerfile
+    env_file:
+        - .env
+    depends_on:
+      mongo:
+        condition: service_started
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+      - 7001:5432
+    env_file:
+      - .env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    ports:
+      - 7002:27017
+    volumes:
+      - mongo-data:/data/db
+    env_file:
+      - .env
+
+volumes:
+  mongo-data:
+  postgres-data:
