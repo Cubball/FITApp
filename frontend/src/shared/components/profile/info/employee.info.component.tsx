@@ -13,6 +13,10 @@ interface EmployeeInfoProps {
 const EmployeeInfo = ({ employee, canEdit, isOwnProfile }: EmployeeInfoProps) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  let displayName = "<ім'я не вказано>";
+  if (employee.firstName && employee.lastName && employee.patronymic) {
+    displayName = `${employee.firstName} ${employee.patronymic} ${employee.lastName}`;
+  }
 
   return (
     <>
@@ -42,15 +46,23 @@ const EmployeeInfo = ({ employee, canEdit, isOwnProfile }: EmployeeInfoProps) =>
         <div className="flex flex-wrap gap-5 py-5 md:gap-0">
           <div className="flex grow basis-1/2">
             <div className="grow basis-1/6">
-              <img
-                src={employee.photoUrl}
-                className="aspect-square rounded-full border-4 border-white object-cover shadow shadow-gray-400"
-              />
+              {employee.photoUrl ? (
+                <img
+                  src={employee.photoUrl}
+                  className="aspect-square rounded-full border-4 border-white object-cover shadow shadow-gray-400"
+                />
+              ) : (
+                <div className="w-full text-center italic">Фото відсутнє</div>
+              )}
             </div>
             <div className="flex grow basis-5/6 flex-col justify-evenly px-3">
-              <div className="font-bold">{`${employee.firstName} ${employee.patronymic} ${employee.lastName}`}</div>
+              <div className="font-bold">{displayName}</div>
               <div className="font-medium">{employee.user.role}</div>
-              <div>{employee.birthDate.toLocaleDateString('uk-UA')}</div>
+              <div>
+                {employee.birthDate
+                  ? new Date(employee.birthDate).toLocaleDateString('uk-UA')
+                  : '<дату народження не вказано>'}
+              </div>
             </div>
           </div>
           <div className="flex grow basis-1/2 items-center justify-end gap-8">

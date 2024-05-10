@@ -1,26 +1,26 @@
 export interface IPosition {
   name: string;
-  startDate: Date;
-  endDate: Date | null; // може бути null, якщо позиція ще не закрита
+  startDate: string;
+  endDate: string | null; // може бути null, якщо позиція ще не закрита
 }
 
 export interface IEducation {
   university: string;
   specialty: string;
-  diplomaDateOfIssue: Date;
+  diplomaDateOfIssue: string;
 }
 
 export interface IAcademicDegree {
   fullName: string;
   shortName: string;
   diplomaNumber: string;
-  dateOfIssue: Date;
+  dateOfIssue: string;
 }
 
 export interface IAcademicRank {
   name: string;
   certificateNumber: string;
-  dateOfIssue: Date;
+  dateOfIssue: string;
 }
 
 export interface IUser {
@@ -36,7 +36,7 @@ export interface IEmployee {
   firstName: string;
   lastName: string;
   patronymic: string;
-  birthDate: Date;
+  birthDate: string;
   photoUrl: string;
   positions: IPosition[];
   educations: IEducation[];
@@ -48,30 +48,30 @@ export interface IUpdateEmployeeBody {
   firstName: string;
   lastName: string;
   patronymic: string;
-  birthDate: Date; // TODO I am not sure about the type
+  birthDate: string; // TODO I am not sure about the type
 }
 
 export interface IAddPositionBody {
   name: string;
-  startDate: Date; // TODO type of date
-  endDate: Date;
+  startDate: string; // TODO type of date
+  endDate: string;
 }
 
 export interface IAddEducationBody {
   university: string;
   specialty: string;
-  diplomaDateOfIssue: Date; // TODO type of date
+  diplomaDateOfIssue: string; // TODO type of date
 }
 
 export interface IAddAcademicDegreesBody {
   fullName: string;
   shortName: string;
   diplomaNumber: string;
-  dateOfIssue: Date; // TODO
+  dateOfIssue: string; // TODO
 }
 
 export interface IAddAcademicRank {
   name: string;
   certificateNumber: string;
-  dateOfIssue: Date; // TODO
+  dateOfIssue: string; // TODO
 }

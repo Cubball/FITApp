@@ -1,7 +1,7 @@
 import { IEmployee } from '../../services/profile/profile.types';
 import Profile from '../../shared/components/profile/profile.component';
 
-const date = new Date('4/20/2024');
+const date = '4/20/2024';
 const fakeEmployee: IEmployee = {
   id: '123',
   firstName: 'Іван',
