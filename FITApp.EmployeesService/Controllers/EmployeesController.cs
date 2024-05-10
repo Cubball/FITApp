@@ -15,7 +15,6 @@ namespace FITApp.EmployeesService.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeesService _employeeService;
-
         private readonly IPhotoService _photoService;
 
         public EmployeesController(IEmployeesService employeeService, IPhotoService photoService)

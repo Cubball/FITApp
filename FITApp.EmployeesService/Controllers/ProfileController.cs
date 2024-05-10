@@ -72,10 +72,6 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> AddEducation([FromBody] EducationDto educationDto)
     {
         var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        if (string.IsNullOrEmpty(id))
-        {
-            return BadRequest("Invalid employee ID.");
-        }
 
         if (string.IsNullOrEmpty(id))
         {
@@ -103,11 +99,6 @@ public class ProfileController : ControllerBase
         {
             return BadRequest("Invalid employee ID.");
         }
-
-        if (string.IsNullOrEmpty(id))
-        {
-            return BadRequest("Invalid employee ID.");
-        }
         try
         {
             long updatedCount = await _employeeService.UpdateEmployeeAcademicDegrees(id, educationDto);
@@ -126,10 +117,6 @@ public class ProfileController : ControllerBase
     public async Task<IActionResult> AddAcademicRank([FromBody] AcademicRankDto academicRankDto)
     {
         var id = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        if (string.IsNullOrEmpty(id))
-        {
-            return BadRequest("Invalid employee ID.");
-        }
 
         if (string.IsNullOrEmpty(id))
         {
