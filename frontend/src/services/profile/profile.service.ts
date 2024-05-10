@@ -64,11 +64,15 @@ class ProfileService {
   }
 
   public uploadPhoto(photo: File) {
-    return this.httpService.put(`${this.module}/photo`, { file: photo }, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    return this.httpService.put(
+      `${this.module}/photo`,
+      { file: photo },
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       }
-    });
+    );
   }
 
   public deletePhoto() {
