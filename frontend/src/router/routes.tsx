@@ -4,6 +4,7 @@ import MainLayout from '../layouts/main/main.layout';
 import EmployeesList from '../modules/admin/employees-list/employees-list.component';
 import MyProfile from '../modules/profile/my-profile.component';
 import EmployeeProfile from '../modules/admin/employees-list/employee-profile.component';
+import AddEmployee from '../modules/admin/add-employee.component';
 
 const sharedRoutes: RouteObject[] = [
   {
@@ -15,6 +16,10 @@ const sharedRoutes: RouteObject[] = [
     path: '/',
     element: <MainLayout />,
     children: [
+      {
+        path: 'employees/new',
+        element: <AddEmployee />
+      },
       {
         path: 'employees/:employeeId',
         element: <EmployeeProfile />

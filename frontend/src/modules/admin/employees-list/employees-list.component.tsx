@@ -55,6 +55,7 @@ const EmployeesList = () => {
   // TODO: fetch actual users
   const location = useLocation();
   const page = new URLSearchParams(location.search).get('page');
+  const totalPages = Math.ceil(list.total / list.pageSize)
 
   return (
     <div className="flex h-full flex-col justify-between px-10 py-5 items-center">
@@ -64,7 +65,7 @@ const EmployeesList = () => {
           <EmployeeEntry employee={employee} key={employee.id} />
         ))}
       </div>
-      <Pagination link='' totalPages={10} page={Number(page)}/>
+      <Pagination link='' totalPages={totalPages} page={Number(page)}/>
     </div>
   );
 };
