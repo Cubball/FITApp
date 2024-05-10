@@ -86,7 +86,7 @@ namespace FITApp.EmployeesService.Services
                 new Education
                 {
                     University = education.University,
-                    Specialization = education.Specialization,
+                    Specialty = education.Specialty,
                     DiplomaDateOfIssue = education.DiplomaDateOfIssue
                 });
 
@@ -179,14 +179,14 @@ namespace FITApp.EmployeesService.Services
 
         // public async Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize)
         // {
-        //     var total = 
+        //     var total =
         //         await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
         //
-        //     var employees = 
+        //     var employees =
         //         await employeeRepository.GetEmployeesByPage(FilterDefinition<Employee>.Empty, page, pageSize);
         //
         //     var employeesDto = mapper.Map<IEnumerable<EmployeeDto>>(employees);
-        //     
+        //
         //     EmployeesPaginationReedDto response = new EmployeesPaginationReedDto
         //     {
         //         Page = page,
@@ -199,14 +199,14 @@ namespace FITApp.EmployeesService.Services
 
         // public async Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize)
         // {
-        //     var total = 
+        //     var total =
         //         await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
         //
-        //     var employees = 
+        //     var employees =
         //         await employeeRepository.GetEmployeesByPage2(FilterDefinition<Employee>.Empty, page, pageSize);
         //
         //     // var employeesDto = mapper.Map<IEnumerable<SimpleEmployeeDto>>(employees);
-        //     
+        //
         //     EmployeesPaginationReedDto response = new EmployeesPaginationReedDto
         //     {
         //         Page = page,

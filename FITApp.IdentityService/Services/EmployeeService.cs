@@ -47,7 +47,7 @@ public class EmployeeService : IEmployeeService
     {
         try
         {
-            var response = await _httpClient.PutAsJsonAsync(_appOptions.EmployeeServiceUsersEndpoint, user);
+            var response = await _httpClient.PutAsJsonAsync($"{_appOptions.EmployeeServiceUsersEndpoint}/{user.Id}", user);
             return response.IsSuccessStatusCode;
         }
         catch

@@ -86,12 +86,6 @@ public class UsersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateUserRequest userRequest)
     {
-        var isRightEmail = userRequest.Email.EndsWith("@knu.ua");
-        if (!isRightEmail)
-        {
-            return BadRequest("Email is not valid");
-        }
-
         var userCheck = await _userManager.FindByEmailAsync(userRequest.Email);
         if (userCheck != null)
         {
@@ -120,7 +114,7 @@ public class UsersController : ControllerBase
 
         var createEmployeeRequest = new CreateEmployeeRequest
         {
-            Id = user.Id,
+            UserId = user.Id,
             Email = user.Email,
             Role = role.Name!,
             RoleId = role.Id,
@@ -134,8 +128,8 @@ public class UsersController : ControllerBase
         await _userManager.CreateAsync(user, password!);
         await _userManager.AddToRoleAsync(user, role.Name!);
 
-        var subject = "FITApp registration";
-        var message = $"You have been registered in FITApp. Your password is {password}";
+        var subject = "Реєстрація у FITApp";
+        var message = $"Вас було зареєстровано у FITApp. Ваш пароль: {password}";
 
         await _emailSender.SendEmail(userRequest.Email, subject, message);
 
@@ -169,8 +163,8 @@ public class UsersController : ControllerBase
         user.RefreshTokenExpiryTime = null;
         await _userManager.UpdateAsync(user);
 
-        var subject = "FITApp password reset";
-        var message = $"Your password has been reset. Your new password is {password}";
+        var subject = "FITApp скидання паролю";
+        var message = $"Ваш пароль було скинуто. Ваш новий пароль: {password}";
 
         await _emailSender.SendEmail(user.Email!, subject, message);
 

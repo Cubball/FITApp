@@ -12,8 +12,8 @@ namespace FITApp.EmployeesService.Validators
                 .NotEmpty().WithMessage("University name is required.")
                 .Length(3, 250);
 
-            RuleFor(dto => dto.Specialization)
-                .NotEmpty().WithMessage("Specialization is required.")
+            RuleFor(dto => dto.Specialty)
+                .NotEmpty().WithMessage("Specialty is required.")
                 .Length(3, 250);
 
             RuleFor(dto => dto.DiplomaDateOfIssue)
