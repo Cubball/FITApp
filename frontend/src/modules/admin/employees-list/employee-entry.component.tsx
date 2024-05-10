@@ -1,32 +1,33 @@
-import { IEmployeeShortInfo } from './employees-list.component';
 import TrashIcon from './../../../assets/icons/trash-icon.svg';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import ConfirmModal from '../../../shared/components/confirm-modal';
+import { IEmployeeShortInfo } from '../../../services/employees/employees.types';
 
 interface EmployeeEntryProps {
   employee: IEmployeeShortInfo;
+  onDelete: (id: string) => void;
 }
 
-const EmployeeEntry = ({ employee }: EmployeeEntryProps) => {
-  // TODO:
-  const onDeleteClick = () => {};
+const EmployeeEntry = ({ employee, onDelete }: EmployeeEntryProps) => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-  const displayName = `${employee.lastName} ${employee.firstName.substring(0, 1)}. ${employee.patronymic.substring(0, 1)}.`
+  let displayName = "<ім'я не вказано>";
+  console.log(employee)
+  if (employee.firstName && employee.patronymic) {
+    displayName = `${employee.lastName} ${employee.firstName.substring(0, 1)}. ${employee.patronymic.substring(0, 1)}.`;
+  }
 
   return (
     <>
       <ConfirmModal
         isOpen={confirmModalOpen}
         text={`Ви впевнені що хочете видалити співробітника ${displayName}?`}
-        onConfirm={() => onDeleteClick()}
+        onConfirm={() => onDelete(employee.id)}
         onClose={() => setConfirmModalOpen(false)}
       />
       <div className="my-2 flex items-center justify-between rounded-lg bg-accent-background p-3">
         <NavLink className="flex grow flex-col gap-3 md:flex-row" to={`/employees/${employee.id}`}>
-          <span className="font-semibold md:basis-[40%]">
-            {displayName}
-          </span>
+          <span className="font-semibold md:basis-[40%]">{displayName}</span>
           <span className="md:basis-[35%]">{employee.email}</span>
           <span className="md:basis-[15%]">{employee.role}</span>
         </NavLink>

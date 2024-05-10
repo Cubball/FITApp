@@ -9,16 +9,11 @@ import {
   IUpdateEmployeeBody
 } from '../../services/profile/profile.types';
 import { IUseProfileReturn } from './profile.types';
-import { toast } from 'react-toastify';
+import { createOnError } from '../../shared/helpers/toast.helpers';
 
 export const useMyProfile = (): IUseProfileReturn => {
   const queryClient = useQueryClient();
   const queryKey = [QUERY_KEYS.PROFILE];
-  const createOnError = (text: string) => () => {
-    toast(text, {
-      type: 'error'
-    });
-  };
   const { data, isLoading } = useQuery({
     queryKey,
     queryFn: () => authService.getProfile()

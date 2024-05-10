@@ -10,13 +10,13 @@ export interface IEmployeeShortInfo {
 export interface IEmployeesPagedList {
   page: number;
   pageSize: number;
-  total: number;
+  totalCount: number;
   employees: IEmployeeShortInfo[];
 }
 
 export interface IAddEmployee {
   email: string;
-  roleName: string;
+  roleId: string;
 }
 
 export interface IUpdateEmployeeRole {

@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { QUERY_KEYS } from '../../shared/keys/query-keys';
 import { IUseProfileReturn } from './profile.types';
-import { toast } from 'react-toastify';
 import { employeesService } from '../../services/employees/employees.service';
 import {
   IAddAcademicDegreesBody,
@@ -10,15 +9,11 @@ import {
   IAddPositionBody,
   IUpdateEmployeeBody
 } from '../../services/profile/profile.types';
+import { createOnError } from '../../shared/helpers/toast.helpers';
 
 export const useEmployeeProfile = (id: string): IUseProfileReturn => {
   const queryClient = useQueryClient();
   const queryKey = [QUERY_KEYS.EMPLOYEE_PROFILE, id];
-  const createOnError = (text: string) => () => {
-    toast(text, {
-      type: 'error'
-    });
-  };
   const { data, isLoading } = useQuery({
     queryKey,
     queryFn: () => employeesService.getEmployee(id)

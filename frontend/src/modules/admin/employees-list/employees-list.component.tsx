@@ -1,71 +1,29 @@
 import { useLocation } from 'react-router-dom';
 import Pagination from '../../../shared/components/pagination';
 import EmployeeEntry from './employee-entry.component';
-
-// TODO: move somewhere appropriate
-export interface IPagedEmployeesList {
-  page: number;
-  pageSize: number;
-  total: number;
-  employees: IEmployeeShortInfo[];
-}
-
-export interface IEmployeeShortInfo {
-  id: number;
-  firstName: string;
-  lastName: string;
-  patronymic: string;
-  email: string;
-  role: string;
-}
-
-const list: IPagedEmployeesList = {
-  page: 1,
-  pageSize: 10,
-  total: 3,
-  employees: [
-    {
-      email: 'some@longer.email',
-      firstName: 'Святослав',
-      lastName: 'Довгепрізвищедуже',
-      patronymic: 'Миколайович',
-      id: 1,
-      role: 'Викладач'
-    },
-    {
-      email: 'foo@bar.baz',
-      firstName: 'Іван',
-      lastName: 'Острозький',
-      patronymic: 'Миколайович',
-      id: 2,
-      role: 'Викладач'
-    },
-    {
-      email: 'foo@bar.baz',
-      firstName: 'Іван',
-      lastName: 'Острозький',
-      patronymic: 'Миколайович',
-      id: 3,
-      role: 'Викладач'
-    }
-  ]
-};
+import { useEmployeesList } from '../../../hooks/employees/employees-list.hook';
+import { IEmployeeShortInfo } from '../../../services/employees/employees.types';
 
 const EmployeesList = () => {
-  // TODO: fetch actual users
   const location = useLocation();
   const page = new URLSearchParams(location.search).get('page');
-  const totalPages = Math.ceil(list.total / list.pageSize)
+  const { employeesList, isLoading, deleteEmployeeById } = useEmployeesList(Number(page ?? 1));
+  // TODO:
+  if (isLoading) return <h1>Loading...</h1>;
+  if (!employeesList) return <h1>Error...</h1>;
+
+  const totalPages = Math.ceil(employeesList.totalCount / employeesList.pageSize);
+  console.log(totalPages);
 
   return (
-    <div className="flex h-full flex-col justify-between px-10 py-5 items-center">
-      <div className='w-full'>
-        <h1 className="text-xl font-bold py-3">Список користувачів</h1>
-        {list.employees.map((employee) => (
-          <EmployeeEntry employee={employee} key={employee.id} />
+    <div className="flex h-full flex-col items-center justify-between px-10 py-5">
+      <div className="w-full">
+        <h1 className="py-3 text-xl font-bold">Список користувачів</h1>
+        {employeesList.employees.map((employee: IEmployeeShortInfo) => (
+          <EmployeeEntry employee={employee} key={employee.id} onDelete={deleteEmployeeById} />
         ))}
       </div>
-      <Pagination link='' totalPages={totalPages} page={Number(page)}/>
+      <Pagination link="employees" totalPages={totalPages} page={employeesList.page} />
     </div>
   );
 };

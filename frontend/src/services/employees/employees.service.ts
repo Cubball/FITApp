@@ -1,4 +1,3 @@
-import { IPagedEmployeesList } from '../../modules/admin/employees-list/employees-list.component';
 import { EnhancedWithAuthHttpService } from '../../shared/services/http-auth.service';
 import { HttpFactoryService } from '../../shared/services/http-factory.service';
 import {
@@ -9,7 +8,7 @@ import {
   IEmployee,
   IUpdateEmployeeBody
 } from '../profile/profile.types';
-import { IAddEmployee, IUpdateEmployeeRole } from './employees.types';
+import { IAddEmployee, IEmployeesPagedList, IUpdateEmployeeRole } from './employees.types';
 
 class EmployeesService {
   httpService: EnhancedWithAuthHttpService;
@@ -21,7 +20,7 @@ class EmployeesService {
   private readonly employeesEndpoint = 'api/employees';
   private readonly usersEndpoint = 'api/users';
 
-  public getEmployees(page: number, pageSize = 10): Promise<IPagedEmployeesList> {
+  public getEmployees(page: number, pageSize: number): Promise<IEmployeesPagedList> {
     return this.httpService.get(this.employeesEndpoint, {
       params: {
         page,
