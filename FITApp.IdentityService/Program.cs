@@ -38,8 +38,8 @@ builder.Services.Configure<FITAppOptions>(builder.Configuration.GetSection(FITAp
 builder.Services.AddSingleton<IClock, SystemClock>();
 builder.Services.AddSingleton<ITokenService, TokenService>(s => new TokenService(jwtPrivateKey, s.GetRequiredService<IClock>()));
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IPasswordGenerator, FakePasswordGenerator>();
-builder.Services.AddScoped<IEmailSender, FakeEmailSender>();
+builder.Services.AddScoped<IPasswordGenerator, PasswordGenerator>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var employeeServiceBaseUrl = builder.Configuration["FITAppOptions:EmployeeServiceBaseUrl"] ?? throw new InvalidOperationException("FITAppOptions:EmployeeServiceBaseUrl is not set");
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
