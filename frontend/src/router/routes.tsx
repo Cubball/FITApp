@@ -5,15 +5,26 @@ import EmployeesList from '../modules/admin/employees-list/employees-list.compon
 import MyProfile from '../modules/profile/my-profile.component';
 import EmployeeProfile from '../modules/admin/employees-list/employee-profile.component';
 import AddEmployee from '../modules/admin/add-employee.component';
+import NotFound from '../shared/components/not-found';
+import AddRole from '../modules/admin/add-role.component';
 
+// TODO: do proper routing
 const sharedRoutes: RouteObject[] = [
   {
-    path: '/login',
-    element: <LoginScreen />
-  },
-  // TODO: do proper routing
-  {
     path: '/',
+    errorElement: <NotFound />
+  },
+  {
+    path: 'login',
+    element: <LoginScreen />
+  }
+];
+
+export const publicRoutes = createBrowserRouter(sharedRoutes);
+
+export const privateRoutes = createBrowserRouter([
+  {
+    path: '',
     element: <MainLayout />,
     children: [
       {
@@ -31,23 +42,12 @@ const sharedRoutes: RouteObject[] = [
       {
         path: 'profile',
         element: <MyProfile />
+      },
+      {
+        path: 'roles/new',
+        element: <AddRole />
       }
     ]
-  },
-];
-
-export const publicRoutes = createBrowserRouter([
-  {
-    path: '/',
-    element: <div>Hello</div>
-  },
-  ...sharedRoutes
-]);
-
-export const privateRoutes = createBrowserRouter([
-  {
-    path: '/',
-    element: <div>Hello</div>
   },
   ...sharedRoutes
 ]);
