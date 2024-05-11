@@ -22,7 +22,7 @@ const EmployeesList = () => {
 
   const totalPages = Math.ceil(employeesList.totalCount / employeesList.pageSize);
   return (
-    <div className="flex h-full flex-col items-center justify-between px-10 py-5">
+    <div className="flex h-full flex-col items-center justify-between overflow-y-auto px-10 py-5">
       <div className="w-full">
         <h1 className="py-3 text-xl font-bold">Список користувачів</h1>
         {employeesList.employees.map((employee: IEmployeeShortInfo) => (
@@ -34,7 +34,7 @@ const EmployeesList = () => {
           />
         ))}
       </div>
-      <Pagination link="employees" totalPages={totalPages} page={employeesList.page} />
+      <Pagination link="/employees" totalPages={totalPages} page={employeesList.page} />
     </div>
   );
 };
