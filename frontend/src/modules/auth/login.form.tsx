@@ -1,13 +1,15 @@
 import { Form, Formik } from 'formik';
 import Input from '../../shared/components/input';
 import Button from '../../shared/components/button';
+import { useAuth } from '../../shared/hooks/auth.hook';
+import { IAuthData } from '../../services/auth/auth.types';
+import { NavLink } from 'react-router-dom';
 
-interface LoginFormProps {
-  onSubmit: any;
-  isLoginLoading: boolean;
-}
-
-const LoginForm = ({ onSubmit, isLoginLoading }: LoginFormProps) => {
+const LoginForm = () => {
+  const { handleLogin, isLoginLoading } = useAuth();
+  const onSubmit = (values: IAuthData) => {
+    handleLogin(values);
+  };
   return (
     <div className="mx-auto flex aspect-square max-h-full w-full max-w-md flex-col justify-center rounded-[3rem] bg-white px-20 py-16 md:ml-40 2xl:max-w-lg">
       <h2 className="mb-4 text-center text-3xl font-medium">ВХІД</h2>
@@ -27,9 +29,9 @@ const LoginForm = ({ onSubmit, isLoginLoading }: LoginFormProps) => {
       </Formik>
       <p className="text-right font-medium">
         Забули{' '}
-        <a href="#" className="text-sky-500">
+        <NavLink to="/forgot-password" className="text-sky-500">
           пароль?
-        </a>
+        </NavLink>
       </p>
     </div>
   );
