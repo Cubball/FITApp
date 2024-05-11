@@ -3,6 +3,8 @@ import Pagination from '../../../shared/components/pagination';
 import EmployeeEntry from './employee-entry.component';
 import { IEmployeeShortInfo } from '../../../services/employees/employees.types';
 import { useEmployeesList } from '../../../shared/hooks/employees-list.hook';
+import Loading from '../../../shared/components/loading';
+import Error from '../../../shared/components/error';
 
 const EmployeesList = () => {
   const location = useLocation();
@@ -10,9 +12,13 @@ const EmployeesList = () => {
   const { employeesList, isLoading, deleteEmployeeById, resetPasswordById } = useEmployeesList(
     Number(page ?? 1)
   );
-  // TODO:
-  if (isLoading) return <h1>Loading...</h1>;
-  if (!employeesList) return <h1>Error...</h1>;
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!employeesList) {
+    return <Error />;
+  }
 
   const totalPages = Math.ceil(employeesList.totalCount / employeesList.pageSize);
   return (

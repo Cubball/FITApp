@@ -15,39 +15,46 @@ import LoginForm from '../modules/auth/login.form';
 import ForgotPassword from '../modules/auth/forgot-password.component';
 import ConfirmResetPassword from '../modules/auth/confirm-reset-password.component';
 import ChangePassword from '../modules/profile/change-password';
+import GlobalError from '../shared/components/global-error';
 
 export const publicRoutes = createBrowserRouter([
   {
-    path: '/login',
-    element: (
-      <AuthScreen>
-        <LoginForm />
-      </AuthScreen>
-    )
-  },
-  {
-    path: '/forgot-password',
-    element: (
-      <AuthScreen>
-        <ForgotPassword />
-      </AuthScreen>
-    )
-  },
-  {
-    path: '/reset-password-confirm',
-    element: (
-      <AuthScreen>
-        <ConfirmResetPassword />
-      </AuthScreen>
-    )
-  },
-  {
-    path: '/',
-    element: <Navigate to="/login" />
-  },
-  {
-    path: '*',
-    element: <NotFound />
+    path: '',
+    children: [
+      {
+        path: '/login',
+        element: (
+          <AuthScreen>
+            <LoginForm />
+          </AuthScreen>
+        )
+      },
+      {
+        path: '/forgot-password',
+        element: (
+          <AuthScreen>
+            <ForgotPassword />
+          </AuthScreen>
+        )
+      },
+      {
+        path: '/reset-password-confirm',
+        element: (
+          <AuthScreen>
+            <ConfirmResetPassword />
+          </AuthScreen>
+        )
+      },
+      {
+        path: '/',
+        element: <Navigate to="/login" />
+      },
+      {
+        path: '*',
+        element: <NotFound />
+      }
+    ],
+    errorElement: <GlobalError />
   }
 ]);
 
@@ -129,10 +136,12 @@ export const privateRoutes = createBrowserRouter([
           </ProtectedRoute>
         )
       }
-    ]
+    ],
+    errorElement: <GlobalError />
   },
   {
     path: '*',
-    element: <NotFound />
+    element: <NotFound />,
+    errorElement: <GlobalError />
   }
 ]);

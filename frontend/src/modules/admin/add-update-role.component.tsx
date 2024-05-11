@@ -2,9 +2,11 @@ import { Field, Form, Formik } from 'formik';
 import { NavLink, useParams } from 'react-router-dom';
 import { useRole } from '../../shared/hooks/role.hook';
 import { ICreateRoleRequest } from '../../services/role/role.types';
+import Loading from '../../shared/components/loading';
+import Error from '../../shared/components/error';
 
 const AddUpdateRole = () => {
-  const params = useParams()
+  const params = useParams();
   const id = params.roleId;
 
   const {
@@ -15,8 +17,13 @@ const AddUpdateRole = () => {
     handleCreateRole,
     handleUpdateRole
   } = useRole(id);
-  if (arePermissionsLoading || isRoleLoading) return 'Loading...';
-  if (!permissions) return 'Error';
+  if (arePermissionsLoading || isRoleLoading) {
+    return <Loading />;
+  }
+
+  if (!permissions) {
+    return <Error />;
+  }
 
   return (
     <div className="flex flex-col items-center gap-5 p-5">

@@ -1,15 +1,21 @@
-import { NavLink, useParams } from "react-router-dom";
-import { useEmployee } from "../../../shared/hooks/employee.hook";
-import { Field, Form, Formik } from "formik";
-import { useRoles } from "../../../shared/hooks/roles.hook";
+import { NavLink, useParams } from 'react-router-dom';
+import { useEmployee } from '../../../shared/hooks/employee.hook';
+import { Field, Form, Formik } from 'formik';
+import { useRoles } from '../../../shared/hooks/roles.hook';
+import Loading from '../../../shared/components/loading';
+import Error from '../../../shared/components/error';
 
 const ChangeRole = () => {
   const employeeId = useParams().employeeId;
   const { employee, isLoading, changeRole } = useEmployee(employeeId);
-  const { roles, isGetRolesLoading } = useRoles()
-  // TODO:
-  if (isLoading || isGetRolesLoading) return 'isLoading'
-  if (!employeeId || !employee || !roles) return 'error';
+  const { roles, isGetRolesLoading } = useRoles();
+  if (isLoading || isGetRolesLoading) {
+    return <Loading />;
+  }
+
+  if (!employeeId || !employee || !roles) {
+    return <Error />;
+  }
 
   return (
     <div className="flex flex-col items-center gap-5 p-5">
@@ -18,7 +24,7 @@ const ChangeRole = () => {
       </h1>
       <Formik
         initialValues={{
-          roleId: employee.user.roleId,
+          roleId: employee.user.roleId
         }}
         onSubmit={changeRole}
       >
@@ -39,7 +45,10 @@ const ChangeRole = () => {
               </option>
             ))}
           </Field>
-          <button className="w-full max-w-xl rounded-md bg-main-text p-2 text-white md:w-1/2" type='submit'>
+          <button
+            className="w-full max-w-xl rounded-md bg-main-text p-2 text-white md:w-1/2"
+            type="submit"
+          >
             Зберегти
           </button>
           <NavLink
@@ -52,6 +61,6 @@ const ChangeRole = () => {
       </Formik>
     </div>
   );
-}
+};
 
-export default ChangeRole
+export default ChangeRole;
