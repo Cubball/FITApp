@@ -22,5 +22,18 @@ class AuthService {
       { headers: { Authorization: `Bearer ${jwt}` } }
     );
   }
+
+  public resetPassword(email: string): Promise<null> {
+    return this.httpService.post(`${this.module}/reset-password`, { email });
+  }
+
+  public confirmResetPassword(id: string, token: string): Promise<null> {
+    return this.httpService.get(`${this.module}/reset-password-confirm`, {
+      params: {
+        id,
+        token
+      }
+    });
+  }
 }
 export const authService = new AuthService(new HttpFactoryService().createHttpService());

@@ -1,5 +1,5 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
-import LoginScreen from '../modules/auth/login.screen';
+import AuthScreen from '../modules/auth/auth.screen';
 import MainLayout from '../layouts/main/main.layout';
 import EmployeesList from '../modules/admin/employees-list/employees-list.component';
 import MyProfile from '../modules/profile/my-profile.component';
@@ -11,11 +11,35 @@ import RolesList from '../modules/admin/roles-list/roles-list.component';
 import { PermissionsEnum } from '../services/role/role.types';
 import NotFound from '../shared/components/not-found';
 import ChangeRole from '../modules/admin/employees-list/change-role.component';
+import LoginForm from '../modules/auth/login.form';
+import ForgotPassword from '../modules/auth/forgot-password.component';
+import ConfirmResetPassword from '../modules/auth/confirm-reset-password.component';
+import ChangePassword from '../modules/profile/change-password';
 
 export const publicRoutes = createBrowserRouter([
   {
     path: '/login',
-    element: <LoginScreen />
+    element: (
+      <AuthScreen>
+        <LoginForm />
+      </AuthScreen>
+    )
+  },
+  {
+    path: '/forgot-password',
+    element: (
+      <AuthScreen>
+        <ForgotPassword />
+      </AuthScreen>
+    )
+  },
+  {
+    path: '/reset-password-confirm',
+    element: (
+      <AuthScreen>
+        <ConfirmResetPassword />
+      </AuthScreen>
+    )
   },
   {
     path: '/',
@@ -40,6 +64,10 @@ export const privateRoutes = createBrowserRouter([
       {
         path: '/login',
         element: <Navigate to="/profile" />
+      },
+      {
+        path: '/change-password',
+        element: <ChangePassword />
       },
       {
         path: 'employees/new',
