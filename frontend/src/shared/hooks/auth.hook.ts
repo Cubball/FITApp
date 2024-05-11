@@ -3,6 +3,7 @@ import { IAuth, IAuthData } from '../../services/auth/auth.types';
 import { authService } from '../../services/auth/auth.service';
 import { QUERY_KEYS } from '../keys/query-keys';
 import { STORAGE_KEYS } from '../keys/storage-keys';
+import { addErrorToast } from '../helpers/toast.helpers';
 
 interface IUseAuthReturn {
   authData: IAuth | undefined;
@@ -24,7 +25,7 @@ export const useAuth = (): IUseAuthReturn => {
   const onSuccess = (data) => {
     localStorage.setItem(STORAGE_KEYS.JWT_TOKEN, data.accessToken);
     client.setQueryData([QUERY_KEYS.AUTH], {
-      accessToken: data.accessToken,
+      accessToken: data.accessToken
     });
   };
 
@@ -37,7 +38,13 @@ export const useAuth = (): IUseAuthReturn => {
   const { mutateAsync: handleLogin, isLoading: isLoginLoading } = useMutation(
     [QUERY_KEYS.AUTH],
     ({ email, password }: IAuthData) => authService.login(email, password),
-    { onSuccess, onError, retry: false }
+    {
+      onSuccess,
+      onError: () => {
+        onError(), addErrorToast('Не вдалося ввійти');
+      },
+      retry: false
+    }
   );
 
   return { authData, isRefreshLoading, handleLogin, isLoginLoading };

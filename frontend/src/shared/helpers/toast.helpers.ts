@@ -17,3 +17,9 @@ export const addSuccessToast = (text: string) => {
     type: 'success'
   });
 };
+
+export const addErrorToast = (text: string) => {
+  toast(text, {
+    type: 'error'
+  });
+};

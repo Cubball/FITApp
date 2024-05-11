@@ -78,5 +78,12 @@ class ProfileService {
   public deletePhoto() {
     return this.httpService.delete(`${this.module}/photo`);
   }
+
+  public changePassword(oldPassword: string, newPassword: string): Promise<null> {
+    return this.httpService.post(`api/auth/change-password`, {
+      oldPassword,
+      newPassword
+    });
+  }
 }
 export const authService = new ProfileService(new HttpFactoryService().createAuthHttpService());

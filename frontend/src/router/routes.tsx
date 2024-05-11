@@ -14,6 +14,7 @@ import ChangeRole from '../modules/admin/employees-list/change-role.component';
 import LoginForm from '../modules/auth/login.form';
 import ForgotPassword from '../modules/auth/forgot-password.component';
 import ConfirmResetPassword from '../modules/auth/confirm-reset-password.component';
+import ChangePassword from '../modules/profile/change-password';
 
 export const publicRoutes = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ export const privateRoutes = createBrowserRouter([
       {
         path: '/login',
         element: <Navigate to="/profile" />
+      },
+      {
+        path: '/change-password',
+        element: <ChangePassword />
       },
       {
         path: 'employees/new',

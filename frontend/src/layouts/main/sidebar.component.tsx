@@ -4,6 +4,7 @@ import RolesIcon from '../../assets/icons/roles-icon.svg';
 import AddUserIcon from '../../assets/icons/add-user-icon.svg'
 import AddRoleIcon from '../../assets/icons/add-role-icon.svg';
 import ProfileIcon from '../../assets/icons/profile-icon.svg';
+import PasswordIcon from '../../assets/icons/password-icon.svg';
 import LogoutButton from './logout.button.component';
 import BurgerMenuIcon from '../../assets/icons/burger-menu-icon.svg';
 import { useState } from 'react';
@@ -26,6 +27,7 @@ const Sidebar = () => {
         <SidebarItem icon={AddUserIcon} text="Додати користувача" route="employees/new" requiredPermission={PermissionsEnum.usersCreate}/>
         <SidebarItem icon={RolesIcon} text="Ролі" route="roles" requiredPermission={PermissionsEnum.rolesRead}/>
         <SidebarItem icon={AddRoleIcon} text="Додати роль" route="roles/new" requiredPermission={PermissionsEnum.rolesCreate}/>
+        <SidebarItem icon={PasswordIcon} text="Змінити пароль" route="change-password" />
       </div>
       <div className={(expanded ? 'block' : 'hidden') + ' md:block'}>
         <LogoutButton />
