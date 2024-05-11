@@ -6,6 +6,12 @@ export const createOnError = (text: string) => () => {
   });
 };
 
+export const createOnSuccess = (text: string) => () => {
+  toast(text, {
+    type: 'success'
+  });
+};
+
 export const addSuccessToast = (text: string) => {
   toast(text, {
     type: 'success'

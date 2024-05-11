@@ -7,7 +7,9 @@ import { useEmployeesList } from '../../../shared/hooks/employees-list.hook';
 const EmployeesList = () => {
   const location = useLocation();
   const page = new URLSearchParams(location.search).get('page');
-  const { employeesList, isLoading, deleteEmployeeById } = useEmployeesList(Number(page ?? 1));
+  const { employeesList, isLoading, deleteEmployeeById, resetPasswordById } = useEmployeesList(
+    Number(page ?? 1)
+  );
   // TODO:
   if (isLoading) return <h1>Loading...</h1>;
   if (!employeesList) return <h1>Error...</h1>;
@@ -18,7 +20,12 @@ const EmployeesList = () => {
       <div className="w-full">
         <h1 className="py-3 text-xl font-bold">Список користувачів</h1>
         {employeesList.employees.map((employee: IEmployeeShortInfo) => (
-          <EmployeeEntry employee={employee} key={employee.id} onDelete={deleteEmployeeById} />
+          <EmployeeEntry
+            employee={employee}
+            key={employee.id}
+            onDelete={deleteEmployeeById}
+            onPasswordReset={resetPasswordById}
+          />
         ))}
       </div>
       <Pagination link="employees" totalPages={totalPages} page={employeesList.page} />

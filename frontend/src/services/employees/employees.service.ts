@@ -49,6 +49,10 @@ class EmployeesService {
     return this.httpService.put(`${this.employeesEndpoint}/${id}`, employee);
   }
 
+  public resetEmployeePassword(id: string): Promise<null> {
+    return this.httpService.post(`${this.usersEndpoint}/${id}/reset-password`, {});
+  }
+
   public addPosition(id: string, position: IAddPositionBody): Promise<null> {
     return this.httpService.post(`${this.employeesEndpoint}/${id}/positions`, position);
   }
