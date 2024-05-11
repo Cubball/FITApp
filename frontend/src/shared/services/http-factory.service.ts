@@ -1,3 +1,4 @@
+import { authAxios } from './authAxios';
 import { EnhancedWithAuthHttpService } from './http-auth.service';
 import { HttpService } from './http.service';
 import { mainAxios } from './mainAxios';
@@ -9,7 +10,7 @@ export class HttpFactoryService {
   }
 
   private createServiceWithAuthAxios(): HttpService {
-    return new HttpService(mainAxios as IHttpClient);
+    return new HttpService(authAxios as IHttpClient);
   }
 
   public createAuthHttpService(): EnhancedWithAuthHttpService {

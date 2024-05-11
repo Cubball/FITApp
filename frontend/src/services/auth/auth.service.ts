@@ -1,6 +1,7 @@
 import { STORAGE_KEYS } from '../../shared/keys/storage-keys';
-import { HttpFactoryService } from '../../shared/services/http-factory.service';
 import { HttpService } from '../../shared/services/http.service';
+import { mainAxios } from '../../shared/services/mainAxios';
+import { IHttpClient } from '../../shared/services/types';
 import { IAuth } from './auth.types';
 
 class AuthService {
@@ -36,4 +37,4 @@ class AuthService {
     });
   }
 }
-export const authService = new AuthService(new HttpFactoryService().createHttpService());
+export const authService = new AuthService(new HttpService(mainAxios as IHttpClient));
