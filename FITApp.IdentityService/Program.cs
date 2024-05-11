@@ -14,8 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// NOTE: for now, we only have an SQLite database for development, we'll add another one later
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=app.db"));
+var connectionString = builder.Configuration.GetConnectionString("IdentityDefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddIdentityCore<User>(o =>
     {
         o.User.RequireUniqueEmail = true;
@@ -38,8 +38,8 @@ builder.Services.Configure<FITAppOptions>(builder.Configuration.GetSection(FITAp
 builder.Services.AddSingleton<IClock, SystemClock>();
 builder.Services.AddSingleton<ITokenService, TokenService>(s => new TokenService(jwtPrivateKey, s.GetRequiredService<IClock>()));
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IPasswordGenerator, FakePasswordGenerator>();
-builder.Services.AddScoped<IEmailSender, FakeEmailSender>();
+builder.Services.AddScoped<IPasswordGenerator, PasswordGenerator>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var employeeServiceBaseUrl = builder.Configuration["FITAppOptions:EmployeeServiceBaseUrl"] ?? throw new InvalidOperationException("FITAppOptions:EmployeeServiceBaseUrl is not set");
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();

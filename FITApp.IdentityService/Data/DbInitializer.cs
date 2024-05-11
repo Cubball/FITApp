@@ -1,4 +1,3 @@
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
@@ -88,7 +87,7 @@ public static class DbInitializer
         var adminUser = new User { Id = Guid.NewGuid().ToString(), UserName = adminEmail, Email = adminEmail };
         var createEmployeeRequest = new CreateEmployeeRequest
         {
-            Id = adminUser.Id,
+            UserId = adminUser.Id,
             Email = adminUser.Email,
             Role = role.Name!,
             RoleId = role.Id,
@@ -111,6 +110,7 @@ public static class DbInitializer
         var response = await httpClient.SendAsync(requestMessage);
         if (!response.IsSuccessStatusCode)
         {
+            Console.WriteLine(response.StatusCode);
             throw new InvalidOperationException($"Failed to create admin user in the Employee Service");
         }
 

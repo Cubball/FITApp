@@ -118,7 +118,7 @@ public class UserService : IUserService
         var callbackUrl = $"{_options.BaseUrl}/reset-password-confirm?id={user.Id}&token={HttpUtility.UrlEncode(token)}";
         try
         {
-            await _emailSender.SendEmail(email, "Reset your password", $"Please reset your password by <a href='{callbackUrl}'>clicking here</a>.");
+            await _emailSender.SendEmail(email, "Скидання пароля у FITApp", $"Щоб скинути Ваш пароль, натисніть перейдіть за даним посиланням: {callbackUrl}");
             return true;
         }
         catch
@@ -148,7 +148,7 @@ public class UserService : IUserService
         await _userManager.UpdateAsync(user);
         try
         {
-            await _emailSender.SendEmail(user.Email!, "Your new password", $"Your new password is {password}");
+            await _emailSender.SendEmail(user.Email!, "Новий пароль у FITApp", $"Ваш новий пароль: {password}");
             return true;
         }
         catch
