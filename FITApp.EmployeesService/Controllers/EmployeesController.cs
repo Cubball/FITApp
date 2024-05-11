@@ -196,6 +196,7 @@ namespace FITApp.EmployeesService.Controllers
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployeesAsync(uint page = 1, uint pageSize = 10)
         {
             var response = await _employeeService.GetEmployeesPagination(page, pageSize);
+            
             return Ok(response);
         }
         // [HttpGet]
