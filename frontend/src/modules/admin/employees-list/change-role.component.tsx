@@ -2,13 +2,16 @@ import { NavLink, useParams } from "react-router-dom";
 import { useEmployee } from "../../../shared/hooks/employee.hook";
 import { Field, Form, Formik } from "formik";
 import { useRoles } from "../../../shared/hooks/roles.hook";
+import Loading from "../../../shared/components/loading";
 
 const ChangeRole = () => {
   const employeeId = useParams().employeeId;
   const { employee, isLoading, changeRole } = useEmployee(employeeId);
   const { roles, isGetRolesLoading } = useRoles()
   // TODO:
-  if (isLoading || isGetRolesLoading) return 'isLoading'
+  if (isLoading || isGetRolesLoading) {
+    return <Loading />
+  }
   if (!employeeId || !employee || !roles) return 'error';
 
   return (

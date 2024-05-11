@@ -1,13 +1,13 @@
 import { RouterProvider } from 'react-router-dom';
 import { privateRoutes, publicRoutes } from './routes';
 import { useAuth } from '../shared/hooks/auth.hook';
+import GlobalLoading from '../shared/components/global-loading';
 
 const Router = () => {
   const { authData, isRefreshLoading } = useAuth();
 
-  // TODO: handle loading properly
   if (isRefreshLoading) {
-    return <div>Loading...</div>;
+    return <GlobalLoading />
   }
 
   return <RouterProvider router={authData?.accessToken ? privateRoutes : publicRoutes} />;

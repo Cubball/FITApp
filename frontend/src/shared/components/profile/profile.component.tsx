@@ -5,6 +5,7 @@ import EmployeeAcademicRanks from './academic-ranks/employee-academic-ranks.comp
 import EmployeePositions from './positions/employee-positions.component';
 import { useParams } from 'react-router-dom';
 import { useProfile } from '../../hooks/profile/profile.hook';
+import Loading from '../loading';
 
 interface ProfileProps {
   canEdit: boolean;
@@ -34,7 +35,9 @@ const Profile = ({ canEdit, isOwnProfile }: ProfileProps) => {
     deletePhoto
   } = useProfile(id);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) {
+    return <Loading />;
+  }
 
   // TODO: stub
   if (!profile) return null;

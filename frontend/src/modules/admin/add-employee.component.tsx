@@ -5,6 +5,7 @@ import { IAddEmployee } from '../../services/employees/employees.types';
 import { employeesService } from '../../services/employees/employees.service';
 import { createOnError } from '../../shared/helpers/toast.helpers';
 import { useRoles } from '../../shared/hooks/roles.hook';
+import Loading from '../../shared/components/loading';
 
 const AddEmployee = () => {
   const { roles, isGetRolesLoading } = useRoles()
@@ -14,8 +15,11 @@ const AddEmployee = () => {
     onSuccess: () => navigate('/employees'),
     onError: createOnError('Не вдалося додати працівника')
   })
+  if (isGetRolesLoading)  {
+    return <Loading />
+  }
 
-  if (isGetRolesLoading) return 'Loading...';
+  // TODO:
   if (!roles) return 'Error';
 
   return (

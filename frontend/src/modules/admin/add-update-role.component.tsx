@@ -2,6 +2,7 @@ import { Field, Form, Formik } from 'formik';
 import { NavLink, useParams } from 'react-router-dom';
 import { useRole } from '../../shared/hooks/role.hook';
 import { ICreateRoleRequest } from '../../services/role/role.types';
+import Loading from '../../shared/components/loading';
 
 const AddUpdateRole = () => {
   const params = useParams()
@@ -15,7 +16,11 @@ const AddUpdateRole = () => {
     handleCreateRole,
     handleUpdateRole
   } = useRole(id);
-  if (arePermissionsLoading || isRoleLoading) return 'Loading...';
+  if (arePermissionsLoading || isRoleLoading) {
+    return <Loading />
+  }
+
+  // TODO:
   if (!permissions) return 'Error';
 
   return (

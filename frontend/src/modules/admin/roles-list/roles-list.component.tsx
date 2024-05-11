@@ -1,12 +1,15 @@
-import { IRoleShortInfo } from "../../../services/role/role.types";
-import { useRoles } from "../../../shared/hooks/roles.hook";
-import RoleEntry from "./role-entry.component";
+import { IRoleShortInfo } from '../../../services/role/role.types';
+import Loading from '../../../shared/components/loading';
+import { useRoles } from '../../../shared/hooks/roles.hook';
+import RoleEntry from './role-entry.component';
 
 const RolesList = () => {
-  const {roles, isGetRolesLoading, handleDeleteRole} = useRoles()
+  const { roles, isGetRolesLoading, handleDeleteRole } = useRoles();
+  if (isGetRolesLoading) {
+    return <Loading />;
+  }
 
   // TODO:
-  if (isGetRolesLoading) return <h1>Loading...</h1>;
   if (!roles) return <h1>Error...</h1>;
 
   return (
