@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { authService } from '../../services/auth/auth.service';
 import { HttpStatusCode } from './types';
+import { STORAGE_KEYS } from '../keys/storage-keys';
 
-const authAxios = axios.create();
+export const authAxios = axios.create();
 
 authAxios.interceptors.response.use(
   (config) => config,
@@ -12,6 +13,7 @@ authAxios.interceptors.response.use(
       req.isFirst = true;
       try {
         const response = await authService.refresh();
+        localStorage.setItem(STORAGE_KEYS.JWT_TOKEN, response.accessToken)
         req.headers.Authorization = `Bearer ${response.accessToken}`;
         const res = await authAxios.request(req);
         return res;
