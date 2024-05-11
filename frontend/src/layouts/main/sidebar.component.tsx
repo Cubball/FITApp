@@ -1,9 +1,13 @@
 import SidebarItem from './sidebar.item.component';
-import PublicationsIcon from '../../assets/icons/publications-icon.svg';
+import UsersIcon from '../../assets/icons/users-icon.svg';
+import RolesIcon from '../../assets/icons/roles-icon.svg';
+import AddUserIcon from '../../assets/icons/add-user-icon.svg'
+import AddRoleIcon from '../../assets/icons/add-role-icon.svg';
 import ProfileIcon from '../../assets/icons/profile-icon.svg';
 import LogoutButton from './logout.button.component';
 import BurgerMenuIcon from '../../assets/icons/burger-menu-icon.svg';
 import { useState } from 'react';
+import { PermissionsEnum } from '../../services/role/role.types';
 
 const Sidebar = () => {
   const [expanded, setExpanded] = useState(false);
@@ -17,9 +21,11 @@ const Sidebar = () => {
         <span className="font-bold">Меню</span>
       </button>
       <div className={(expanded ? 'block' : 'hidden') + ' md:block'}>
-        {/* TODO: determine routes accessible to the user and display corresponding SidebarItems */}
-        <SidebarItem icon={PublicationsIcon} text="Мої публікації" route="publications" />
         <SidebarItem icon={ProfileIcon} text="Мій профіль" route="profile" />
+        <SidebarItem icon={UsersIcon} text="Користувачі" route="employees" requiredPermission={PermissionsEnum.usersRead}/>
+        <SidebarItem icon={AddUserIcon} text="Додати користувача" route="employees/new" requiredPermission={PermissionsEnum.usersCreate}/>
+        <SidebarItem icon={RolesIcon} text="Ролі" route="roles" requiredPermission={PermissionsEnum.rolesRead}/>
+        <SidebarItem icon={AddRoleIcon} text="Додати роль" route="roles/new" requiredPermission={PermissionsEnum.rolesCreate}/>
       </div>
       <div className={(expanded ? 'block' : 'hidden') + ' md:block'}>
         <LogoutButton />
