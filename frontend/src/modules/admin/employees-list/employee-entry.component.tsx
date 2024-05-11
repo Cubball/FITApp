@@ -1,5 +1,6 @@
 import TrashIcon from './../../../assets/icons/trash-icon.svg';
 import ResetIcon from '../../../assets/icons/reset-icon.svg';
+import ChangeRoleIcon from '../../../assets/icons/change-role.svg'
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import ConfirmModal from '../../../shared/components/confirm-modal';
@@ -39,15 +40,25 @@ const EmployeeEntry = ({ employee, onDelete, onPasswordReset }: EmployeeEntryPro
       />
       <div className="my-2 flex items-center justify-between rounded-lg bg-accent-background p-3">
         <div className="flex grow flex-col gap-3 md:flex-row">
-          <NavLink className="font-semibold md:basis-[40%]" to={`/employees/${employee.id}`}>{displayName}</NavLink>
+          <NavLink className="font-semibold md:basis-[40%]" to={`/employees/${employee.id}`}>
+            {displayName}
+          </NavLink>
           <span className="md:basis-[35%]">{employee.email}</span>
           <span className="md:basis-[15%]">{employee.role}</span>
         </div>
         <div className="flex items-center justify-between gap-1 md:gap-3">
           {canEdit && (
-            <button className="mr-1" onClick={() => setConfirmResetPasswordModalOpen(true)}>
-              <img src={ResetIcon} />
-            </button>
+            <>
+              <NavLink
+                className="mr-1"
+                to={`/employees/${employee.id}/role`}
+              >
+                <img src={ChangeRoleIcon} />
+              </NavLink>
+              <button className="mr-1" onClick={() => setConfirmResetPasswordModalOpen(true)}>
+                <img src={ResetIcon} />
+              </button>
+            </>
           )}
           {canDelete && (
             <button className="mr-1" onClick={() => setConfirmDeleteModalOpen(true)}>

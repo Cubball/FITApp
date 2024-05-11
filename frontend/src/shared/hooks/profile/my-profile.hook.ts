@@ -8,8 +8,8 @@ import {
   IAddPositionBody,
   IUpdateEmployeeBody
 } from '../../../services/profile/profile.types';
-import { IUseProfileReturn } from './profile.types';
 import { createOnError } from '../../../shared/helpers/toast.helpers';
+import { IUseProfileReturn } from './profile.hook';
 
 export const useMyProfile = (): IUseProfileReturn => {
   const queryClient = useQueryClient();

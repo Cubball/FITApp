@@ -10,6 +10,7 @@ import ProtectedRoute from './protected-route';
 import RolesList from '../modules/admin/roles-list/roles-list.component';
 import { PermissionsEnum } from '../services/role/role.types';
 import NotFound from '../shared/components/not-found';
+import ChangeRole from '../modules/admin/employees-list/change-role.component';
 
 export const publicRoutes = createBrowserRouter([
   {
@@ -53,6 +54,14 @@ export const privateRoutes = createBrowserRouter([
         element: (
           <ProtectedRoute permission={PermissionsEnum.usersRead}>
             <EmployeeProfile />
+          </ProtectedRoute>
+        )
+      },
+      {
+        path: 'employees/:employeeId/role',
+        element: (
+          <ProtectedRoute permission={PermissionsEnum.usersUpdate}>
+            <ChangeRole />
           </ProtectedRoute>
         )
       },
