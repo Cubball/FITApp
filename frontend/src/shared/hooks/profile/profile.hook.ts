@@ -1,8 +1,18 @@
-import { IAddAcademicDegreesBody, IAddAcademicRank, IAddEducationBody, IAddPositionBody, IEmployee, IUpdateEmployeeBody } from "../../services/profile/profile.types";
+import { useMyProfile } from './my-profile.hook';
+import { useEmployeeProfile } from './employee-profile.hook';
+
+import {
+  IAddAcademicDegreesBody,
+  IAddAcademicRank,
+  IAddEducationBody,
+  IAddPositionBody,
+  IEmployee,
+  IUpdateEmployeeBody
+} from '../../../services/profile/profile.types';
 
 export interface IUseProfileReturn {
-  profile: IEmployee | undefined,
-  isLoading: boolean,
+  profile: IEmployee | undefined;
+  isLoading: boolean;
   updateProfile: (body: IUpdateEmployeeBody) => void;
   addEducation: (body: IAddEducationBody) => void;
   deleteEducation: (index: number) => void;
@@ -15,3 +25,11 @@ export interface IUseProfileReturn {
   uploadPhoto: (photo: File) => void;
   deletePhoto: () => void;
 }
+
+export const useProfile = (employeeId: string | undefined): IUseProfileReturn => {
+  if (!employeeId) {
+    return useMyProfile();
+  }
+
+  return useEmployeeProfile(employeeId);
+};

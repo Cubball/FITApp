@@ -1,8 +1,8 @@
 import { useLocation } from 'react-router-dom';
 import Pagination from '../../../shared/components/pagination';
 import EmployeeEntry from './employee-entry.component';
-import { useEmployeesList } from '../../../hooks/employees/employees-list.hook';
 import { IEmployeeShortInfo } from '../../../services/employees/employees.types';
+import { useEmployeesList } from '../../../shared/hooks/employees-list.hook';
 
 const EmployeesList = () => {
   const location = useLocation();

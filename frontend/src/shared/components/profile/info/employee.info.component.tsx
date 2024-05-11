@@ -95,7 +95,11 @@ const EmployeeInfo = ({
                 />
                 <button
                   className="h-fit grow rounded-lg border border-main-text px-1 py-3 text-center font-semibold shadow shadow-gray-400 md:max-w-[40%]"
-                  onClick={() => setConfirmModalOpen(true)}
+                  onClick={() => {
+                    if (employee.photo) {
+                      setConfirmModalOpen(true);
+                    }
+                  }}
                 >
                   Видалити
                 </button>

@@ -3,8 +3,8 @@ import EmployeeEducations from './educations/employee-educations.component';
 import EmployeeAcademicDegrees from './academic-degrees/employee-academic-degrees.component';
 import EmployeeAcademicRanks from './academic-ranks/employee-academic-ranks.component';
 import EmployeePositions from './positions/employee-positions.component';
-import { useProfile } from '../../../hooks/profile/profile.hook';
 import { useParams } from 'react-router-dom';
+import { useProfile } from '../../hooks/profile/profile.hook';
 
 interface ProfileProps {
   canEdit: boolean;

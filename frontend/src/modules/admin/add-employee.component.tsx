@@ -4,26 +4,19 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { IAddEmployee } from '../../services/employees/employees.types';
 import { employeesService } from '../../services/employees/employees.service';
 import { createOnError } from '../../shared/helpers/toast.helpers';
+import { useRole } from '../../shared/hooks/role.hook';
 
 const AddEmployee = () => {
-  // TODO: fetch roles
-  const roles = [
-    {
-      id: '609446d3-4bbe-4efd-bff2-eae27f65017a',
-      name: 'Викладач'
-    },
-    {
-      id: '012f46da-7f4f-421d-9ba6-9537add2b9db',
-      name: 'Викладач 2'
-    }
-  ];
+  const { roles, isGetRolesLoading } = useRole()
   const navigate = useNavigate();
-
   const { mutate } = useMutation({
     mutationFn: (employee: IAddEmployee) => employeesService.addEmployee(employee),
     onSuccess: () => navigate('/employees'),
     onError: createOnError('Не вдалося додати працівника')
   })
+
+  if (isGetRolesLoading) return 'Loading...';
+  if (!roles) return 'Error';
 
   return (
     <div className="flex flex-col items-center gap-5 p-5">
