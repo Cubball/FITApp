@@ -1,8 +1,23 @@
-import { Children, useState } from 'react';
-import PlusIcon from '../../assets/icons/plus-icon.svg';
+import { Children, PropsWithChildren, useState } from 'react';
+import PlusIcon from '../../../assets/icons/plus-icon.svg';
 import ExpandableListItem from './expandable.list.item.component';
 
-const ExpandableList = ({ title, icon, children, onAddClick, onDeleteClick }) => {
+interface ExpandableListProps extends PropsWithChildren {
+  title: string;
+  icon: string;
+  canEdit: boolean;
+  onAddClick: () => void;
+  onDeleteClick: (index: number) => void;
+}
+
+const ExpandableList = ({
+  children,
+  title,
+  icon,
+  canEdit,
+  onAddClick,
+  onDeleteClick
+}: ExpandableListProps) => {
   const childrenArray = Children.toArray(children);
   const canExpand = childrenArray.length > 1;
   const [expanded, setExpanded] = useState(false);
@@ -12,9 +27,11 @@ const ExpandableList = ({ title, icon, children, onAddClick, onDeleteClick }) =>
         <h2 className="text-lg font-semibold">
           {title} <img src={icon} className="inline pl-1" />
         </h2>
-        <button onClick={onAddClick}>
-          <img src={PlusIcon} />
-        </button>
+        {canEdit ? (
+          <button onClick={onAddClick}>
+            <img src={PlusIcon} />
+          </button>
+        ) : null}
       </div>
       {canExpand && expanded ? (
         childrenArray.map((child, index) => (
@@ -24,6 +41,7 @@ const ExpandableList = ({ title, icon, children, onAddClick, onDeleteClick }) =>
             index={index}
             key={index}
             onDeleteClick={onDeleteClick}
+            canEdit={canEdit}
           />
         ))
       ) : childrenArray.length > 0 ? (
@@ -32,12 +50,13 @@ const ExpandableList = ({ title, icon, children, onAddClick, onDeleteClick }) =>
           canExpand={canExpand}
           index={0}
           onDeleteClick={onDeleteClick}
+          canEdit={canEdit}
         />
       ) : null}
       {canExpand ? (
         <>
           <button
-            className="text-sm w-full pt-3 text-center font-semibold"
+            className="w-full pt-3 text-center text-sm font-semibold"
             onClick={() => setExpanded((previous) => !previous)}
           >
             {expanded ? 'Приховати' : 'Показати все'}

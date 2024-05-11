@@ -1,7 +1,11 @@
 import { Field } from 'formik';
-import { IInputAttributes } from './types';
+import { InputHTMLAttributes } from 'react';
 
-const Input = ({ label, ...props }: IInputAttributes) => {
+interface InputProps extends InputHTMLAttributes<HTMLButtonElement> {
+  label: string;
+}
+
+const Input = ({ label, ...props }: InputProps) => {
   return (
     <div className="mb-4">
       <label className="font-medium" htmlFor={props.name}>

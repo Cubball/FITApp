@@ -14,7 +14,8 @@ export default {
         'main-background': '#BBDAF6',
         'main-text': '#384D6C',
         'link-active': '#CCE4FF',
-        'link-accent': '#acc9e3'
+        'link-accent': '#acc9e3',
+        'accent-background': '#fff5c0'
       }
     }
   },
