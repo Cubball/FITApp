@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { IRoleShortInfo } from '../../services/role/role.types';
 import { QUERY_KEYS } from '../keys/query-keys';
 import { roleService } from '../../services/role/role.service';
@@ -11,14 +11,16 @@ interface IUseRolesReturn {
 }
 
 export const useRoles = (): IUseRolesReturn => {
+  const queryClient = useQueryClient();
   const { data: roles, isLoading: isGetRolesLoading } = useQuery([QUERY_KEYS.ROLES], () =>
     roleService.getRoles()
   );
 
-  const { mutateAsync: mutateDeleteRole, isLoading: isDeleteRoleLoading } = useMutation(
-    [QUERY_KEYS.MUTATE_ROLE],
-    (id: string) => roleService.deleteRole(id)
-  );
+  const { mutateAsync: mutateDeleteRole, isLoading: isDeleteRoleLoading } = useMutation({
+    mutationKey: [QUERY_KEYS.MUTATE_ROLE],
+    mutationFn: (id: string) => roleService.deleteRole(id),
+    onSuccess: () => queryClient.invalidateQueries([QUERY_KEYS.ROLES])
+  });
 
   const handleDeleteRole = async (id: string) => {
     await mutateDeleteRole(id);

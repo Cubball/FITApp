@@ -7,6 +7,7 @@ import EmployeeProfile from '../modules/admin/employees-list/employee-profile.co
 import AddEmployee from '../modules/admin/add-employee.component';
 import NotFound from '../shared/components/not-found';
 import AddUpdateRole from '../modules/admin/add-update-role.component';
+import RolesList from '../modules/admin/roles-list/roles-list.component';
 
 // TODO: do proper routing
 const sharedRoutes: RouteObject[] = [
@@ -50,6 +51,10 @@ export const privateRoutes = createBrowserRouter([
       {
         path: 'roles/:roleId',
         element: <AddUpdateRole />
+      },
+      {
+        path: 'roles',
+        element: <RolesList />
       }
     ]
   },

@@ -13,8 +13,6 @@ const EmployeesList = () => {
   if (!employeesList) return <h1>Error...</h1>;
 
   const totalPages = Math.ceil(employeesList.totalCount / employeesList.pageSize);
-  console.log(totalPages);
-
   return (
     <div className="flex h-full flex-col items-center justify-between px-10 py-5">
       <div className="w-full">

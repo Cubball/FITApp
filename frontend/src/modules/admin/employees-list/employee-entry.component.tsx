@@ -12,7 +12,6 @@ interface EmployeeEntryProps {
 const EmployeeEntry = ({ employee, onDelete }: EmployeeEntryProps) => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   let displayName = "<ім'я не вказано>";
-  console.log(employee)
   if (employee.firstName && employee.patronymic) {
     displayName = `${employee.lastName} ${employee.firstName.substring(0, 1)}. ${employee.patronymic.substring(0, 1)}.`;
   }
