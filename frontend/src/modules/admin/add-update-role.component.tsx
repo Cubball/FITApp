@@ -1,30 +1,40 @@
 import { Field, Form, Formik } from 'formik';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
+import { useRole } from '../../shared/hooks/role.hook';
+import { ICreateRoleRequest } from '../../services/role/role.types';
 
-const AddRole = () => {
-  // TODO: fetch permissions
-  const permissions = [
-    {
-      name: 'add_users',
-      description: 'Додавати співробінтиків'
-    },
-    {
-      name: 'delete_users',
-      description: 'Видаляти співробінтиків'
-    }
-  ];
+const AddUpdateRole = () => {
+  const params = useParams()
+  const id = params.roleId;
+
+  const {
+    role,
+    isRoleLoading,
+    permissions,
+    arePermissionsLoading,
+    handleCreateRole,
+    handleUpdateRole
+  } = useRole(id);
+  if (arePermissionsLoading || isRoleLoading) return 'Loading...';
+  if (!permissions) return 'Error';
 
   return (
     <div className="flex flex-col items-center gap-5 p-5">
       <h1 className="border-b border-gray-300 px-10 pb-1 text-center text-xl font-semibold">
-        Додати нову роль
+        {role ? 'Оновити роль' : 'Додати нову роль'}
       </h1>
       <Formik
         initialValues={{
-          name: '',
-          permissions: []
+          name: role?.name ?? '',
+          permissions: role?.permissions ?? []
         }}
-        onSubmit={(e) => console.log(e)}
+        onSubmit={(createUpdateRole) => {
+          if (role) {
+            handleUpdateRole(role.id, createUpdateRole as ICreateRoleRequest);
+          } else {
+            handleCreateRole(createUpdateRole as ICreateRoleRequest);
+          }
+        }}
       >
         <Form className="flex w-full flex-col items-center gap-5">
           <Field
@@ -50,7 +60,10 @@ const AddRole = () => {
               ))}
             </div>
           </div>
-          <button className="w-full max-w-xl rounded-md bg-main-text p-2 text-white md:w-1/2" type='submit'>
+          <button
+            className="w-full max-w-xl rounded-md bg-main-text p-2 text-white md:w-1/2"
+            type="submit"
+          >
             Зберегти
           </button>
           <NavLink
@@ -65,4 +78,4 @@ const AddRole = () => {
   );
 };
 
-export default AddRole;
+export default AddUpdateRole;

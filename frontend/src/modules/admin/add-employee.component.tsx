@@ -4,10 +4,10 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { IAddEmployee } from '../../services/employees/employees.types';
 import { employeesService } from '../../services/employees/employees.service';
 import { createOnError } from '../../shared/helpers/toast.helpers';
-import { useRole } from '../../shared/hooks/role.hook';
+import { useRoles } from '../../shared/hooks/roles.hook';
 
 const AddEmployee = () => {
-  const { roles, isGetRolesLoading } = useRole()
+  const { roles, isGetRolesLoading } = useRoles()
   const navigate = useNavigate();
   const { mutate } = useMutation({
     mutationFn: (employee: IAddEmployee) => employeesService.addEmployee(employee),

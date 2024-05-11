@@ -10,16 +10,21 @@ export enum PermissionsEnum {
   rolesDelete = 'roles_delete'
 }
 
-export interface IRole {
+export interface IRoleShortInfo {
   id: string;
-  neme: string;
+  name: string;
 }
 
-export interface IRolesResponse {
-  roles: Array<IRole>;
+export interface IRole extends IRoleShortInfo {
+  permissions: string[];
 }
 
 export interface ICreateRoleRequest {
   name: string;
   permissions: PermissionsEnum[];
+}
+
+export interface IPermission {
+  name: PermissionsEnum;
+  description: string;
 }

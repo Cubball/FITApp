@@ -1,6 +1,6 @@
 import { HttpFactoryService } from '../../shared/services/http-factory.service';
 import { EnhancedWithAuthHttpService } from '../../shared/services/http-auth.service.ts';
-import { ICreateRoleRequest, IRole, IRolesResponse } from './role.types.ts';
+import { ICreateRoleRequest, IPermission, IRole, IRoleShortInfo } from './role.types.ts';
 
 class RoleService {
   private readonly httpService: EnhancedWithAuthHttpService;
@@ -9,11 +9,18 @@ class RoleService {
     this.httpService = httpService;
   }
 
-  private readonly module = '/roles';
+  private readonly module = 'api/roles';
 
-  public async getRoles(): Promise<Array<IRole>> {
-    const response = await this.httpService.get<IRolesResponse>(this.module);
-    return response.roles;
+  public async getRoles(): Promise<Array<IRoleShortInfo>> {
+    return this.httpService.get<Array<IRoleShortInfo>>(this.module);
+  }
+
+  public getRole(id: string): Promise<IRole> {
+    return this.httpService.get<IRole>(`${this.module}/${id}`);
+  }
+
+  public getPermissions(): Promise<IPermission[]> {
+    return this.httpService.get<IPermission[]>(`${this.module}/permissions`);
   }
 
   public async createRole(data: ICreateRoleRequest): Promise<null> {

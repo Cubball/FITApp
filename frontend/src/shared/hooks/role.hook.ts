@@ -1,38 +1,53 @@
 import { useMutation, useQuery } from 'react-query';
 import { roleService } from '../../services/role/role.service';
-import { ICreateRoleRequest, IRole } from '../../services/role/role.types';
+import { ICreateRoleRequest, IPermission, IRole } from '../../services/role/role.types';
 import { QUERY_KEYS } from '../keys/query-keys';
+import { addSuccessToast } from '../helpers/toast.helpers';
+import { useNavigate } from 'react-router-dom';
 
 interface UseRoleReturn {
-  roles: Array<IRole> | undefined;
+  role?: IRole;
+  isRoleLoading: boolean;
+  permissions?: IPermission[];
   handleCreateRole: (data: ICreateRoleRequest) => Promise<void>;
   handleUpdateRole: (id: string, data: ICreateRoleRequest) => Promise<void>;
-  handleDeleteRole: (id: string) => Promise<void>;
-  isGetRolesLoading: boolean;
+  arePermissionsLoading: boolean;
   isCreateRoleLoading: boolean;
   isUpdateRoleLoading: boolean;
-  isDeleteRoleLoading: boolean;
 }
 
-export const useRole = (): UseRoleReturn => {
-  const { data: roles, isLoading: isGetRolesLoading } = useQuery([QUERY_KEYS.ROLES], () =>
-    roleService.getRoles()
-  );
+export const useRole = (id?: string): UseRoleReturn => {
+  const navigate = useNavigate();
+  const { data: permissions, isLoading: arePermissionsLoading } = useQuery({
+    queryKey: [QUERY_KEYS.PERMISSIONS],
+    queryFn: () => roleService.getPermissions()
+  });
 
-  const { mutateAsync: mutateCreateRole, isLoading: isCreateRoleLoading } = useMutation(
-    [QUERY_KEYS.MUTATE_ROLE],
-    (data: ICreateRoleRequest) => roleService.createRole(data)
-  );
+  const { data: role, isLoading: isRoleLoading } = id
+    ? useQuery({
+        queryKey: [QUERY_KEYS.ROLES, id],
+        queryFn: () => roleService.getRole(id)
+      })
+    : { data: undefined, isLoading: false };
 
-  const { mutateAsync: mutateUpdateRole, isLoading: isUpdateRoleLoading } = useMutation(
-    [QUERY_KEYS.MUTATE_ROLE],
-    ({ id, data }: { id: string; data: ICreateRoleRequest }) => roleService.updateRole(id, data)
-  );
+  const { mutateAsync: mutateCreateRole, isLoading: isCreateRoleLoading } = useMutation({
+    mutationKey: [QUERY_KEYS.MUTATE_ROLE],
+    mutationFn: (data: ICreateRoleRequest) => roleService.createRole(data),
+    onSuccess: () => {
+      addSuccessToast('Роль додано');
+      navigate('/roles');
+    }
+  });
 
-  const { mutateAsync: mutateDeleteRole, isLoading: isDeleteRoleLoading } = useMutation(
-    [QUERY_KEYS.MUTATE_ROLE],
-    (id: string) => roleService.deleteRole(id)
-  );
+  const { mutateAsync: mutateUpdateRole, isLoading: isUpdateRoleLoading } = useMutation({
+    mutationKey: [QUERY_KEYS.MUTATE_ROLE],
+    mutationFn: ({ id, data }: { id: string; data: ICreateRoleRequest }) =>
+      roleService.updateRole(id, data),
+    onSuccess: () => {
+      addSuccessToast('Роль оновлено');
+      navigate('/roles');
+    }
+  });
 
   const handleUpdateRole = async (id: string, data: ICreateRoleRequest) => {
     await mutateUpdateRole({ id, data });
@@ -42,18 +57,14 @@ export const useRole = (): UseRoleReturn => {
     await mutateCreateRole(data);
   };
 
-  const handleDeleteRole = async (id: string) => {
-    await mutateDeleteRole(id);
-  };
-
   return {
-    roles,
+    role,
+    isRoleLoading,
+    permissions,
     handleCreateRole,
     handleUpdateRole,
-    handleDeleteRole,
-    isGetRolesLoading,
+    arePermissionsLoading,
     isCreateRoleLoading,
-    isUpdateRoleLoading,
-    isDeleteRoleLoading
+    isUpdateRoleLoading
   };
 };
