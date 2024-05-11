@@ -3,9 +3,10 @@ import { NavLink, useParams } from 'react-router-dom';
 import { useRole } from '../../shared/hooks/role.hook';
 import { ICreateRoleRequest } from '../../services/role/role.types';
 import Loading from '../../shared/components/loading';
+import Error from '../../shared/components/error';
 
 const AddUpdateRole = () => {
-  const params = useParams()
+  const params = useParams();
   const id = params.roleId;
 
   const {
@@ -17,11 +18,12 @@ const AddUpdateRole = () => {
     handleUpdateRole
   } = useRole(id);
   if (arePermissionsLoading || isRoleLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
-  // TODO:
-  if (!permissions) return 'Error';
+  if (!permissions) {
+    return <Error />;
+  }
 
   return (
     <div className="flex flex-col items-center gap-5 p-5">

@@ -6,21 +6,23 @@ import { employeesService } from '../../services/employees/employees.service';
 import { createOnError } from '../../shared/helpers/toast.helpers';
 import { useRoles } from '../../shared/hooks/roles.hook';
 import Loading from '../../shared/components/loading';
+import Error from '../../shared/components/error';
 
 const AddEmployee = () => {
-  const { roles, isGetRolesLoading } = useRoles()
+  const { roles, isGetRolesLoading } = useRoles();
   const navigate = useNavigate();
   const { mutate } = useMutation({
     mutationFn: (employee: IAddEmployee) => employeesService.addEmployee(employee),
     onSuccess: () => navigate('/employees'),
     onError: createOnError('Не вдалося додати працівника')
-  })
-  if (isGetRolesLoading)  {
-    return <Loading />
+  });
+  if (isGetRolesLoading) {
+    return <Loading />;
   }
 
-  // TODO:
-  if (!roles) return 'Error';
+  if (!roles) {
+    return <Error />;
+  }
 
   return (
     <div className="flex flex-col items-center gap-5 p-5">
@@ -59,7 +61,10 @@ const AddEmployee = () => {
               </option>
             ))}
           </Field>
-          <button className="w-full max-w-xl rounded-md bg-main-text p-2 text-white md:w-1/2" type='submit'>
+          <button
+            className="w-full max-w-xl rounded-md bg-main-text p-2 text-white md:w-1/2"
+            type="submit"
+          >
             Зберегти
           </button>
           <NavLink

@@ -4,6 +4,7 @@ import EmployeeEntry from './employee-entry.component';
 import { IEmployeeShortInfo } from '../../../services/employees/employees.types';
 import { useEmployeesList } from '../../../shared/hooks/employees-list.hook';
 import Loading from '../../../shared/components/loading';
+import Error from '../../../shared/components/error';
 
 const EmployeesList = () => {
   const location = useLocation();
@@ -15,8 +16,9 @@ const EmployeesList = () => {
     return <Loading />;
   }
 
-  // TODO:
-  if (!employeesList) return <h1>Error...</h1>;
+  if (!employeesList) {
+    return <Error />;
+  }
 
   const totalPages = Math.ceil(employeesList.totalCount / employeesList.pageSize);
   return (

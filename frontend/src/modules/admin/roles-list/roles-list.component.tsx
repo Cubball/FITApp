@@ -1,4 +1,5 @@
 import { IRoleShortInfo } from '../../../services/role/role.types';
+import Error from '../../../shared/components/error';
 import Loading from '../../../shared/components/loading';
 import { useRoles } from '../../../shared/hooks/roles.hook';
 import RoleEntry from './role-entry.component';
@@ -9,8 +10,9 @@ const RolesList = () => {
     return <Loading />;
   }
 
-  // TODO:
-  if (!roles) return <h1>Error...</h1>;
+  if (!roles) {
+    return <Error />;
+  }
 
   return (
     <div className="flex h-full flex-col items-center justify-between px-10 py-5">
