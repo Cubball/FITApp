@@ -10,11 +10,11 @@ public class SimpleEmployeeProfile : Profile
     {
         CreateMap<BsonDocument, SimpleEmployeeDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.GetValue("_id").AsString))
-            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => GetStringValue(src, "FirstName")))
-            .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => GetStringValue(src, "LastName")))
-            .ForMember(dest => dest.Patronymic, opt => opt.MapFrom(src => GetStringValue(src, "Patronymic")))
-            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => GetNestedValue(src, "User", "Email")))
-            .ForMember(dest => dest.Role, opt => opt.MapFrom(src => GetNestedValue(src, "User", "Role")));
+            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => GetStringValue(src, "firstName")))
+            .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => GetStringValue(src, "lastName")))
+            .ForMember(dest => dest.Patronymic, opt => opt.MapFrom(src => GetStringValue(src, "patronymic")))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => GetNestedValue(src, "user", "email")))
+            .ForMember(dest => dest.Role, opt => opt.MapFrom(src => GetNestedValue(src, "user", "role")));
     }
 
     private string? GetStringValue(BsonDocument src, string fieldName)
