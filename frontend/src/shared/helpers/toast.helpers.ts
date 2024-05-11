@@ -23,3 +23,9 @@ export const addErrorToast = (text: string) => {
     type: 'error'
   });
 };
+
+export const addInfoToast = (text: string) => {
+  toast(text, {
+    type: 'info'
+  });
+};
