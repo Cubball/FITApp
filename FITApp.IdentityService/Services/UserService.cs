@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Web;
 using FITApp.Auth.Data;
 using FITApp.IdentityService.Entities;
 using FITApp.IdentityService.Infrastructure;
@@ -114,7 +115,7 @@ public class UserService : IUserService
         }
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        var callbackUrl = $"{_options.BaseUrl}/reset-password-confirm?id={user.Id}&token={token}";
+        var callbackUrl = $"{_options.BaseUrl}/reset-password-confirm?id={user.Id}&token={HttpUtility.UrlEncode(token)}";
         try
         {
             await _emailSender.SendEmail(email, "Скидання пароля у FITApp", $"Щоб скинути Ваш пароль, натисніть перейдіть за даним посиланням: {callbackUrl}");
