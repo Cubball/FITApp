@@ -1,10 +1,9 @@
 import { userPermissionsService } from '../../../services/auth/user-permissions.service';
+import { PermissionsEnum } from '../../../services/role/role.types';
 import Profile from '../../../shared/components/profile/profile.component';
 
 const EmployeeProfile = () => {
-  // TODO: replace with enum later
-  const canEdit = userPermissionsService.hasOneOfPermissions(['all', 'users_update'])
-
+  const canEdit = userPermissionsService.hasPermission(PermissionsEnum.usersUpdate)
   return <Profile canEdit={canEdit} isOwnProfile={false}/>;
 };
 

@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { QUERY_KEYS } from '../../../shared/keys/query-keys';
-import { IUseProfileReturn } from './profile.types';
 import { employeesService } from '../../../services/employees/employees.service';
 import {
   IAddAcademicDegreesBody,
@@ -10,6 +9,7 @@ import {
   IUpdateEmployeeBody
 } from '../../../services/profile/profile.types';
 import { createOnError } from '../../../shared/helpers/toast.helpers';
+import { IUseProfileReturn } from './profile.hook';
 
 export const useEmployeeProfile = (id: string): IUseProfileReturn => {
   const queryClient = useQueryClient();

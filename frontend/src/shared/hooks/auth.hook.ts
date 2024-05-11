@@ -23,6 +23,9 @@ export const useAuth = (): IUseAuthReturn => {
 
   const onSuccess = (data) => {
     localStorage.setItem(STORAGE_KEYS.JWT_TOKEN, data.accessToken);
+    client.setQueryData([QUERY_KEYS.AUTH], {
+      accessToken: data.accessToken,
+    });
   };
 
   const { data: authData, isLoading: isRefreshLoading } = useQuery(
