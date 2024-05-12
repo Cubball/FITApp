@@ -8,7 +8,7 @@ export default {
         montserrat: ['"Montserrat"', 'sans-serif']
       },
       backgroundImage: {
-        document: 'url("./src/assets/document.svg")'
+        document: 'url("$assets/document.svg")'
       },
       colors: {
         'main-background': '#BBDAF6',

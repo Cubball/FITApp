@@ -19,41 +19,40 @@ import GlobalError from '../shared/components/global-error';
 
 export const publicRoutes = createBrowserRouter([
   {
-    path: '',
-    children: [
-      {
-        path: '/login',
-        element: (
-          <AuthScreen>
-            <LoginForm />
-          </AuthScreen>
-        )
-      },
-      {
-        path: '/forgot-password',
-        element: (
-          <AuthScreen>
-            <ForgotPassword />
-          </AuthScreen>
-        )
-      },
-      {
-        path: '/reset-password-confirm',
-        element: (
-          <AuthScreen>
-            <ConfirmResetPassword />
-          </AuthScreen>
-        )
-      },
-      {
-        path: '/',
-        element: <Navigate to="/login" />
-      },
-      {
-        path: '*',
-        element: <NotFound />
-      }
-    ],
+    path: '/login',
+    element: (
+      <AuthScreen>
+        <LoginForm />
+      </AuthScreen>
+    ),
+    errorElement: <GlobalError />
+  },
+  {
+    path: '/forgot-password',
+    element: (
+      <AuthScreen>
+        <ForgotPassword />
+      </AuthScreen>
+    ),
+    errorElement: <GlobalError />
+  },
+  {
+    path: '/reset-password-confirm',
+    element: (
+      <AuthScreen>
+        <ConfirmResetPassword />
+      </AuthScreen>
+    ),
+    errorElement: <GlobalError />
+  },
+  {
+    path: '/',
+    element: <Navigate to="/login" />,
+    errorElement: <GlobalError />
+  },
+  {
+    path: '*',
+    element: <NotFound />,
     errorElement: <GlobalError />
   }
 ]);
@@ -61,82 +60,105 @@ export const publicRoutes = createBrowserRouter([
 export const privateRoutes = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />,
-    children: [
-      {
-        path: '/',
-        element: <Navigate to="/profile" />
-      },
-      // HACK:
-      {
-        path: '/login',
-        element: <Navigate to="/profile" />
-      },
-      {
-        path: '/change-password',
-        element: <ChangePassword />
-      },
-      {
-        path: 'employees/new',
-        element: (
-          <ProtectedRoute permission={PermissionsEnum.usersCreate}>
-            <AddEmployee />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: 'employees/:employeeId',
-        element: (
-          <ProtectedRoute permission={PermissionsEnum.usersRead}>
-            <EmployeeProfile />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: 'employees/:employeeId/role',
-        element: (
-          <ProtectedRoute permission={PermissionsEnum.usersUpdate}>
-            <ChangeRole />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: 'employees',
-        element: (
-          <ProtectedRoute permission={PermissionsEnum.usersRead}>
-            <EmployeesList />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: 'profile',
-        element: <MyProfile />
-      },
-      {
-        path: 'roles/new',
-        element: (
-          <ProtectedRoute permission={PermissionsEnum.rolesCreate}>
-            <AddUpdateRole />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: 'roles/:roleId',
-        element: (
-          <ProtectedRoute permission={PermissionsEnum.rolesUpdate}>
-            <AddUpdateRole />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: 'roles',
-        element: (
-          <ProtectedRoute permission={PermissionsEnum.rolesRead}>
-            <RolesList />
-          </ProtectedRoute>
-        )
-      }
-    ],
+    element: <Navigate to="/profile" />
+  },
+  // HACK:
+  {
+    path: '/login',
+    element: <Navigate to="/profile" />
+  },
+  {
+    path: '/change-password',
+    element: (
+      <MainLayout>
+        <ChangePassword />
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />
+  },
+  {
+    path: '/employees/new',
+    element: (
+      <MainLayout>
+        <ProtectedRoute permission={PermissionsEnum.usersCreate}>
+          <AddEmployee />
+        </ProtectedRoute>
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />
+  },
+  {
+    path: '/employees/:employeeId',
+    element: (
+      <MainLayout>
+        <ProtectedRoute permission={PermissionsEnum.usersRead}>
+          <EmployeeProfile />
+        </ProtectedRoute>
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />
+  },
+  {
+    path: '/employees/:employeeId/role',
+    element: (
+      <MainLayout>
+        <ProtectedRoute permission={PermissionsEnum.usersUpdate}>
+          <ChangeRole />
+        </ProtectedRoute>
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />
+  },
+  {
+    path: '/employees',
+    element: (
+      <MainLayout>
+        <ProtectedRoute permission={PermissionsEnum.usersRead}>
+          <EmployeesList />
+        </ProtectedRoute>
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />
+  },
+  {
+    path: '/profile',
+    element: (
+      <MainLayout>
+        <MyProfile />
+      </MainLayout>
+    )
+  },
+  {
+    path: '/roles/new',
+    element: (
+      <MainLayout>
+        <ProtectedRoute permission={PermissionsEnum.rolesCreate}>
+          <AddUpdateRole />
+        </ProtectedRoute>
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />
+  },
+  {
+    path: '/roles/:roleId',
+    element: (
+      <MainLayout>
+        <ProtectedRoute permission={PermissionsEnum.rolesUpdate}>
+          <AddUpdateRole />
+        </ProtectedRoute>
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />
+  },
+  {
+    path: '/roles',
+    element: (
+      <MainLayout>
+        <ProtectedRoute permission={PermissionsEnum.rolesRead}>
+          <RolesList />
+        </ProtectedRoute>
+      </MainLayout>
+    ),
     errorElement: <GlobalError />
   },
   {

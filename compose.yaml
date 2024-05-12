@@ -1,5 +1,10 @@
 name: fitapp
 services:
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - 7777:7777
   gateway:
     container_name: gateway
     build:
