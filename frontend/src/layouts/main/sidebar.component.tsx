@@ -22,12 +22,12 @@ const Sidebar = () => {
         <span className="font-bold">Меню</span>
       </button>
       <div className={(expanded ? 'block' : 'hidden') + ' md:block'}>
-        <SidebarItem icon={ProfileIcon} text="Мій профіль" route="profile" />
-        <SidebarItem icon={UsersIcon} text="Користувачі" route="employees" requiredPermission={PermissionsEnum.usersRead}/>
-        <SidebarItem icon={AddUserIcon} text="Додати користувача" route="employees/new" requiredPermission={PermissionsEnum.usersCreate}/>
-        <SidebarItem icon={RolesIcon} text="Ролі" route="roles" requiredPermission={PermissionsEnum.rolesRead}/>
-        <SidebarItem icon={AddRoleIcon} text="Додати роль" route="roles/new" requiredPermission={PermissionsEnum.rolesCreate}/>
-        <SidebarItem icon={PasswordIcon} text="Змінити пароль" route="change-password" />
+        <SidebarItem icon={ProfileIcon} text="Мій профіль" route="/profile" />
+        <SidebarItem icon={UsersIcon} text="Користувачі" route="/employees" requiredPermission={PermissionsEnum.usersRead}/>
+        <SidebarItem icon={AddUserIcon} text="Додати користувача" route="/employees/new" requiredPermission={PermissionsEnum.usersCreate}/>
+        <SidebarItem icon={RolesIcon} text="Ролі" route="/roles" requiredPermission={PermissionsEnum.rolesRead}/>
+        <SidebarItem icon={AddRoleIcon} text="Додати роль" route="/roles/new" requiredPermission={PermissionsEnum.rolesCreate}/>
+        <SidebarItem icon={PasswordIcon} text="Змінити пароль" route="/change-password" />
       </div>
       <div className={(expanded ? 'block' : 'hidden') + ' md:block'}>
         <LogoutButton />
