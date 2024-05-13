@@ -41,8 +41,18 @@ public class ProfileController : ControllerBase
             return BadRequest("Invalid employee ID.");
         }
 
-        long updatedCount = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
-        return updatedCount == 0 ? NotFound() : Ok();
+        try
+        {
+            long updatedCount = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
+            return updatedCount == 0 ? NotFound() : Ok();
+
+        }
+        catch (ValidationException ex)
+        {
+
+            return BadRequest(ex.Errors);
+            throw;
+        }
 
     }
 

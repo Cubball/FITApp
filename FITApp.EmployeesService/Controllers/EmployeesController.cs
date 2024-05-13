@@ -43,8 +43,19 @@ namespace FITApp.EmployeesService.Controllers
                 return BadRequest("Invalid employee ID.");
             }
 
-            long updatedCount = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
-            return updatedCount == 0 ? NotFound() : Ok();
+            try
+            {
+                long updatedCount = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
+                return updatedCount == 0 ? NotFound() : Ok();
+
+            }
+            catch (ValidationException ex)
+            {
+
+                return BadRequest(ex.Errors);
+                throw;
+            }
+
 
         }
 
@@ -196,7 +207,7 @@ namespace FITApp.EmployeesService.Controllers
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployeesAsync(uint page = 1, uint pageSize = 10)
         {
             var response = await _employeeService.GetEmployeesPagination(page, pageSize);
-            
+
             return Ok(response);
         }
         // [HttpGet]
