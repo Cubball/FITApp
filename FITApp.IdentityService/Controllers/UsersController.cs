@@ -184,13 +184,18 @@ public class UsersController : ControllerBase
             return NotFound();
         }
 
+        var result = await _userManager.DeleteAsync(user);
+        if (!result.Succeeded)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
         var employeeDeleted = await _employeeService.DeleteAsync(id);
         if (!employeeDeleted)
         {
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
-        await _userManager.DeleteAsync(user);
         return Ok();
     }
 
