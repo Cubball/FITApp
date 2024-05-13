@@ -14,6 +14,8 @@ const AddUpdateRole = () => {
     isRoleLoading,
     permissions,
     arePermissionsLoading,
+    isCreateRoleLoading,
+    isUpdateRoleLoading,
     handleCreateRole,
     handleUpdateRole
   } = useRole(id);
@@ -68,8 +70,9 @@ const AddUpdateRole = () => {
             </div>
           </div>
           <button
-            className="w-full max-w-xl rounded-md bg-main-text p-2 text-white md:w-1/2"
+            className="w-full max-w-xl rounded-md bg-main-text p-2 text-white disabled:bg-gray-400 md:w-1/2"
             type="submit"
+            disabled={isUpdateRoleLoading || isCreateRoleLoading}
           >
             Зберегти
           </button>

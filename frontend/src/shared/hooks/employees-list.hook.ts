@@ -2,7 +2,11 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { QUERY_KEYS } from '../../shared/keys/query-keys';
 import { employeesService } from '../../services/employees/employees.service';
 import { IEmployeesPagedList } from '../../services/employees/employees.types';
-import { createOnError, createOnSuccess } from '../../shared/helpers/toast.helpers';
+import {
+  addSuccessToast,
+  createOnError,
+  createOnSuccess
+} from '../../shared/helpers/toast.helpers';
 
 interface IUseEmployeesListReturn {
   employeesList: IEmployeesPagedList | undefined;
@@ -21,7 +25,10 @@ export const useEmployeesList = (page: number, pageSize = 10): IUseEmployeesList
 
   const { mutateAsync: deleteEmployeeById } = useMutation({
     mutationFn: (id: string) => employeesService.deleteEmployee(id),
-    onSuccess: () => queryClient.invalidateQueries(queryKey),
+    onSuccess: () => {
+      addSuccessToast('Працівника видалено');
+      queryClient.invalidateQueries(queryKey);
+    },
     onError: createOnError('Не вдалося видалити працівника')
   });
 

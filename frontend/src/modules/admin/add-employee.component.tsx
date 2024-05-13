@@ -3,7 +3,7 @@ import { useMutation } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { IAddEmployee } from '../../services/employees/employees.types';
 import { employeesService } from '../../services/employees/employees.service';
-import { createOnError } from '../../shared/helpers/toast.helpers';
+import { addInfoToast, addSuccessToast, createOnError } from '../../shared/helpers/toast.helpers';
 import { useRoles } from '../../shared/hooks/roles.hook';
 import Loading from '../../shared/components/loading';
 import Error from '../../shared/components/error';
@@ -11,9 +11,13 @@ import Error from '../../shared/components/error';
 const AddEmployee = () => {
   const { roles, isGetRolesLoading } = useRoles();
   const navigate = useNavigate();
-  const { mutate } = useMutation({
+  const { mutate, isLoading: isAddLoading } = useMutation({
     mutationFn: (employee: IAddEmployee) => employeesService.addEmployee(employee),
-    onSuccess: () => navigate('/employees'),
+    onSuccess: () => {
+      addSuccessToast('Працівника додано');
+      navigate('/employees');
+    },
+    onMutate: () => addInfoToast('Працівник створюється...'),
     onError: createOnError('Не вдалося додати працівника')
   });
   if (isGetRolesLoading) {
@@ -62,8 +66,9 @@ const AddEmployee = () => {
             ))}
           </Field>
           <button
-            className="w-full max-w-xl rounded-md bg-main-text p-2 text-white md:w-1/2"
+            className="w-full max-w-xl rounded-md bg-main-text p-2 text-white disabled:bg-gray-400 md:w-1/2"
             type="submit"
+            disabled={isAddLoading}
           >
             Зберегти
           </button>

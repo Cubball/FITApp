@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { roleService } from '../../services/role/role.service';
 import { ICreateRoleRequest, IPermission, IRole } from '../../services/role/role.types';
 import { QUERY_KEYS } from '../keys/query-keys';
@@ -18,6 +18,7 @@ interface UseRoleReturn {
 
 export const useRole = (id?: string): UseRoleReturn => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { data: permissions, isLoading: arePermissionsLoading } = useQuery({
     queryKey: [QUERY_KEYS.PERMISSIONS],
     queryFn: () => roleService.getPermissions()
@@ -34,6 +35,7 @@ export const useRole = (id?: string): UseRoleReturn => {
     mutationKey: [QUERY_KEYS.MUTATE_ROLE],
     mutationFn: (data: ICreateRoleRequest) => roleService.createRole(data),
     onSuccess: () => {
+      queryClient.invalidateQueries([QUERY_KEYS.ROLES]);
       addSuccessToast('Роль додано');
       navigate('/roles');
     }
@@ -44,6 +46,7 @@ export const useRole = (id?: string): UseRoleReturn => {
     mutationFn: ({ id, data }: { id: string; data: ICreateRoleRequest }) =>
       roleService.updateRole(id, data),
     onSuccess: () => {
+      queryClient.invalidateQueries([QUERY_KEYS.ROLES]);
       addSuccessToast('Роль оновлено');
       navigate('/roles');
     }
