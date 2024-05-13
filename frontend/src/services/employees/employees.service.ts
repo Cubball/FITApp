@@ -34,11 +34,11 @@ class EmployeesService {
   }
 
   public deleteEmployee(id: string): Promise<null> {
-    return this.httpService.delete(`${this.employeesEndpoint}/${id}`);
+    return this.httpService.delete(`${this.usersEndpoint}/${id}`);
   }
 
   public updateEmployeeRole(id: string, employeeRole: IUpdateEmployeeRole) {
-    return this.httpService.put(`${this.employeesEndpoint}/${id}`, employeeRole);
+    return this.httpService.put(`${this.usersEndpoint}/${id}/role`, employeeRole);
   }
 
   public getEmployee(id: string): Promise<IEmployee> {
