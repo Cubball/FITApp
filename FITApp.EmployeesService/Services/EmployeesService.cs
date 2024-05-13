@@ -13,7 +13,8 @@ namespace FITApp.EmployeesService.Services
         IValidator<PositionDto> positionValidator,
         IValidator<EducationDto> educationValidator,
         IValidator<AcademicDegreeDto> academicDegreeDtoValidator,
-        IValidator<AcademicRankDto> academicRankDtoValidator) : IEmployeesService
+        IValidator<AcademicRankDto> academicRankDtoValidator,
+        IValidator<EmployeeDetailsDto> EmployeeDetailsValidator) : IEmployeesService
     {
 
         public async Task CreateEmployee(EmployeeDto employeeDto)
@@ -40,6 +41,14 @@ namespace FITApp.EmployeesService.Services
 
         public async Task<long> UpdateEmployeeDetails(string id, EmployeeDetailsDto employeeDetails)
         {
+            var validationResult = await EmployeeDetailsValidator.ValidateAsync(employeeDetails);
+            // Check if the validation failed
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException("EmployeeDetailsDto validation failed.", validationResult.Errors);
+            }
+
+
             DateOnly newDateFromDateTime = new(employeeDetails.BirthDate!.Value.Year,
                 employeeDetails.BirthDate.Value.Month,
                 employeeDetails.BirthDate.Value.Day);
