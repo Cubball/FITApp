@@ -28,6 +28,8 @@ builder.Services.AddSingleton<IUsersService, UsersService>();
 builder.Services.AddSingleton<IPhotoService, PhotoService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddHealthChecks();
+
 MongoDbClassMapInitializer.RegisterClassMaps();
 MongoDbClassMapInitializer.AddConventionPack();
 var app = builder.Build();
@@ -43,6 +45,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.MapHealthChecks("/_health");
 
 app.UseAuthorization();
 

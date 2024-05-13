@@ -11,6 +11,7 @@ RUN dotnet publish -c Release -o /app ./FITApp.EmployeesService/
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
+RUN apt-get update && apt-get install -y curl
 COPY --from=build /app .
 ENV ASPNETCORE_HTTP_PORTS=5002
 ENTRYPOINT ["dotnet", "FITApp.EmployeesService.dll"]
