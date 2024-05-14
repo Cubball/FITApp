@@ -1,3 +1,43 @@
+# Employees Service
+Employees Service is responsible for storing and managing employees' personal info, including thier name, profile picture, educations, etc.
+
+## Configuration
+The service expects for the following options to be set:
+- JwtOptions:PublicKey - the public RSA key used to verify the access tokens
+- CloudinarySettings:CloudName - Cloudinary cloud name
+- CloudinarySettings:ApiSecret - Cloudinary API secret
+- CloudinarySettings:ApiKey - Cloudinary API key
+- MongoDBSettings:DatabaseName - MongoDB database name
+- MongoDBSettings:ConnectionString - MongoDB connection string
+
+CloudinarySettings are not set in appsettings.\
+JwtOptions, MongoDBSettings:ConnectionString are already set for development only.\
+MongoDBSettings:DatabaseName is already set for both development and production.\
+If needed, you can change any of the already set options.
+You can set options either in appsettings files, environment variables or using dotnet user-secrets.
+
+## Running locally
+### Prerequisites
+- .NET 8 SDK
+- MongoDB database
+- All of the required options
+
+### How to run
+1. Clone the repository
+    ```
+    git clone https://github.com/Cubball/FITApp
+    ```
+1. cd into this folder
+    ```
+    cd FITApp/FITApp.EmployeesService
+    ```
+1. Run the app
+    ```
+    dotnet run
+    ```
+
+After successfully launching the service will listen on http://localhost:5002
+
 ## Controllers Overview
 ### Users Controller
 The Users Controller manages user-related operations such as adding, modifying, and deleting users.
@@ -94,7 +134,7 @@ Responses:
 ```json
 {
     "id": "id",
-    "user": { 
+    "user": {
         "userId": "userId",
         "email": "email",
         "role": "role",
@@ -282,7 +322,7 @@ Responses:
 ```
 {
     "id": "id",
-    "user": { 
+    "user": {
         "userId": "userId",
         "email": "email",
         "role": "role",
@@ -394,7 +434,7 @@ Responses:
 - 401 Unauthorized: User is not authenticated.
 - 403 Forbidden: User does not have permission to delete the position.
 - 404 Not Found: Position not found.
-  
+
 #### Add education information to the user's profile.
 ```
 POST /api/profile/educations
