@@ -15,7 +15,7 @@ const AddAcademicRankModal = ({ isOpen, onClose, onSubmit }: AddAcademicRankModa
       </h2>
       <Formik
         initialValues={{
-          name: '',
+          name: 'Доцент',
           certificateNumber: '',
           dateOfIssue: undefined
         }}
