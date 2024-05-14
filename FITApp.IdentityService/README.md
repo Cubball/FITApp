@@ -1,19 +1,52 @@
 # Identity Service
+Identity Service is responsible for storing and managing users, their roles and roles' permissions.
+It is also responsible for giving out JWT to use when making requests to other services.
+This service also communicates synchronously [Employees Service](../FITApp.EmployeesService) to make sure their data is in sync.
+
 ## Configuration
-The following options need to be set for the service to work properly:
-- JwtOptions:PublicKey - the public key used to verify the access tokens
-- JwtOptions:PrivateKey - the private key used to sign the access tokens
+The service expects for the following options to be set:
+- JwtOptions:PublicKey - the public RSA key used to verify the access tokens
+- JwtOptions:PrivateKey - the private RSA key used to sign the access tokens
 - AdminOptions:Email - the email of the admin user that will be created on the first run
 - AdminOptions:Password - the password of the admin user that will be created on the first run
 - AdminOptions:RoleName - the role of the admin user that will be created on the first run
-- EmailSettings:Email - Google Account email address
+- EmailSettings:Email - Google Account email address for sending the emails
 - EmailSettings:Password - Google Account App Password that is generated in the Google Account settings
+- ConnectionStrings:IdentityDefaultConnection - the connection string for the PostgreSQL database
 - FITAppOptions:BaseUrl - the base URL of the app
+- FITAppOptions:EmployeeServiceBaseUrl - the base URL of the Employees Service
+- FITAppOptions:EmployeeServiceUsersEndpoint - users endpoint in the Employees Service
 
-For development purposes, JwtOptions, AdminOptions and FITAppOptions options are already set in the appsettings.Development.json file.
-However, in a production environment, they should be set securely elsewhere.
+EmailSettings are not set in appsettings.\
+JwtOptions, AdminOptions and ConnectionStrings are already set for development only.\
+FITAppOptions are already set for both development and production.\
+If needed, you can change any of the already set options.
+You can set options either in appsettings files, environment variables or using dotnet user-secrets.
 
-EmailSettings can be set using dotnet user-secrets.
+## Running locally
+### Prerequisites
+- .NET 8 SDK
+- PostgreSQL database
+- All of the required options
+- [Employees Service](../FITApp.EmployeesService) running
+
+### How to run
+1. Clone the repository
+    ```
+    git clone https://github.com/Cubball/FITApp
+    ```
+1. cd into this folder
+    ```
+    cd FITApp/FITApp.IdentityService
+    ```
+1. Run the app
+    ```
+    dotnet run
+    ```
+
+Upon first launch, the service will apply migrations to the database and seed it with the admin user.
+It will also make a request to the [Employees Service](../FITApp.EmployeesService) to add the admin user there as well, so make sure it is running before launching this service.
+After successfully launching the service will listen on http://localhost:5001
 
 ## Endpoints
 ### Auth
