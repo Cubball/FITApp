@@ -227,6 +227,8 @@ namespace FITApp.EmployeesService.Controllers
             }
             try
             {
+                var employee = await _employeeService.GetEmployee(id);
+                if (employee.Photo != "") { long updatedCountPhoto = await _photoService.RemoveEmployeePhoto(id); }
                 long updatedCount = await _photoService.UpdateEmployeePhoto(id, employeePhotoUploadDto);
                 return updatedCount == 0 ? NotFound() : Ok();
             }

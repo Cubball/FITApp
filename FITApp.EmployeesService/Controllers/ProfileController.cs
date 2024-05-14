@@ -205,6 +205,8 @@ public class ProfileController : ControllerBase
         }
         try
         {
+            var employee = await _employeeService.GetEmployee(id);
+            if (employee.Photo != "") { long updatedCountPhoto = await _photoService.RemoveEmployeePhoto(id); }
             long updatedCount = await _photoService.UpdateEmployeePhoto(id, employeePhotoUploadDto);
             return updatedCount == 0 ? NotFound() : Ok();
         }
@@ -214,7 +216,6 @@ public class ProfileController : ControllerBase
             throw;
         }
     }
-
     [HttpDelete("photo")]
     public async Task<IActionResult> RemovePhoto()
     {
