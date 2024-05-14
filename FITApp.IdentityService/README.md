@@ -108,7 +108,7 @@ Returns:
 
 #### Confirming the password reset
 ```
-GET /api/auth/confirm-reset-password?id=string&token=string
+GET /api/auth/reset-password-confirm?id=string&token=string
 ```
 Returns:
 - 200
@@ -139,7 +139,7 @@ Accepts:
 ```json
 {
   "email": "string",
-  "roleName": "string"
+  "roleId": "string"
 }
 ```
 Returns:
@@ -192,7 +192,7 @@ PUT /api/users/{id}/role
 Accepts:
 ```json
 {
-  "roleName": "string"
+  "roleId": "string"
 }
 ```
 Returns:
