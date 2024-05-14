@@ -10,21 +10,29 @@ interface AddPositionModalProps {
 
 const AddPositionModal = ({ isOpen, onClose, onSubmit }: AddPositionModalProps) => {
   const [isCurrentPosition, setIsCurrentPosition] = useState(false);
+  const onModalClose = () => {
+    setIsCurrentPosition(false)
+    onClose();
+  }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onModalClose}>
       <h2 className="border-b border-gray-500 p-2 text-center text-lg font-semibold">
         Додати посаду
       </h2>
       <Formik
         initialValues={{
-          name: '',
+          name: 'Асистент',
           startDate: undefined,
           endDate: undefined
         }}
         onSubmit={(values) => {
+          if (isCurrentPosition) {
+            values.endDate = undefined
+          }
+
           onSubmit(values);
-          onClose();
+          onModalClose();
         }}
       >
         <Form className="gap-5 p-3 *:mb-1 sm:grid sm:grid-cols-2">
@@ -34,6 +42,7 @@ const AddPositionModal = ({ isOpen, onClose, onSubmit }: AddPositionModalProps) 
               name="isCurrentPosition"
               type="checkbox"
               className="h-5 w-5 rounded-md border border-gray-300 p-2"
+              checked={isCurrentPosition}
               onChange={(e) => setIsCurrentPosition(e.target.checked)}
             />
             <label htmlFor="isCurrentPosition" className="ml-2 font-semibold">
@@ -86,7 +95,7 @@ const AddPositionModal = ({ isOpen, onClose, onSubmit }: AddPositionModalProps) 
           <button
             className="w-full rounded-md border border-main-text p-3"
             type="button"
-            onClick={onClose}
+            onClick={onModalClose}
           >
             Скасувати
           </button>
