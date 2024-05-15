@@ -5,9 +5,9 @@ COPY FITApp.EmployeesService/FITApp.EmployeesService.csproj ./FITApp.EmployeesSe
 COPY FITApp.Auth/FITApp.Auth.csproj ./FITApp.Auth/
 RUN dotnet restore ./FITApp.EmployeesService/
 
-COPY FITApp.EmployeesService/ ./FITApp.EmployeesService/
 COPY FITApp.Auth/ ./FITApp.Auth/
-RUN dotnet publish -c Release -o /app ./FITApp.EmployeesService/
+COPY FITApp.EmployeesService/ ./FITApp.EmployeesService/
+RUN dotnet publish -c Release -o /app ./FITApp.EmployeesService/ --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app

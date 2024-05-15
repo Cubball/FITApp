@@ -5,9 +5,9 @@ COPY FITApp.IdentityService/FITApp.IdentityService.csproj ./FITApp.IdentityServi
 COPY FITApp.Auth/FITApp.Auth.csproj ./FITApp.Auth/
 RUN dotnet restore ./FITApp.IdentityService/
 
-COPY FITApp.IdentityService/ ./FITApp.IdentityService/
 COPY FITApp.Auth/ ./FITApp.Auth/
-RUN dotnet publish -c Release -o /app ./FITApp.IdentityService/
+COPY FITApp.IdentityService/ ./FITApp.IdentityService/
+RUN dotnet publish -c Release -o /app ./FITApp.IdentityService/ --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
