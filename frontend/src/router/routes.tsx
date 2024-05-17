@@ -16,6 +16,7 @@ import ForgotPassword from '../modules/auth/forgot-password.component';
 import ConfirmResetPassword from '../modules/auth/confirm-reset-password.component';
 import ChangePassword from '../modules/profile/change-password';
 import GlobalError from '../shared/components/global-error';
+import PublicationsList from '../modules/publications/publications-list.component';
 
 export const publicRoutes = createBrowserRouter([
   {
@@ -125,6 +126,14 @@ export const privateRoutes = createBrowserRouter([
     element: (
       <MainLayout>
         <MyProfile />
+      </MainLayout>
+    )
+  },
+  {
+    path: '/publications',
+    element: (
+      <MainLayout>
+        <PublicationsList />
       </MainLayout>
     )
   },

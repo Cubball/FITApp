@@ -4,6 +4,7 @@ import RolesIcon from '../../assets/icons/roles-icon.svg';
 import AddUserIcon from '../../assets/icons/add-user-icon.svg'
 import AddRoleIcon from '../../assets/icons/add-role-icon.svg';
 import ProfileIcon from '../../assets/icons/profile-icon.svg';
+import PublicationsIcon from '../../assets/icons/publication-icon.svg';
 import PasswordIcon from '../../assets/icons/password-icon.svg';
 import LogoutButton from './logout.button.component';
 import BurgerMenuIcon from '../../assets/icons/burger-menu-icon.svg';
@@ -23,6 +24,7 @@ const Sidebar = () => {
       </button>
       <div className={(expanded ? 'block' : 'hidden') + ' md:block'}>
         <SidebarItem icon={ProfileIcon} text="Мій профіль" route="/profile" />
+        <SidebarItem icon={PublicationsIcon} text="Мої публікації" route="/publications" />
         <SidebarItem icon={UsersIcon} text="Користувачі" route="/employees" requiredPermission={PermissionsEnum.usersRead}/>
         <SidebarItem icon={AddUserIcon} text="Додати користувача" route="/employees/new" requiredPermission={PermissionsEnum.usersCreate}/>
         <SidebarItem icon={RolesIcon} text="Ролі" route="/roles" requiredPermission={PermissionsEnum.rolesRead}/>
