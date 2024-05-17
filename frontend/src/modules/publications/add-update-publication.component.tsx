@@ -50,7 +50,7 @@ const AddUpdatePublication = () => {
       />
       <div className="flex flex-col items-center gap-5 p-5">
         <h1 className="border-b border-gray-300 px-10 pb-1 text-center text-xl font-semibold">
-          {publication ? 'Оновити публікацію' : 'Додати нову пубілкацію'}
+          {publication ? 'Оновити публікацію' : 'Додати нову публікацію'}
         </h1>
         <Formik
           initialValues={{

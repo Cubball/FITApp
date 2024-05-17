@@ -15,7 +15,7 @@ const PublicationEntry = ({ publication, onDelete }: PublicationEntryProps) => {
     <>
       <ConfirmModal
         isOpen={confirmDeleteModalOpen}
-        text={`Ви впевнені що хочете видалити пубілкацію "${publication.name}"?`}
+        text={`Ви впевнені що хочете видалити публікацію "${publication.name}"?`}
         onConfirm={() => onDelete(publication.id)}
         onClose={() => setConfirmDeleteModalOpen(false)}
       />
