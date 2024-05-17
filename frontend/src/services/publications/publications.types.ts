@@ -19,7 +19,7 @@ export interface IPublication {
   annotation: string;
   eVersionLink: string;
   dateOfPublication: string;
-  author: IAuthor;
+  author: IAuthor; // TODO: maybe remove
   coauthors: ICoauthor[];
 }
 
