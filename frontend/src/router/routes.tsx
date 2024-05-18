@@ -19,6 +19,7 @@ import GlobalError from '../shared/components/global-error';
 import PublicationsList from '../modules/publications/publications-list.component';
 import AddUpdatePublication from '../modules/publications/add-update-publication.component';
 import Reports from '../modules/publications/reports.component';
+import Administration from '../modules/admin/administration.component';
 
 export const publicRoutes = createBrowserRouter([
   {
@@ -118,6 +119,17 @@ export const privateRoutes = createBrowserRouter([
       <MainLayout>
         <ProtectedRoute permission={PermissionsEnum.usersRead}>
           <EmployeesList />
+        </ProtectedRoute>
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />,
+  },
+  {
+    path: '/administration',
+    element: (
+      <MainLayout>
+        <ProtectedRoute permission={PermissionsEnum.administrationRead}>
+          <Administration />
         </ProtectedRoute>
       </MainLayout>
     ),
