@@ -3,6 +3,7 @@ export interface IHttpConfig {
   headers?: Record<string, string>;
   params?: unknown;
   data?: unknown;
+  responseType?: string;
   onUploadProgress?: (progressEvent: ProgressEvent) => void;
 }
 
