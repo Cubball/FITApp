@@ -56,6 +56,8 @@ const AddUpdatePublication = () => {
           initialValues={{
             name: publication?.name ?? '',
             type: publication?.type ?? '',
+            pagesCount: publication?.pagesCount ?? 0,
+            pagesByAuthorCount: publication?.pagesByAuthorCount ?? 0,
             annotation: publication?.annotation ?? '',
             eVersionLink: publication?.eVersionLink ?? '',
             dateOfPublication: publication?.dateOfPublication ?? ''
@@ -102,6 +104,24 @@ const AddUpdatePublication = () => {
               <option value="Статті">Статті</option>
               <option value="Інше">Інше</option>
             </Field>
+            <Field
+              id="pagesCount"
+              name="pagesCount"
+              placeholder="Введіть кількість сторінок в публікації"
+              type="number"
+              min={0}
+              required
+              className="w-full max-w-xl rounded-md border border-gray-300 p-2 md:w-1/2"
+            />
+            <Field
+              id="pagesByAuthorCount"
+              name="pagesByAuthorCount"
+              placeholder="Введіть кількість сторінок в публікації, написаних Вами"
+              type="number"
+              min={0}
+              required
+              className="w-full max-w-xl rounded-md border border-gray-300 p-2 md:w-1/2"
+            />
             <Field
               id="annotation"
               name="annotation"

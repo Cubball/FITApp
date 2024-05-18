@@ -16,16 +16,19 @@ export interface IPublication {
   id: string;
   name: string;
   type: string;
+  pagesCount: number;
+  pagesByAuthorCount: number;
   annotation: string;
   eVersionLink: string;
   dateOfPublication: string;
-  author: IAuthor; // TODO: maybe remove
   coauthors: ICoauthor[];
 }
 
 export interface ICreateUpdatePublication {
   name: string;
   type: string;
+  pagesCount: number;
+  pagesByAuthorCount: number;
   annotation: string;
   eVersionLink: string;
   dateOfPublication: string;
