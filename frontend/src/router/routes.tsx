@@ -18,6 +18,7 @@ import ChangePassword from '../modules/profile/change-password';
 import GlobalError from '../shared/components/global-error';
 import PublicationsList from '../modules/publications/publications-list.component';
 import AddUpdatePublication from '../modules/publications/add-update-publication.component';
+import Reports from '../modules/publications/reports.component';
 
 export const publicRoutes = createBrowserRouter([
   {
@@ -127,6 +128,15 @@ export const privateRoutes = createBrowserRouter([
     element: (
       <MainLayout>
         <MyProfile />
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />,
+  },
+  {
+    path: '/reports',
+    element: (
+      <MainLayout>
+        <Reports />
       </MainLayout>
     ),
     errorElement: <GlobalError />,
