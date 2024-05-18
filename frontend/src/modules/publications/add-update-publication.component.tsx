@@ -80,66 +80,84 @@ const AddUpdatePublication = () => {
           }}
         >
           <Form className="flex w-full flex-col items-center gap-5">
-            <Field
-              id="name"
-              name="name"
-              placeholder="Введіть назву"
-              required
-              className="w-full max-w-xl rounded-md border border-gray-300 p-2 md:w-1/2"
-            />
-            <Field
-              id="type"
-              name="type"
-              as="select"
-              required
-              className="w-full max-w-xl rounded-md border border-gray-300 p-2 md:w-1/2"
-            >
-              <option value="" disabled hidden>
-                Оберіть тип
-              </option>
-              <option value="Підручник">Підручник</option>
-              <option value="Навчальні посібники">Навчальні посібники</option>
-              <option value="Методичні рекомендації">Методичні рекомендації</option>
-              <option value="Монографія">Монографія</option>
-              <option value="Статті">Статті</option>
-              <option value="Інше">Інше</option>
-            </Field>
-            <Field
-              id="pagesCount"
-              name="pagesCount"
-              placeholder="Введіть кількість сторінок в публікації"
-              type="number"
-              min={0}
-              required
-              className="w-full max-w-xl rounded-md border border-gray-300 p-2 md:w-1/2"
-            />
-            <Field
-              id="pagesByAuthorCount"
-              name="pagesByAuthorCount"
-              placeholder="Введіть кількість сторінок в публікації, написаних Вами"
-              type="number"
-              min={0}
-              required
-              className="w-full max-w-xl rounded-md border border-gray-300 p-2 md:w-1/2"
-            />
-            <Field
-              id="annotation"
-              name="annotation"
-              placeholder="Введіть анотацію"
-              required
-              as="textarea"
-              className="w-full max-w-xl rounded-md border border-gray-300 p-2 md:w-1/2"
-            />
-            <Field
-              id="eVersionLink"
-              name="eVersionLink"
-              placeholder="Введіть посилання на електронну версію"
-              required
-              className="w-full max-w-xl rounded-md border border-gray-300 p-2 md:w-1/2"
-            />
+            <div className="w-full max-w-xl md:w-1/2">
+              <label htmlFor="name">Назва:</label>
+              <Field
+                id="name"
+                name="name"
+                placeholder="Введіть назву"
+                required
+                className="w-full rounded-md border border-gray-300 p-2"
+              />
+            </div>
+            <div className="w-full max-w-xl md:w-1/2">
+              <label htmlFor="type">Тип:</label>
+              <Field
+                id="type"
+                name="type"
+                as="select"
+                required
+                className="w-full rounded-md border border-gray-300 p-2"
+              >
+                <option value="" disabled hidden>
+                  Оберіть тип
+                </option>
+                <option value="Підручник">Підручник</option>
+                <option value="Навчальні посібники">Навчальні посібники</option>
+                <option value="Методичні рекомендації">Методичні рекомендації</option>
+                <option value="Монографія">Монографія</option>
+                <option value="Статті">Статті</option>
+                <option value="Інше">Інше</option>
+              </Field>
+            </div>
+            <div className="w-full max-w-xl md:w-1/2">
+              <label htmlFor="pagesCount">Кількість сторінок:</label>
+              <Field
+                id="pagesCount"
+                name="pagesCount"
+                placeholder="Введіть кількість сторінок в публікації"
+                type="number"
+                min={0}
+                required
+                className="w-full rounded-md border border-gray-300 p-2"
+              />
+            </div>
+            <div className="w-full max-w-xl md:w-1/2">
+              <label htmlFor="pagesByAuthorCount">Кількість сторінок, написаних Вами:</label>
+              <Field
+                id="pagesByAuthorCount"
+                name="pagesByAuthorCount"
+                placeholder="Введіть кількість сторінок в публікації, написаних Вами"
+                type="number"
+                min={0}
+                required
+                className="w-full rounded-md border border-gray-300 p-2"
+              />
+            </div>
+            <div className="w-full max-w-xl md:w-1/2">
+              <label htmlFor="annotation">Анотація:</label>
+              <Field
+                id="annotation"
+                name="annotation"
+                placeholder="Введіть анотацію"
+                required
+                as="textarea"
+                className="w-full rounded-md border border-gray-300 p-2"
+              />
+            </div>
+            <div className="w-full max-w-xl md:w-1/2">
+              <label htmlFor="eVersionLink">Посилання на електронну версію:</label>
+              <Field
+                id="eVersionLink"
+                name="eVersionLink"
+                placeholder="Введіть посилання на електронну версію"
+                required
+                className="w-full rounded-md border border-gray-300 p-2"
+              />
+            </div>
             <div className="w-full max-w-xl md:w-1/2">
               <label htmlFor="dateOfPublication" className="block">
-                Введіть дату публікації:
+                Дата публікації:
               </label>
               <Field
                 id="dateOfPublication"
