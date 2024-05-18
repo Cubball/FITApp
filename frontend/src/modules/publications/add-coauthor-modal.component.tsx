@@ -65,7 +65,7 @@ const AddCoauthorModal = ({ isOpen, onAdd, onClose, employees }: AddCoauthorModa
                 if (employee.firstName && employee.lastName && employee.patronymic) {
                   displayName = `${employee.lastName} ${employee.firstName} ${employee.patronymic}`;
                 }
-                return <option value={employee.id}>{displayName}</option>;
+                return <option value={employee.id} key={employee.id}>{displayName}</option>;
               })}
             </Field>
           ) : (
