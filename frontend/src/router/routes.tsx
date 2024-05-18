@@ -16,6 +16,10 @@ import ForgotPassword from '../modules/auth/forgot-password.component';
 import ConfirmResetPassword from '../modules/auth/confirm-reset-password.component';
 import ChangePassword from '../modules/profile/change-password';
 import GlobalError from '../shared/components/global-error';
+import PublicationsList from '../modules/publications/publications-list.component';
+import AddUpdatePublication from '../modules/publications/add-update-publication.component';
+import Reports from '../modules/publications/reports.component';
+import Administration from '../modules/admin/administration.component';
 
 export const publicRoutes = createBrowserRouter([
   {
@@ -118,7 +122,18 @@ export const privateRoutes = createBrowserRouter([
         </ProtectedRoute>
       </MainLayout>
     ),
-    errorElement: <GlobalError />
+    errorElement: <GlobalError />,
+  },
+  {
+    path: '/administration',
+    element: (
+      <MainLayout>
+        <ProtectedRoute permission={PermissionsEnum.administrationRead}>
+          <Administration />
+        </ProtectedRoute>
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />,
   },
   {
     path: '/profile',
@@ -126,7 +141,44 @@ export const privateRoutes = createBrowserRouter([
       <MainLayout>
         <MyProfile />
       </MainLayout>
-    )
+    ),
+    errorElement: <GlobalError />,
+  },
+  {
+    path: '/reports',
+    element: (
+      <MainLayout>
+        <Reports />
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />,
+  },
+  {
+    path: '/publications/new',
+    element: (
+      <MainLayout>
+        <AddUpdatePublication />
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />,
+  },
+  {
+    path: '/publications/:publicationId',
+    element: (
+      <MainLayout>
+        <AddUpdatePublication />
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />,
+  },
+  {
+    path: '/publications',
+    element: (
+      <MainLayout>
+        <PublicationsList />
+      </MainLayout>
+    ),
+    errorElement: <GlobalError />,
   },
   {
     path: '/roles/new',

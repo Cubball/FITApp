@@ -7,7 +7,9 @@ export enum PermissionsEnum {
   rolesCreate = 'roles_create',
   rolesRead = 'roles_read',
   rolesUpdate = 'roles_update',
-  rolesDelete = 'roles_delete'
+  rolesDelete = 'roles_delete',
+  administrationRead = 'administration_read',
+  administrationUpdate = 'administration_update',
 }
 
 export interface IRoleShortInfo {
