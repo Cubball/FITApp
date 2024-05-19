@@ -10,14 +10,14 @@ namespace FITApp.PublicationsService.Services
     public class PublicationsService : IPublicationsService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IConfiguration _configuration;
+        private readonly HttpClient _httpClient;
 
-        public PublicationsService(IUnitOfWork unitOfWork, IHttpClientFactory httpClientFactory, IConfiguration configuration)
+
+        public PublicationsService(IUnitOfWork unitOfWork, HttpClient httpClient)
         {
             _unitOfWork = unitOfWork;
-            _httpClientFactory = httpClientFactory;
-            _configuration = configuration;
+            _httpClient = httpClient;
+
         }
 
         public async Task CreateAsync(UpsertPublicationDTO publicationDTO, string userId)
@@ -25,9 +25,7 @@ namespace FITApp.PublicationsService.Services
             var author = await _unitOfWork.AuthorRepository.GetAsync(userId);
             if (author == null)
             {
-                var client = _httpClientFactory.CreateClient();
-                client.BaseAddress = new Uri(_configuration["EmployeesServiceUrl"]!);
-                Author response = await client.GetFromJsonAsync<Author>($"/{userId}");
+                Author response = await _httpClient.GetFromJsonAsync<Author>($"/api/employees/{userId}");
                 await _unitOfWork.AuthorRepository.CreateAsync(response!);
             }
 
