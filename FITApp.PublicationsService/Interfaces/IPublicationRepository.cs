@@ -7,7 +7,7 @@ namespace FITApp.PublicationsService.Interfaces
     {
         Task<Publication> GetByIdAsync(ObjectId id);
 
-        Task<IEnumerable<Publication>> GetByAuthor(string authorId);
+        Task<IEnumerable<Publication>> GetByAuthor(string authorId, int pageNumber, int pageSize);
 
         Task Create(Publication publication);
 
