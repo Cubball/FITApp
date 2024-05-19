@@ -2,6 +2,8 @@ using FITApp.PublicationsService.Contracts;
 using FITApp.PublicationsService.Contracts.Requests;
 using FITApp.PublicationsService.Contracts.Responses;
 using FITApp.PublicationsService.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace FITApp.PublicationsService.Helpers
 {
@@ -69,6 +71,21 @@ namespace FITApp.PublicationsService.Helpers
                 LastName = authorDTO.LastName,
                 Patronymic = authorDTO.Patronymic
             };
+        }
+
+        public static string GetUserId(this ControllerBase controller)
+        {
+            return controller.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        }
+
+        public static bool Validate(this UpsertPublicationDTO publicationDTO)
+        {
+            return publicationDTO != null
+                && !string.IsNullOrEmpty(publicationDTO.Name)
+                && !string.IsNullOrEmpty(publicationDTO.Type)
+                && publicationDTO.DateOfPublication != null
+                && publicationDTO.PagesCount > 0
+                && publicationDTO.PagesByAuthorCount > 0;
         }
     }
 }
