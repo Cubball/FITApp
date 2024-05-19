@@ -1,5 +1,4 @@
 using FITApp.PublicationsService.Contracts.Requests;
-using FITApp.PublicationsService.Exceptions;
 using FITApp.PublicationsService.Helpers;
 using FITApp.PublicationsService.Interfaces;
 
