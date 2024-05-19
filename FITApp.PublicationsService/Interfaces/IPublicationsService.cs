@@ -13,6 +13,6 @@ namespace FITApp.PublicationsService.Interfaces
 
         Task<FullPublication> GetById(string id);
 
-        Task<AllPublicationsDTO> GetAll(int pageNumber, int pageSize);
+        Task<AllPublicationsDTO> GetAll(string userId, int pageNumber, int pageSize);
     }
 }
