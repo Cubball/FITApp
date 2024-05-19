@@ -4,12 +4,12 @@ namespace FITApp.PublicationsService.Interfaces
 {
     public interface IAuthorRepository
     {
-        Task<Author> Get(string id);
+        Task<Author> GetAsync(string id);
 
-        Task Create(Author author);
+        Task CreateAsync(Author author);
 
-        Task Update(string id, Author author);
+        Task UpdateAsync(string id, Author author);
 
-        Task Delete(string id);
+        Task DeleteAsync(string id);
     }
 }

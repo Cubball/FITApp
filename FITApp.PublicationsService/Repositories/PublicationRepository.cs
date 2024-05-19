@@ -9,17 +9,17 @@ namespace FITApp.PublicationsService.Repositories
     {
         const string CollectionName = "publications";
         private readonly IMongoCollection<Publication> _collection = database.GetCollection<Publication>(CollectionName);
-        public async Task Create(Publication publication)
+        public async Task CreateAsync(Publication publication)
         {
             await _collection.InsertOneAsync(publication);
         }
 
-        public async Task Delete(ObjectId id)
+        public async Task DeleteAsync(ObjectId id)
         {
             await _collection.DeleteOneAsync<Publication>(p => p.Id == id);
         }
 
-        public async Task<IEnumerable<Publication>> GetByAuthor(string authorId, int pageNumber, int pageSize)
+        public async Task<IEnumerable<Publication>> GetByAuthorAsync(string authorId, int pageNumber, int pageSize)
         {
             return await _collection.Find<Publication>(p => p.AuthorId == authorId)
             .Skip((pageNumber - 1) * pageSize)
@@ -32,7 +32,7 @@ namespace FITApp.PublicationsService.Repositories
             return await _collection.Find<Publication>(p => p.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task Update(ObjectId id, Publication publication)
+        public async Task UpdateAsync(ObjectId id, Publication publication)
         {
             await _collection.UpdateOneAsync<Publication>(p => p.Id == id, Builders<Publication>.Update
                                                             .Set(p => p.Name, publication.Name)
