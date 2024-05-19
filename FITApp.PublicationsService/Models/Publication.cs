@@ -17,7 +17,7 @@ namespace FITApp.PublicationsService.Models
     [BsonIgnore]
     public Author Author { get; set; } = null!;
 
-    public ICollection<Coauthor> Coauthors { get; set; } = null!;
+    public ICollection<Coauthor>? Coauthors { get; set; } = null!;
 
     public string Annotation { get; set; } = null!;
 

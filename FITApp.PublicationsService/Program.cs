@@ -17,6 +17,8 @@ builder.Services.AddSingleton(database);
 builder.Services.AddScoped<IPublicationRepository, PublicationRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPublicationsService, PublicationsService>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddHeaderPropagation(o => o.Headers.Add(HeaderNames.Authorization));
 builder.Services.AddHttpClient<IPublicationsService, PublicationsService>(o => o.BaseAddress = new Uri(builder.Configuration["EmployeesServiceUrl"]))
     .AddHeaderPropagation();
