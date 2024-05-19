@@ -9,6 +9,8 @@ namespace FITApp.PublicationsService.Models
 
     public string Name { get; set; } = null!;
 
+    public string Type { get; set; }
+
     public string AuthorId { get; set; } = null!;
 
     // This is for joining later
@@ -20,6 +22,10 @@ namespace FITApp.PublicationsService.Models
     public string Annotation { get; set; } = null!;
 
     public string EVersionLink { get; set; } = null!;
+
+    public int PagesTotal { get; set; }
+
+    public int PagesByAuthor { get; set; }
 
     public DateOnly DateOfPublication { get; set; }
 }
