@@ -19,12 +19,15 @@ namespace FITApp.PublicationsService.Repositories
             await _collection.DeleteOneAsync<Publication>(p => p.Id == id);
         }
 
-        public async Task<IEnumerable<Publication>> GetByAuthorAsync(string authorId, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<Publication>, int)> GetByAuthorAsync(string authorId, int pageNumber, int pageSize)
         {
-            return await _collection.Find<Publication>(p => p.AuthorId == authorId)
+            int total = (int)await _collection.CountDocumentsAsync<Publication>(p => p.AuthorId == authorId);
+            var publications = await _collection.Find<Publication>(p => p.AuthorId == authorId)
             .Skip((pageNumber - 1) * pageSize)
             .Limit(pageSize)
             .ToListAsync();
+
+            return (publications, total);
         }
 
         public async Task<Publication> GetByIdAsync(ObjectId id)
