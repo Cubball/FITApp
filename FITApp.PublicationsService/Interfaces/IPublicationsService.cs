@@ -7,11 +7,11 @@ namespace FITApp.PublicationsService.Interfaces
     {
         Task CreateAsync(UpsertPublicationDTO publicationDTO, string userId);
 
-        Task UpdateAsync(string id, UpsertPublicationDTO publicationDTO);
+        Task UpdateAsync(string id, UpsertPublicationDTO publicationDTO, string userId);
 
-        Task DeleteAsync(string id);
+        Task DeleteAsync(string id, string userId);
 
-        Task<FullPublication> GetById(string id);
+        Task<FullPublication> GetById(string id, string userId);
 
         Task<AllPublicationsDTO> GetAll(string userId, int pageNumber, int pageSize);
     }
