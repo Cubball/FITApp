@@ -87,5 +87,13 @@ namespace FITApp.PublicationsService.Helpers
                 && publicationDTO.PagesCount > 0
                 && publicationDTO.PagesByAuthorCount > 0;
         }
+
+        public static bool Validate(this AuthorDTO authorDTO)
+        {
+            return authorDTO != null
+                && !string.IsNullOrEmpty(authorDTO.FirstName)
+                && !string.IsNullOrEmpty(authorDTO.LastName)
+                && !string.IsNullOrEmpty(authorDTO.Patronymic);
+        }
     }
 }
