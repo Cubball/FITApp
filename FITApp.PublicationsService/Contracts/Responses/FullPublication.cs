@@ -12,7 +12,7 @@ namespace FITApp.PublicationsService.Contracts.Responses
 
         public string EVersionLink { get; set; }
 
-        public DateTime DateOfPublication { get; set; }
+        public DateOnly DateOfPublication { get; set; }
 
         public int PagesCount { get; set; }
 
