@@ -7,12 +7,12 @@ namespace FITApp.PublicationsService.Interfaces
     {
         Task<Publication> GetByIdAsync(ObjectId id);
 
-        Task<IEnumerable<Publication>> GetByAuthor(string authorId, int pageNumber, int pageSize);
+        Task<IEnumerable<Publication>> GetByAuthorAsync(string authorId, int pageNumber, int pageSize);
 
-        Task Create(Publication publication);
+        Task CreateAsync(Publication publication);
 
-        Task Update(ObjectId id, Publication publication);
+        Task UpdateAsync(ObjectId id, Publication publication);
 
-        Task Delete(ObjectId id);
+        Task DeleteAsync(ObjectId id);
     }
 }
