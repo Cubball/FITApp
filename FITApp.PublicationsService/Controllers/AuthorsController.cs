@@ -1,7 +1,6 @@
 using FITApp.Auth.Attributes;
 using FITApp.Auth.Data;
 using FITApp.PublicationsService.Contracts.Requests;
-using FITApp.PublicationsService.Exceptions;
 using FITApp.PublicationsService.Helpers;
 using FITApp.PublicationsService.Interfaces;
 using Microsoft.AspNetCore.Authorization;
