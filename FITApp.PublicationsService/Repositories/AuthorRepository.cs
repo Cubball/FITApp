@@ -8,24 +8,27 @@ namespace FITApp.PublicationsService.Repositories
     {
         const string CollectionName = "authors";
         private readonly IMongoCollection<Author> _collection = database.GetCollection<Author>(CollectionName);
-        public Task CreateAsync(Author author)
+        public async Task CreateAsync(Author author)
         {
-            throw new NotImplementedException();
+            await _collection.InsertOneAsync(author);
         }
 
-        public Task DeleteAsync(string id)
+        public async Task DeleteAsync(string id)
         {
-            throw new NotImplementedException();
+            await _collection.DeleteOneAsync<Author>(a => a.Id == id);
         }
 
-        public Task<Author> GetAsync(string id)
+        public async Task<Author> GetAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _collection.Find<Author>(a => a.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task UpdateAsync(string id, Author author)
+        public async Task UpdateAsync(string id, Author author)
         {
-            throw new NotImplementedException();
+            await _collection.UpdateOneAsync<Author>(a => a.Id == id, Builders<Author>.Update
+                                                        .Set(a => a.FirstName, author.FirstName)
+                                                        .Set(a => a.LastName, author.LastName)
+                                                        .Set(a => a.Patronymic, author.Patronymic));
         }
 
     }
