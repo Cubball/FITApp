@@ -1,12 +1,15 @@
 using FITApp.PublicationsService.Contracts.Requests;
 using FITApp.PublicationsService.Contracts.Responses;
+using FITApp.PublicationsService.Exceptions;
 using FITApp.PublicationsService.Helpers;
 using FITApp.PublicationsService.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FITApp.PublicationsService.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class PublicationsController(IPublicationsService publicationsService) : ControllerBase
     {
@@ -33,8 +36,21 @@ namespace FITApp.PublicationsService.Controllers
                 return BadRequest();
             }
 
-            var result = await _publicationsService.GetById(id);
-            return Ok(result);
+            var userId = this.GetUserId();
+
+            try
+            {
+                var result = await _publicationsService.GetById(id, userId);
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (NotAllowedException)
+            {
+                return Forbid();
+            }
         }
 
         [HttpPost]
@@ -58,20 +74,48 @@ namespace FITApp.PublicationsService.Controllers
                 return BadRequest();
             }
 
-            await _publicationsService.DeleteAsync(id);
-            return Ok();
+            var userId = this.GetUserId();
+            try
+            {
+                await _publicationsService.DeleteAsync(id, userId);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (NotAllowedException)
+            {
+                return Forbid();
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(string id, [FromBody] UpsertPublicationDTO publicationDTO)
+        public async Task<ActionResult> Update(
+            string id,
+            [FromBody] UpsertPublicationDTO publicationDTO
+        )
         {
             if (string.IsNullOrEmpty(id) || !publicationDTO.Validate())
             {
                 return BadRequest();
             }
 
-            await _publicationsService.UpdateAsync(id, publicationDTO);
-            return Ok();
+            var userId = this.GetUserId();
+
+            try
+            {
+                await _publicationsService.UpdateAsync(id, publicationDTO, userId);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (NotAllowedException)
+            {
+                return Forbid();
+            }
         }
     }
 }

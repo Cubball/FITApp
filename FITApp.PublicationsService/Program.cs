@@ -1,6 +1,7 @@
 using FITApp.PublicationsService.Interfaces;
 using FITApp.PublicationsService.Repositories;
 using FITApp.PublicationsService.Services;
+using FITApp.Auth.Extensions;
 using Microsoft.Net.Http.Headers;
 using MongoDB.Driver;
 
@@ -11,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+var jwtPublicKey = builder.Configuration["JwtOptions:PublicKey"] ?? throw new InvalidOperationException("JwtOptions:PublicKey is not set");
+builder.Services.AddJWTAuth(jwtPublicKey);
 MongoClient client = new MongoClient(builder.Configuration["MongoSettings:ConnectionString"]);
 var database = client.GetDatabase(builder.Configuration["MongoSettings:DatabaseName"]);
 builder.Services.AddSingleton(database);

@@ -1,5 +1,6 @@
 using FITApp.PublicationsService.Contracts.Requests;
 using FITApp.PublicationsService.Contracts.Responses;
+using FITApp.PublicationsService.Exceptions;
 using FITApp.PublicationsService.Helpers;
 using FITApp.PublicationsService.Interfaces;
 using FITApp.PublicationsService.Models;
@@ -34,9 +35,21 @@ namespace FITApp.PublicationsService.Services
             await _unitOfWork.PublicationRepository.CreateAsync(publication);
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(string id, string userId)
         {
-            await _unitOfWork.PublicationRepository.DeleteAsync(ObjectId.Parse(id));
+            var objectId = ObjectId.Parse(id);
+            var publication = await _unitOfWork.PublicationRepository.GetByIdAsync(objectId);
+            if (publication == null)
+            {
+                throw new NotFoundException("Publication not found");
+            }
+
+            if (publication.AuthorId != userId)
+            {
+                throw new NotAllowedException("You are not allowed to delete this publication");
+            }
+
+            await _unitOfWork.PublicationRepository.DeleteAsync(objectId);
         }
 
         public async Task<AllPublicationsDTO> GetAll(string userId, int pageNumber, int pageSize)
@@ -53,14 +66,36 @@ namespace FITApp.PublicationsService.Services
             return result;
         }
 
-        public async Task<FullPublication> GetById(string id)
+        public async Task<FullPublication> GetById(string id, string userId)
         {
             var publication = await _unitOfWork.PublicationRepository.GetByIdAsync(ObjectId.Parse(id));
+            if (publication == null)
+            {
+                throw new NotFoundException("Publication not found");
+            }
+
+            if (publication.AuthorId != userId)
+            {
+                throw new NotAllowedException("You are not allowed to view this publication");
+            }
+
             return publication.Map();
         }
 
-        public async Task UpdateAsync(string id, UpsertPublicationDTO publicationDTO)
+        public async Task UpdateAsync(string id, UpsertPublicationDTO publicationDTO, string userId)
         {
+            var objectId = ObjectId.Parse(id);
+            var publicationCheck = await _unitOfWork.PublicationRepository.GetByIdAsync(objectId);
+            if (publicationCheck == null)
+            {
+                throw new NotFoundException("Publication not found");
+            }
+
+            if (publicationCheck.AuthorId != userId)
+            {
+                throw new NotAllowedException("You are not allowed to update this publication");
+            }
+
             var publication = publicationDTO.Map();
             await _unitOfWork.PublicationRepository.UpdateAsync(ObjectId.Parse(id), publication);
         }
