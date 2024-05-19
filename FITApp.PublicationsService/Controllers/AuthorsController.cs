@@ -24,15 +24,8 @@ namespace FITApp.PublicationsService.Controllers
                 return BadRequest();
             }
 
-            try
-            {
-                await _authorService.UpdateAsync(id, authorDTO);
-                return Ok();
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
+            await _authorService.UpdateAsync(id, authorDTO);
+            return Ok();
         }
 
         [HttpPut]

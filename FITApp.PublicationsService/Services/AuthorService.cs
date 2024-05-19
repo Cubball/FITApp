@@ -17,10 +17,10 @@ namespace FITApp.PublicationsService.Services
 
         public async Task UpdateAsync(string id, AuthorDTO authorDTO)
         {
-            var publication = await _unitOfWork.AuthorRepository.GetAsync(id);
-            if (publication == null)
+            var author = await _unitOfWork.AuthorRepository.GetAsync(id);
+            if (author == null)
             {
-                throw new NotFoundException("Author not found");
+                return;
             }
 
             await _unitOfWork.AuthorRepository.UpdateAsync(id, authorDTO.Map());
