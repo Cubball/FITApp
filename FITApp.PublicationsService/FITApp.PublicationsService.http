@@ -1,0 +1,6 @@
+@FITApp.PublicationsService_HostAddress = http://localhost:5087
+
+GET {{FITApp.PublicationsService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
