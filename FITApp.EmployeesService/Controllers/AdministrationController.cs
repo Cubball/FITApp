@@ -25,9 +25,26 @@ namespace FITApp.EmployeesService.Controllers
         [RequiresPermission(Permissions.AdministrationUpdate)]
         public async Task<ActionResult> UpdateAsync([FromBody] AdministrationDto administrationDto)
         {
+            if (!Validate(administrationDto))
+            {
+                return BadRequest();
+            }
+
             await _administrationService.UpdateAsync(administrationDto);
             return Ok();
         }
+
+        private static bool Validate(AdministrationDto administrationDto)
+        {
+            return administrationDto != null
+                   && !string.IsNullOrWhiteSpace(administrationDto.HeadOfDepartment.FirstName)
+                   && !string.IsNullOrWhiteSpace(administrationDto.HeadOfDepartment.LastName)
+                   && !string.IsNullOrWhiteSpace(administrationDto.HeadOfDepartment.Patronymic)
+                   && !string.IsNullOrWhiteSpace(administrationDto.ScientificSecretary.FirstName)
+                   && !string.IsNullOrWhiteSpace(administrationDto.ScientificSecretary.LastName)
+                   && !string.IsNullOrWhiteSpace(administrationDto.ScientificSecretary.Patronymic);
+        }
+
 
     }
 }

@@ -23,9 +23,11 @@ builder.Services.AddValidatorsFromAssemblyContaining<PositionDtoValidator>(Servi
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBSettings"));
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
+builder.Services.AddSingleton<IAdministrationRepository, AdministrationRepository>();
 builder.Services.AddSingleton<IEmployeesService, EmployeesService>();
 builder.Services.AddSingleton<IUsersService, UsersService>();
 builder.Services.AddSingleton<IPhotoService, PhotoService>();
+builder.Services.AddSingleton<IAdministrationService, AdministrationService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddHealthChecks();
