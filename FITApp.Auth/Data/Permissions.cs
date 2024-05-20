@@ -35,4 +35,7 @@ public static class Permissions
 
     [PermissionDescription("Видалення ролей")]
     public const string RolesDelete = "roles_delete";
+
+    [PermissionDescription("Зміна даних адміністрації")]
+    public const string AdministrationUpdate = "administration_update";
 }
