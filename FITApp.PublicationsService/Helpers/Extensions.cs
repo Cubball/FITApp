@@ -81,19 +81,23 @@ namespace FITApp.PublicationsService.Helpers
         public static bool Validate(this UpsertPublicationDTO publicationDTO)
         {
             return publicationDTO != null
-                && !string.IsNullOrEmpty(publicationDTO.Name)
-                && !string.IsNullOrEmpty(publicationDTO.Type)
-                && publicationDTO.DateOfPublication != null
+                && !string.IsNullOrWhiteSpace(publicationDTO.Name)
+                && !string.IsNullOrWhiteSpace(publicationDTO.Type)
+                && !string.IsNullOrWhiteSpace(publicationDTO.Annotation)
+                && !string.IsNullOrWhiteSpace(publicationDTO.EVersionLink)
+                && publicationDTO.DateOfPublication < DateTime.Now
+                && publicationDTO.DateOfPublication != default
                 && publicationDTO.PagesCount > 0
-                && publicationDTO.PagesByAuthorCount > 0;
+                && publicationDTO.PagesByAuthorCount > 0
+                && publicationDTO.PagesByAuthorCount <= publicationDTO.PagesCount;
         }
 
         public static bool Validate(this AuthorDTO authorDTO)
         {
             return authorDTO != null
-                && !string.IsNullOrEmpty(authorDTO.FirstName)
-                && !string.IsNullOrEmpty(authorDTO.LastName)
-                && !string.IsNullOrEmpty(authorDTO.Patronymic);
+                && !string.IsNullOrWhiteSpace(authorDTO.FirstName)
+                && !string.IsNullOrWhiteSpace(authorDTO.LastName)
+                && !string.IsNullOrWhiteSpace(authorDTO.Patronymic);
         }
     }
 }
