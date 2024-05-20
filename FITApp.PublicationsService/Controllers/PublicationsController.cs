@@ -16,15 +16,15 @@ namespace FITApp.PublicationsService.Controllers
         private readonly IPublicationsService _publicationsService = publicationsService;
 
         [HttpGet]
-        public async Task<ActionResult<AllPublicationsDTO>> GetAll(int pageNumber, int pageSize)
+        public async Task<ActionResult<AllPublicationsDTO>> GetAll(int page, int pageSize)
         {
-            if (pageNumber < 1 || pageSize < 1)
+            if (page < 1 || pageSize < 1)
             {
                 return BadRequest();
             }
 
             var userId = this.GetUserId();
-            var result = await _publicationsService.GetAll(userId, pageNumber, pageSize);
+            var result = await _publicationsService.GetAll(userId, page, pageSize);
             return Ok(result);
         }
 

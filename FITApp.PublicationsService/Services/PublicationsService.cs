@@ -31,6 +31,7 @@ namespace FITApp.PublicationsService.Services
             }
 
             Publication publication = publicationDTO.Map();
+            publication.AuthorId = userId;
 
             await _unitOfWork.PublicationRepository.CreateAsync(publication);
         }

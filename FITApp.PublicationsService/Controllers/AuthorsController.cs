@@ -10,6 +10,7 @@ namespace FITApp.PublicationsService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AuthorsController(IAuthorService authorService) : ControllerBase
     {
         private readonly IAuthorService _authorService = authorService;
@@ -28,7 +29,6 @@ namespace FITApp.PublicationsService.Controllers
         }
 
         [HttpPut]
-        [Authorize]
         public async Task<ActionResult> Update([FromBody] AuthorDTO authorDTO)
         {
             if (!authorDTO.Validate())
