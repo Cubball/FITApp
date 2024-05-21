@@ -1,10 +1,12 @@
 using FITApp.PublicationsService.Contracts.Requests;
 using FITApp.PublicationsService.Contracts.Responses;
+using FITApp.PublicationsService.Documents;
 using FITApp.PublicationsService.Exceptions;
 using FITApp.PublicationsService.Helpers;
 using FITApp.PublicationsService.Interfaces;
 using FITApp.PublicationsService.Models;
 using MongoDB.Bson;
+using QuestPDF.Fluent;
 
 namespace FITApp.PublicationsService.Services
 {
@@ -116,16 +118,27 @@ namespace FITApp.PublicationsService.Services
                 new DateOnly(startDate.Year, startDate.Month, startDate.Day),
                 new DateOnly(endDate.Year, endDate.Month, endDate.Day)
             );
-            var author = _httpClient.GetFromJsonAsync<Author>("/api/profile");
+            var author = await _httpClient.GetFromJsonAsync<Author>("/api/profile");
 
-            var dtos = publications.Select(async p =>
+            var dtosTasks = publications.Select(async p =>
             {
                 var dto = p.Map();
                 await SetActualAuthors(dto);
                 return dto;
             });
 
-            return default;
+            var dtos = await Task.WhenAll(dtosTasks);
+
+
+            var administration = await _httpClient.GetFromJsonAsync<Administration>("api/administration");
+
+            var document = new Report(dtos, author, administration);
+
+            var bytes = document.GeneratePdf();
+
+            var ms = new MemoryStream(bytes);
+
+            return ms;
         }
 
         private async Task AddLackingAuthorsAsync(UpsertPublicationDTO publicationDTO)
