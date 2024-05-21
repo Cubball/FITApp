@@ -69,8 +69,8 @@ namespace FITApp.PublicationsService.Documents
                         column.Item().Text($"{rank}а кафедри програмних систем і технологій факультету інформаційних технологій Київського національного університету імені Тараса Шевченка").AlignCenter().Style(headerStyle);
 
                         // TODO change to name in whose form
-                        var FullName = $"{Author.FirstName.ToUpper()} {Author.LastName.ToUpper()} {Author.Patronymic.ToUpper()}";
-                        column.Item().Text(FullName).AlignCenter().Style(headerStyle);
+                        var fullName = $"{Author.FirstName.ToUpper()} {Author.LastName.ToUpper()} {Author.Patronymic.ToUpper()}";
+                        column.Item().Text(fullName).AlignCenter().Style(headerStyle);
                     });
 
 
@@ -79,7 +79,30 @@ namespace FITApp.PublicationsService.Documents
 
             void ComposeFooter(IContainer container)
             {
-                throw new NotImplementedException();
+                container.Row(row =>
+                {
+                    row.RelativeItem(5).Column(column =>
+                    {
+                        column.Item().Text("Автор\n").AlignLeft().Style(TextStyle);
+                        column.Item().Text("Список завіряю:\n").AlignLeft().Style(TextStyle);
+                        column.Item().Text("Завідувач кафедри _________________\n\n\n").AlignLeft().Style(TextStyle);
+                        column.Item().Text("Вчений секретар\nфакультету інформаційних технологій").AlignLeft().Style(TextStyle);
+                    });
+
+                    row.RelativeItem(2).Column(column =>
+                    {
+                        column.Item().Text("_________________\n\n\n").AlignRight().Style(TextStyle);
+                        column.Item().Text("_________________\n\n\n").AlignRight().Style(TextStyle);
+                        column.Item().Text("\n_________________").AlignRight().Style(TextStyle);
+                    });
+
+                    row.RelativeItem(3).Column(column =>
+                    {
+                        column.Item().Text($"{Author.FirstName} {Author.LastName.ToUpper()}\n\n\n").AlignRight().Style(TextStyle);
+                        column.Item().Text($"{Administration.HeadOfDepartment.FirstName} {Administration.HeadOfDepartment.LastName.ToUpper()}\n\n\n").AlignRight().Style(TextStyle);
+                        column.Item().Text($"\n{Administration.ScientificSecretary.FirstName} {Administration.ScientificSecretary.LastName.ToUpper()}").AlignRight().Style(TextStyle);
+                    });
+                });
             }
         }
 

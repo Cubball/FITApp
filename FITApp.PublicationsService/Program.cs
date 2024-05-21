@@ -4,6 +4,9 @@ using FITApp.PublicationsService.Services;
 using FITApp.Auth.Extensions;
 using Microsoft.Net.Http.Headers;
 using MongoDB.Driver;
+using QuestPDF.Infrastructure;
+
+QuestPDF.Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 

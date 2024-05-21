@@ -118,10 +118,10 @@ namespace FITApp.PublicationsService.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("reports")]
         public async Task<ActionResult> GetReport(DateTime startDate, DateTime endDate)
         {
-            if (endDate > startDate || startDate > DateTime.Now || endDate > DateTime.Now)
+            if (endDate < startDate || startDate > DateTime.Now || endDate > DateTime.Now)
             {
                 return BadRequest();
             }
