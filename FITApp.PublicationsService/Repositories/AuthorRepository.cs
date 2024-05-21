@@ -13,6 +13,11 @@ namespace FITApp.PublicationsService.Repositories
             await _collection.InsertOneAsync(author);
         }
 
+        public async Task CreateManyAsync(List<Author> authors)
+        {
+            await _collection.InsertManyAsync(authors);
+        }
+
         public async Task DeleteAsync(string id)
         {
             await _collection.DeleteOneAsync<Author>(a => a.Id == id);
@@ -29,6 +34,11 @@ namespace FITApp.PublicationsService.Repositories
                                                         .Set(a => a.FirstName, author.FirstName)
                                                         .Set(a => a.LastName, author.LastName)
                                                         .Set(a => a.Patronymic, author.Patronymic));
+        }
+
+        public async Task<IEnumerable<Author>> GetAllByIds(IEnumerable<string> ids)
+        {
+            return await _collection.Find<Author>(a => ids.Contains(a.Id)).ToListAsync();
         }
 
     }

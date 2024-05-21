@@ -12,5 +12,11 @@ namespace FITApp.PublicationsService.Models
     public string LastName { get; set; } = null!;
 
     public string Patronymic { get; set; } = null!;
+
+    [BsonIgnore]
+    public ICollection<AcademicDegree> AcademicDegrees { get; set; }
+
+    [BsonIgnore]
+    public ICollection<AcademicRank> AcademicRanks { get; set; }
 }
 }

@@ -11,5 +11,7 @@ namespace FITApp.PublicationsService.Interfaces
         Task UpdateAsync(string id, Author author);
 
         Task DeleteAsync(string id);
+
+        Task CreateManyAsync(List<Author> authors);
     }
 }

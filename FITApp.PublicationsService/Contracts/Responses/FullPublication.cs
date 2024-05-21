@@ -18,7 +18,7 @@ namespace FITApp.PublicationsService.Contracts.Responses
 
         public int PagesByAuthorCount { get; set; }
 
-        public ICollection<CoauthorDTO> Coauthors { get; set; }
+        public IList<CoauthorDTO> Coauthors { get; set; }
 
     }
 }

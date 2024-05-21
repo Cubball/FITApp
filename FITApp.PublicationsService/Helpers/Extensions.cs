@@ -73,6 +73,26 @@ namespace FITApp.PublicationsService.Helpers
             };
         }
 
+        public static Author Map(this CoauthorDTO coauthorDTO)
+        {
+            return new Author {
+                Id = coauthorDTO.Id,
+                FirstName = coauthorDTO.FirstName,
+                LastName = coauthorDTO.LastName,
+                Patronymic = coauthorDTO.Patronymic,
+            };
+        }
+
+        public static CoauthorDTO MapToCoauthor(this Author author)
+        {
+            return new CoauthorDTO {
+                Id = author.Id,
+                FirstName = author.FirstName,
+                LastName = author.LastName,
+                Patronymic = author.Patronymic,
+            };
+        }
+
         public static string GetUserId(this ControllerBase controller)
         {
             return controller.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;

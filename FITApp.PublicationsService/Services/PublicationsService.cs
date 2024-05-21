@@ -26,9 +26,11 @@ namespace FITApp.PublicationsService.Services
             var author = await _unitOfWork.AuthorRepository.GetAsync(userId);
             if (author == null)
             {
-                Author response = await _httpClient.GetFromJsonAsync<Author>($"/api/employees/{userId}");
+                Author response = await _httpClient.GetFromJsonAsync<Author>($"/api/profile");
                 await _unitOfWork.AuthorRepository.CreateAsync(response!);
             }
+
+            await AddLackingAuthorsAsync(publicationDTO);
 
             Publication publication = publicationDTO.Map();
             publication.AuthorId = userId;
@@ -39,11 +41,7 @@ namespace FITApp.PublicationsService.Services
         public async Task DeleteAsync(string id, string userId)
         {
             var objectId = ObjectId.Parse(id);
-            var publication = await _unitOfWork.PublicationRepository.GetByIdAsync(objectId);
-            if (publication == null)
-            {
-                throw new NotFoundException("Publication not found");
-            }
+            var publication = await _unitOfWork.PublicationRepository.GetByIdAsync(objectId) ?? throw new NotFoundException("Publication not found");
 
             if (publication.AuthorId != userId)
             {
@@ -69,36 +67,62 @@ namespace FITApp.PublicationsService.Services
 
         public async Task<FullPublication> GetById(string id, string userId)
         {
-            var publication = await _unitOfWork.PublicationRepository.GetByIdAsync(ObjectId.Parse(id));
-            if (publication == null)
-            {
-                throw new NotFoundException("Publication not found");
-            }
+            var publication = await _unitOfWork.PublicationRepository.GetByIdAsync(ObjectId.Parse(id)) ?? throw new NotFoundException("Publication not found");
 
             if (publication.AuthorId != userId)
             {
                 throw new NotAllowedException("You are not allowed to view this publication");
             }
 
-            return publication.Map();
+            var result = publication.Map();
+
+            await SetActualAuthors(result);
+
+            return result;
         }
 
         public async Task UpdateAsync(string id, UpsertPublicationDTO publicationDTO, string userId)
         {
             var objectId = ObjectId.Parse(id);
-            var publicationCheck = await _unitOfWork.PublicationRepository.GetByIdAsync(objectId);
-            if (publicationCheck == null)
-            {
-                throw new NotFoundException("Publication not found");
-            }
+            var publicationCheck = await _unitOfWork.PublicationRepository.GetByIdAsync(objectId) ?? throw new NotFoundException("Publication not found");
 
             if (publicationCheck.AuthorId != userId)
             {
                 throw new NotAllowedException("You are not allowed to update this publication");
             }
 
+            await AddLackingAuthorsAsync(publicationDTO);
+
             var publication = publicationDTO.Map();
             await _unitOfWork.PublicationRepository.UpdateAsync(ObjectId.Parse(id), publication);
+        }
+
+        private async Task AddLackingAuthorsAsync(UpsertPublicationDTO publicationDTO)
+        {
+            foreach (var coauthor in publicationDTO.Coauthors)
+            {
+                if (coauthor.Id != null)
+                {
+                    var coauthorCheck = _unitOfWork.AuthorRepository.GetAsync(coauthor.Id);
+                    if (coauthorCheck == null)
+                    {
+                        await _unitOfWork.AuthorRepository.CreateAsync(coauthor.Map());
+                    }
+                }
+            }
+        }
+
+        private async Task SetActualAuthors(FullPublication fullPublication)
+        {
+
+            for (int i = 0; i < fullPublication.Coauthors.Count; i++)
+            {
+                if (fullPublication.Coauthors[i].Id != null)
+                {
+                    var author = await _unitOfWork.AuthorRepository.GetAsync(fullPublication.Coauthors[i].Id);
+                    fullPublication.Coauthors[i] = author.MapToCoauthor();
+                }
+            }
         }
     }
 }
