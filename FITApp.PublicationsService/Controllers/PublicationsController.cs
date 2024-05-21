@@ -117,5 +117,19 @@ namespace FITApp.PublicationsService.Controllers
                 return Forbid();
             }
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetReport(DateTime startDate, DateTime endDate)
+        {
+            if (endDate > startDate || startDate > DateTime.Now || endDate > DateTime.Now)
+            {
+                return BadRequest();
+            }
+
+            var userId = this.GetUserId();
+
+            var ms = await _publicationsService.GetReport(userId, startDate, endDate);
+            return File(ms, "application/octet-stream", $"report_{startDate}_{endDate}");
+        }
     }
 }

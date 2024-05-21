@@ -14,5 +14,7 @@ namespace FITApp.PublicationsService.Interfaces
         Task UpdateAsync(ObjectId id, Publication publication);
 
         Task DeleteAsync(ObjectId id);
+
+        Task<IEnumerable<Publication>> GetBetweenDates(string authorId, DateOnly startDate, DateOnly endDate);
     }
 }

@@ -13,12 +13,10 @@ namespace FITApp.PublicationsService.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly HttpClient _httpClient;
 
-
         public PublicationsService(IUnitOfWork unitOfWork, HttpClient httpClient)
         {
             _unitOfWork = unitOfWork;
             _httpClient = httpClient;
-
         }
 
         public async Task CreateAsync(UpsertPublicationDTO publicationDTO, string userId)
@@ -41,7 +39,9 @@ namespace FITApp.PublicationsService.Services
         public async Task DeleteAsync(string id, string userId)
         {
             var objectId = ObjectId.Parse(id);
-            var publication = await _unitOfWork.PublicationRepository.GetByIdAsync(objectId) ?? throw new NotFoundException("Publication not found");
+            var publication =
+                await _unitOfWork.PublicationRepository.GetByIdAsync(objectId)
+                ?? throw new NotFoundException("Publication not found");
 
             if (publication.AuthorId != userId)
             {
@@ -53,7 +53,11 @@ namespace FITApp.PublicationsService.Services
 
         public async Task<AllPublicationsDTO> GetAll(string userId, int pageNumber, int pageSize)
         {
-            var publications = await _unitOfWork.PublicationRepository.GetByAuthorAsync(userId, pageNumber, pageSize);
+            var publications = await _unitOfWork.PublicationRepository.GetByAuthorAsync(
+                userId,
+                pageNumber,
+                pageSize
+            );
             var result = new AllPublicationsDTO
             {
                 Publications = publications.Item1.Select(p => p.MapToShortPublication()).ToList(),
@@ -67,7 +71,9 @@ namespace FITApp.PublicationsService.Services
 
         public async Task<FullPublication> GetById(string id, string userId)
         {
-            var publication = await _unitOfWork.PublicationRepository.GetByIdAsync(ObjectId.Parse(id)) ?? throw new NotFoundException("Publication not found");
+            var publication =
+                await _unitOfWork.PublicationRepository.GetByIdAsync(ObjectId.Parse(id))
+                ?? throw new NotFoundException("Publication not found");
 
             if (publication.AuthorId != userId)
             {
@@ -84,7 +90,9 @@ namespace FITApp.PublicationsService.Services
         public async Task UpdateAsync(string id, UpsertPublicationDTO publicationDTO, string userId)
         {
             var objectId = ObjectId.Parse(id);
-            var publicationCheck = await _unitOfWork.PublicationRepository.GetByIdAsync(objectId) ?? throw new NotFoundException("Publication not found");
+            var publicationCheck =
+                await _unitOfWork.PublicationRepository.GetByIdAsync(objectId)
+                ?? throw new NotFoundException("Publication not found");
 
             if (publicationCheck.AuthorId != userId)
             {
@@ -95,6 +103,29 @@ namespace FITApp.PublicationsService.Services
 
             var publication = publicationDTO.Map();
             await _unitOfWork.PublicationRepository.UpdateAsync(ObjectId.Parse(id), publication);
+        }
+
+        public async Task<MemoryStream> GetReport(
+            string userId,
+            DateTime startDate,
+            DateTime endDate
+        )
+        {
+            var publications = await _unitOfWork.PublicationRepository.GetBetweenDates(
+                userId,
+                new DateOnly(startDate.Year, startDate.Month, startDate.Day),
+                new DateOnly(endDate.Year, endDate.Month, endDate.Day)
+            );
+            var author = _httpClient.GetFromJsonAsync<Author>("/api/profile");
+
+            var dtos = publications.Select(async p =>
+            {
+                var dto = p.Map();
+                await SetActualAuthors(dto);
+                return dto;
+            });
+
+            return default;
         }
 
         private async Task AddLackingAuthorsAsync(UpsertPublicationDTO publicationDTO)
@@ -114,12 +145,13 @@ namespace FITApp.PublicationsService.Services
 
         private async Task SetActualAuthors(FullPublication fullPublication)
         {
-
             for (int i = 0; i < fullPublication.Coauthors.Count; i++)
             {
                 if (fullPublication.Coauthors[i].Id != null)
                 {
-                    var author = await _unitOfWork.AuthorRepository.GetAsync(fullPublication.Coauthors[i].Id);
+                    var author = await _unitOfWork.AuthorRepository.GetAsync(
+                        fullPublication.Coauthors[i].Id
+                    );
                     fullPublication.Coauthors[i] = author.MapToCoauthor();
                 }
             }

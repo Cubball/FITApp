@@ -14,5 +14,7 @@ namespace FITApp.PublicationsService.Interfaces
         Task<FullPublication> GetById(string id, string userId);
 
         Task<AllPublicationsDTO> GetAll(string userId, int pageNumber, int pageSize);
+
+        Task<MemoryStream> GetReport(string userId, DateTime startDate, DateTime endDate);
     }
 }

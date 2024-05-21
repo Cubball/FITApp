@@ -30,6 +30,11 @@ namespace FITApp.PublicationsService.Repositories
             return (publications, total);
         }
 
+        public async Task<IEnumerable<Publication>> GetBetweenDates(string authorId, DateOnly startDate, DateOnly endDate)
+        {
+            return await _collection.Find<Publication>(p => p.AuthorId == authorId && p.DateOfPublication > startDate && p.DateOfPublication < endDate).ToListAsync();
+        }
+
         public async Task<Publication> GetByIdAsync(ObjectId id)
         {
             return await _collection.Find<Publication>(p => p.Id == id).FirstOrDefaultAsync();
