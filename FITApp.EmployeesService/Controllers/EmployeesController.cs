@@ -202,6 +202,7 @@ namespace FITApp.EmployeesService.Controllers
             return result == 0 ? NotFound() : Ok();
         }
 
+        [RequiresPermission(Permissions.UsersRead, Permissions.All)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployeesAsync(uint page = 0, uint pageSize = 0)
         {
