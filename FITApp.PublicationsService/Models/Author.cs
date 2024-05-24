@@ -14,6 +14,9 @@ namespace FITApp.PublicationsService.Models
     public string Patronymic { get; set; } = null!;
 
     [BsonIgnore]
+    public int? PagesByAuthor { get; set; }
+
+    [BsonIgnore]
     public ICollection<AcademicDegree> AcademicDegrees { get; set; }
 
     [BsonIgnore]

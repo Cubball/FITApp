@@ -10,12 +10,14 @@ namespace FITApp.PublicationsService.Contracts.Requests
 
         public string EVersionLink { get; set; }
 
+        public string InputData { get; set; }
+
         public DateTime DateOfPublication { get; set; }
 
         public int PagesCount { get; set; }
 
         public int PagesByAuthorCount { get; set; }
 
-        public ICollection<CoauthorDTO> Coauthors { get; set; }
+        public ICollection<AuthorWithPagesDTO> Authors { get; set; }
     }
 }

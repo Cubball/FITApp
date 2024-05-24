@@ -11,21 +11,15 @@ namespace FITApp.PublicationsService.Models
 
     public string Type { get; set; }
 
-    public string AuthorId { get; set; } = null!;
-
-    // This is for joining later
-    [BsonIgnore]
-    public Author Author { get; set; } = null!;
-
-    public ICollection<Coauthor>? Coauthors { get; set; } = null!;
+    public IList<Author> Authors { get; set; } = null!;
 
     public string Annotation { get; set; } = null!;
 
     public string EVersionLink { get; set; } = null!;
 
-    public int PagesTotal { get; set; }
+    public string InputData { get; set; }
 
-    public int PagesByAuthor { get; set; }
+    public int PagesTotal { get; set; }
 
     public DateOnly DateOfPublication { get; set; }
 }

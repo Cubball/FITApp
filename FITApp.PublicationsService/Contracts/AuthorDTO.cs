@@ -1,4 +1,4 @@
-namespace FITApp.PublicationsService.Contracts.Requests
+namespace FITApp.PublicationsService.Contracts
 {
     public class AuthorDTO
     {

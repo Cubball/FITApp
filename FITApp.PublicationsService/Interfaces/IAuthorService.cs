@@ -1,4 +1,4 @@
-using FITApp.PublicationsService.Contracts.Requests;
+using FITApp.PublicationsService.Contracts;
 
 namespace FITApp.PublicationsService.Interfaces
 {

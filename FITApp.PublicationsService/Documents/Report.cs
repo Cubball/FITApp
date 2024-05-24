@@ -243,7 +243,7 @@ namespace FITApp.PublicationsService.Documents
                         .Text(
                             string.Join(
                                 ", ",
-                                item.Coauthors.Select(ca =>
+                                item.Authors.Select(ca =>
                                     $"{ca.LastName} {ca.FirstName[0]}.{ca.Patronymic[0]}."
                                 )
                             )

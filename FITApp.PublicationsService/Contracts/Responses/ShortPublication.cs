@@ -8,6 +8,8 @@ namespace FITApp.PublicationsService.Contracts.Responses
 
         public string Type { get; set; }
 
+        public AuthorDTO MainAuthor { get; set; }
+
         public DateOnly DateOfPublication { get; set; }
     }
 }

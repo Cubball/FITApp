@@ -23,17 +23,18 @@ namespace FITApp.PublicationsService.Services
 
         public async Task CreateAsync(UpsertPublicationDTO publicationDTO, string userId)
         {
-            var author = await _unitOfWork.AuthorRepository.GetAsync(userId);
-            if (author == null)
+            var response = await _unitOfWork.AuthorRepository.GetAsync(userId);
+            if (response == null)
             {
-                Author response = await _httpClient.GetFromJsonAsync<Author>($"/api/profile");
+                response = await _httpClient.GetFromJsonAsync<Author>($"/api/profile");
                 await _unitOfWork.AuthorRepository.CreateAsync(response!);
             }
 
             await AddLackingAuthorsAsync(publicationDTO);
 
             Publication publication = publicationDTO.Map();
-            publication.AuthorId = userId;
+            response.PagesByAuthor = publicationDTO.PagesByAuthorCount;
+            publication.Authors.Add(response);
 
             await _unitOfWork.PublicationRepository.CreateAsync(publication);
         }
@@ -45,7 +46,7 @@ namespace FITApp.PublicationsService.Services
                 await _unitOfWork.PublicationRepository.GetByIdAsync(objectId)
                 ?? throw new NotFoundException("Publication not found");
 
-            if (publication.AuthorId != userId)
+            if (!publication.Authors.Select(x => x.Id).Contains(userId))
             {
                 throw new NotAllowedException("You are not allowed to delete this publication");
             }
@@ -77,14 +78,14 @@ namespace FITApp.PublicationsService.Services
                 await _unitOfWork.PublicationRepository.GetByIdAsync(ObjectId.Parse(id))
                 ?? throw new NotFoundException("Publication not found");
 
-            if (publication.AuthorId != userId)
+            if (!publication.Authors.Select(x => x.Id).Contains(userId))
             {
                 throw new NotAllowedException("You are not allowed to view this publication");
             }
 
             var result = publication.Map();
 
-            await SetActualAuthors(result);
+            // await SetActualAuthors(result);
 
             return result;
         }
@@ -96,7 +97,7 @@ namespace FITApp.PublicationsService.Services
                 await _unitOfWork.PublicationRepository.GetByIdAsync(objectId)
                 ?? throw new NotFoundException("Publication not found");
 
-            if (publicationCheck.AuthorId != userId)
+            if (!publicationCheck.Authors.Select(x => x.Id).Contains(userId))
             {
                 throw new NotAllowedException("You are not allowed to update this publication");
             }
@@ -104,6 +105,9 @@ namespace FITApp.PublicationsService.Services
             await AddLackingAuthorsAsync(publicationDTO);
 
             var publication = publicationDTO.Map();
+            var author = await _unitOfWork.AuthorRepository.GetAsync(userId);
+            author.PagesByAuthor = publicationDTO.PagesByAuthorCount;
+            publication.Authors.Add(author);
             await _unitOfWork.PublicationRepository.UpdateAsync(ObjectId.Parse(id), publication);
         }
 
@@ -123,7 +127,7 @@ namespace FITApp.PublicationsService.Services
             var dtosTasks = publications.Select(async p =>
             {
                 var dto = p.Map();
-                await SetActualAuthors(dto);
+                // await SetActualAuthors(dto);
                 return dto;
             });
 
@@ -143,11 +147,11 @@ namespace FITApp.PublicationsService.Services
 
         private async Task AddLackingAuthorsAsync(UpsertPublicationDTO publicationDTO)
         {
-            foreach (var coauthor in publicationDTO.Coauthors)
+            foreach (var coauthor in publicationDTO.Authors)
             {
                 if (coauthor.Id != null)
                 {
-                    var coauthorCheck = _unitOfWork.AuthorRepository.GetAsync(coauthor.Id);
+                    var coauthorCheck = await _unitOfWork.AuthorRepository.GetAsync(coauthor.Id);
                     if (coauthorCheck == null)
                     {
                         await _unitOfWork.AuthorRepository.CreateAsync(coauthor.Map());
@@ -158,14 +162,14 @@ namespace FITApp.PublicationsService.Services
 
         private async Task SetActualAuthors(FullPublication fullPublication)
         {
-            for (int i = 0; i < fullPublication.Coauthors.Count; i++)
+            for (int i = 0; i < fullPublication.Authors.Count; i++)
             {
-                if (fullPublication.Coauthors[i].Id != null)
+                if (fullPublication.Authors[i].Id != null)
                 {
                     var author = await _unitOfWork.AuthorRepository.GetAsync(
-                        fullPublication.Coauthors[i].Id
+                        fullPublication.Authors[i].Id
                     );
-                    fullPublication.Coauthors[i] = author.MapToCoauthor();
+                    fullPublication.Authors[i] = author.MapToCoauthor();
                 }
             }
         }

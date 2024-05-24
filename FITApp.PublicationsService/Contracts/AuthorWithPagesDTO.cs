@@ -1,6 +1,6 @@
 namespace FITApp.PublicationsService.Contracts;
 
-public class CoauthorDTO
+public class AuthorWithPagesDTO
 {
     public string? Id { get; set; }
 
@@ -9,4 +9,6 @@ public class CoauthorDTO
     public string LastName { get; set; }
 
     public string Patronymic { get; set; }
+
+    public int? PagesByAuthorCount { get; set; }
 }
