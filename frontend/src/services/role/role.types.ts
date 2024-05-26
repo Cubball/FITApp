@@ -8,7 +8,6 @@ export enum PermissionsEnum {
   rolesRead = 'roles_read',
   rolesUpdate = 'roles_update',
   rolesDelete = 'roles_delete',
-  administrationRead = 'administration_read',
   administrationUpdate = 'administration_update',
 }
 

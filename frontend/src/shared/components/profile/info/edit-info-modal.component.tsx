@@ -9,12 +9,7 @@ interface EditInfoModalProps {
   onSubmit: any;
 }
 
-const EditInfoModal = ({
-  employee,
-  isOpen,
-  onClose,
-  onSubmit
-}: EditInfoModalProps) => {
+const EditInfoModal = ({ employee, isOpen, onClose, onSubmit }: EditInfoModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <h2 className="border-b border-gray-500 p-2 text-center text-lg font-semibold">
@@ -25,7 +20,10 @@ const EditInfoModal = ({
           firstName: employee.firstName,
           lastName: employee.lastName,
           patronymic: employee.patronymic,
-          birthDate: employee.birthDate
+          birthDate: employee.birthDate,
+          firstNamePossessive: employee.firstNamePossessive,
+          lastNamePossessive: employee.lastNamePossessive,
+          patronymicPossessive: employee.patronymicPossessive
         }}
         onSubmit={(values) => {
           onSubmit(values);
@@ -34,23 +32,23 @@ const EditInfoModal = ({
       >
         <Form className="gap-5 p-3 *:mb-1 sm:grid sm:grid-cols-2">
           <div>
-            <label htmlFor="firstName" className="mb-1 ml-1 font-semibold">
-              Ім'я
-            </label>
-            <Field
-              id="firstName"
-              name="firstName"
-              required
-              className="w-full rounded-md border border-gray-300 p-2"
-            />
-          </div>
-          <div>
             <label htmlFor="lastName" className="mb-1 ml-1 font-semibold">
               Прізвище
             </label>
             <Field
               id="lastName"
               name="lastName"
+              required
+              className="w-full rounded-md border border-gray-300 p-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="firstName" className="mb-1 ml-1 font-semibold">
+              Ім'я
+            </label>
+            <Field
+              id="firstName"
+              name="firstName"
               required
               className="w-full rounded-md border border-gray-300 p-2"
             />
@@ -74,6 +72,39 @@ const EditInfoModal = ({
               id="birthDate"
               name="birthDate"
               type="date"
+              required
+              className="w-full rounded-md border border-gray-300 p-2"
+            />
+          </div>
+          <div className="col-span-2">
+            <label htmlFor="lastNamePossessive" className="mb-1 ml-1 font-semibold">
+              Прізвище (в родовому відмінку)
+            </label>
+            <Field
+              id="lastNamePossessive"
+              name="lastNamePossessive"
+              required
+              className="w-full rounded-md border border-gray-300 p-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="firstNamePossessive" className="mb-1 ml-1 font-semibold">
+              Ім'я (в родовому відмінку)
+            </label>
+            <Field
+              id="firstNamePossessive"
+              name="firstNamePossessive"
+              required
+              className="w-full rounded-md border border-gray-300 p-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="patronymicPossessive" className="mb-1 ml-1 font-semibold">
+              По-батькові (в родовому відмінку)
+            </label>
+            <Field
+              id="patronymicPossessive"
+              name="patronymicPossessive"
               required
               className="w-full rounded-md border border-gray-300 p-2"
             />

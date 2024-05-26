@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import Modal from '../../shared/components/modal';
 import { Field, Form, Formik } from 'formik';
-import { ICoauthor } from '../../services/publications/publications.types';
+import { ICreateUpdatePublicationAuthor } from '../../services/publications/publications.types';
 import { IEmployeeShortInfo } from '../../services/employees/employees.types';
 
-interface AddCoauthorModalProps {
+interface AddAuthorModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: (coauthor: ICoauthor) => void;
+  onAdd: (author: ICreateUpdatePublicationAuthor) => void;
   employees: IEmployeeShortInfo[];
 }
 
-const AddCoauthorModal = ({ isOpen, onAdd, onClose, employees }: AddCoauthorModalProps) => {
+const AddAuthorModal = ({ isOpen, onAdd, onClose, employees }: AddAuthorModalProps) => {
   const [isKnownEmployee, setIsKnownEmployee] = useState(true);
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -20,13 +20,14 @@ const AddCoauthorModal = ({ isOpen, onAdd, onClose, employees }: AddCoauthorModa
           id: '',
           firstName: '',
           lastName: '',
-          patronymic: ''
+          patronymic: '',
+          pagesByAuthorCount: undefined,
         }}
         onSubmit={(values) => {
           if (isKnownEmployee) {
-            const coauthor = employees.find((e) => e.id === values.id);
-            if (coauthor) {
-              onAdd(coauthor);
+            const author = employees.find((e) => e.id === values.id);
+            if (author) {
+              onAdd({ ...author, pagesByAuthorCount: values.pagesByAuthorCount });
             }
           } else {
             values.id = undefined!;
@@ -65,7 +66,11 @@ const AddCoauthorModal = ({ isOpen, onAdd, onClose, employees }: AddCoauthorModa
                 if (employee.firstName && employee.lastName && employee.patronymic) {
                   displayName = `${employee.lastName} ${employee.firstName} ${employee.patronymic}`;
                 }
-                return <option value={employee.id} key={employee.id}>{displayName}</option>;
+                return (
+                  <option value={employee.id} key={employee.id}>
+                    {displayName}
+                  </option>
+                );
               })}
             </Field>
           ) : (
@@ -105,6 +110,18 @@ const AddCoauthorModal = ({ isOpen, onAdd, onClose, employees }: AddCoauthorModa
               </div>
             </>
           )}
+          <div className="col-span-2">
+            <label htmlFor="pagesByAuthorCount" className="mb-1 ml-1 font-semibold">
+              Кількість сторінок, написаних автором (необов'язково)
+            </label>
+            <Field
+              name="pagesByAuthorCount"
+              id="pagesByAuthorCount"
+              className="w-full rounded-md border border-gray-300 p-2"
+              type="number"
+              min="1"
+            />
+          </div>
           <button className="w-full rounded-md bg-main-text p-3 text-white">Зберегти</button>
           <button
             className="w-full rounded-md border border-main-text p-3"
@@ -119,4 +136,4 @@ const AddCoauthorModal = ({ isOpen, onAdd, onClose, employees }: AddCoauthorModa
   );
 };
 
-export default AddCoauthorModal;
+export default AddAuthorModal;
