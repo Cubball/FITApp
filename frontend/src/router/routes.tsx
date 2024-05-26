@@ -128,9 +128,7 @@ export const privateRoutes = createBrowserRouter([
     path: '/administration',
     element: (
       <MainLayout>
-        <ProtectedRoute permission={PermissionsEnum.administrationRead}>
-          <Administration />
-        </ProtectedRoute>
+        <Administration />
       </MainLayout>
     ),
     errorElement: <GlobalError />,
