@@ -11,6 +11,11 @@ interface PublicationEntryProps {
 
 const PublicationEntry = ({ publication, onDelete }: PublicationEntryProps) => {
   const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState(false);
+  let displayName = "<ім'я не вказано>";
+  const { firstName, lastName, patronymic } = publication.mainAuthor;
+  if (firstName && lastName && patronymic) {
+    displayName = `${lastName} ${firstName[0]}.${patronymic[0]}.`;
+  }
   return (
     <>
       <ConfirmModal
@@ -21,11 +26,12 @@ const PublicationEntry = ({ publication, onDelete }: PublicationEntryProps) => {
       />
       <div className="my-2 flex items-center justify-between rounded-lg bg-accent-background p-3">
         <div className="flex grow flex-col gap-3 md:flex-row">
-          <NavLink className="font-semibold md:basis-[40%]" to={`/publications/${publication.id}`}>
+          <NavLink className="font-semibold md:basis-[30%]" to={`/publications/${publication.id}`}>
             {publication.name}
           </NavLink>
-          <span className="md:basis-[35%]">{publication.type}</span>
-          <span className="md:basis-[15%]">
+          <span className="md:basis-[30%]">{displayName}</span>
+          <span className="md:basis-[15%]">{publication.type}</span>
+          <span className="md:basis-[10%]">
             {new Date(publication.dateOfPublication).toLocaleDateString('uk-UA')}
           </span>
         </div>

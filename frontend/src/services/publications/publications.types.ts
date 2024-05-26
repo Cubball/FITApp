@@ -1,7 +1,8 @@
 export interface IPublicationShortInfo {
   id: string;
-  type: string; // TODO: maybe enum
+  type: string;
   name: string;
+  mainAuthor: IMainAuthor;
   dateOfPublication: string;
 }
 
@@ -21,7 +22,8 @@ export interface IPublication {
   annotation: string;
   eVersionLink: string;
   dateOfPublication: string;
-  coauthors: ICoauthor[];
+  inputData: string;
+  authors: IAuthor[];
 }
 
 export interface ICreateUpdatePublication {
@@ -32,18 +34,27 @@ export interface ICreateUpdatePublication {
   annotation: string;
   eVersionLink: string;
   dateOfPublication: string;
-  coauthors: ICoauthor[];
+  inputData: string;
+  authors: ICreateUpdatePublicationAuthor[];
 }
 
 export interface IAuthor {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
   patronymic: string;
+  pagesByAuthorCount: number;
 }
 
-export interface ICoauthor {
+export interface ICreateUpdatePublicationAuthor {
   id?: string;
+  firstName: string;
+  lastName: string;
+  patronymic: string;
+  pagesByAuthorCount?: number;
+}
+
+export interface IMainAuthor {
   firstName: string;
   lastName: string;
   patronymic: string;

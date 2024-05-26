@@ -3,13 +3,13 @@ import { usePublication } from '../../shared/hooks/publication.hook';
 import Loading from '../../shared/components/loading';
 import Error from '../../shared/components/error';
 import { useEffect, useState } from 'react';
-import { ICoauthor } from '../../services/publications/publications.types';
-import AddCoauthorModal from './add-coauthor-modal.component';
+import AddAuthorModal from './add-author-modal.component';
 import { Field, Form, Formik } from 'formik';
 import XIcon from '../../assets/icons/x-icon.svg';
+import { ICreateUpdatePublicationAuthor } from '../../services/publications/publications.types';
 
 const AddUpdatePublication = () => {
-  const [addCoauthorModalOpen, setAddCoauthorModalOpen] = useState(false);
+  const [addAuthorModalOpen, setAddAuthorModalOpen] = useState(false);
   const params = useParams();
   const id = params.publicationId;
   const {
@@ -22,10 +22,10 @@ const AddUpdatePublication = () => {
     updatePublication,
     isUpdatePublicationLoading
   } = usePublication(id);
-  const [coauthors, setCoauthors] = useState<ICoauthor[]>([]);
+  const [authors, setAuthors] = useState<ICreateUpdatePublicationAuthor[]>([]);
   useEffect(() => {
     if (publication) {
-      setCoauthors(publication.coauthors);
+      setAuthors(publication.authors);
     }
   }, [isPublicationLoading]);
   if (isPublicationLoading || areEmployeesLoading) {
@@ -38,13 +38,13 @@ const AddUpdatePublication = () => {
 
   return (
     <>
-      <AddCoauthorModal
-        isOpen={addCoauthorModalOpen}
-        onClose={() => setAddCoauthorModalOpen(false)}
+      <AddAuthorModal
+        isOpen={addAuthorModalOpen}
+        onClose={() => setAddAuthorModalOpen(false)}
         employees={employees}
-        onAdd={(coauthor) => {
-          if (!coauthor.id || !coauthors.find((a) => a.id === coauthor.id)) {
-            setCoauthors([...coauthors, coauthor]);
+        onAdd={(author) => {
+          if (!author.id || !authors.find((a) => a.id === author.id)) {
+            setAuthors([...authors, author]);
           }
         }}
       />
@@ -60,7 +60,8 @@ const AddUpdatePublication = () => {
             pagesByAuthorCount: publication?.pagesByAuthorCount ?? 0,
             annotation: publication?.annotation ?? '',
             eVersionLink: publication?.eVersionLink ?? '',
-            dateOfPublication: publication?.dateOfPublication ?? ''
+            dateOfPublication: publication?.dateOfPublication ?? '',
+            inputData: publication?.inputData ?? ''
           }}
           onSubmit={(values) => {
             if (publication) {
@@ -68,13 +69,13 @@ const AddUpdatePublication = () => {
                 id: publication.id,
                 publication: {
                   ...values,
-                  coauthors
+                  authors: authors
                 }
               });
             } else {
               createPublication({
                 ...values,
-                coauthors
+                authors: authors
               });
             }
           }}
@@ -146,6 +147,17 @@ const AddUpdatePublication = () => {
               />
             </div>
             <div className="w-full max-w-xl md:w-1/2">
+              <label htmlFor="inputData">Вхідні дані:</label>
+              <Field
+                id="inputData"
+                name="inputData"
+                placeholder="Введіть вхідні дані"
+                required
+                as="textarea"
+                className="w-full rounded-md border border-gray-300 p-2"
+              />
+            </div>
+            <div className="w-full max-w-xl md:w-1/2">
               <label htmlFor="eVersionLink">Посилання на електронну версію:</label>
               <Field
                 id="eVersionLink"
@@ -167,26 +179,24 @@ const AddUpdatePublication = () => {
                 className="w-full rounded-md border border-gray-300 p-2"
               />
             </div>
-            {coauthors.length > 0 && (
+            {authors.length > 0 && (
               <div className="w-full max-w-xl md:w-1/2">
                 <div className="w-full">Співавтори:</div>
-                {coauthors.map((coauthor, index) => {
+                {authors.map((author, index) => {
                   let displayName = "<ім'я не вказано>";
-                  if (coauthor.firstName && coauthor.lastName && coauthor.patronymic) {
-                    displayName = `${coauthor.lastName} ${coauthor.firstName} ${coauthor.patronymic}`;
+                  if (author.firstName && author.lastName && author.patronymic) {
+                    displayName = `${author.lastName} ${author.firstName} ${author.patronymic}`;
                   }
                   return (
                     <div
                       key={index}
                       className="mt-2 flex w-full justify-between rounded-md border border-gray-300 p-2"
                     >
-                      <span>{displayName}</span>
+                      <span>{displayName}{author.pagesByAuthorCount && ` - ${author.pagesByAuthorCount} с.`}</span>
                       <img
-                        src={XIcon}
-                        className="max-h-[20px] cursor-pointer"
-                        onClick={() =>
-                          setCoauthors(coauthors.filter((a) => a !== coauthors[index]))
-                        }
+                      src={XIcon}
+                      className="max-h-[20px] cursor-pointer"
+                      onClick={() => setAuthors(authors.filter((a) => a !== authors[index]))}
                       />
                     </div>
                   );
@@ -196,7 +206,7 @@ const AddUpdatePublication = () => {
             <button
               type="button"
               className="w-full max-w-xl rounded-md border border-dashed border-gray-300 p-2 md:w-1/2"
-              onClick={() => setAddCoauthorModalOpen(true)}
+              onClick={() => setAddAuthorModalOpen(true)}
             >
               Додати співавтора
             </button>
