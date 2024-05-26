@@ -34,7 +34,7 @@ namespace FITApp.PublicationsService.Services
 
             Publication publication = publicationDTO.Map();
             response.PagesByAuthor = publicationDTO.PagesByAuthorCount;
-            publication.Authors.Add(response);
+            publication.Authors.Add(response.MapToPublicationAuthor());
 
             await _unitOfWork.PublicationRepository.CreateAsync(publication);
         }
@@ -107,7 +107,7 @@ namespace FITApp.PublicationsService.Services
             var publication = publicationDTO.Map();
             var author = await _unitOfWork.AuthorRepository.GetAsync(userId);
             author.PagesByAuthor = publicationDTO.PagesByAuthorCount;
-            publication.Authors.Add(author);
+            publication.Authors.Add(author.MapToPublicationAuthor());
             await _unitOfWork.PublicationRepository.UpdateAsync(ObjectId.Parse(id), publication);
         }
 
@@ -124,14 +124,8 @@ namespace FITApp.PublicationsService.Services
             );
             var author = await _httpClient.GetFromJsonAsync<Author>("/api/profile");
 
-            var dtosTasks = publications.Select(async p =>
-            {
-                var dto = p.Map();
-                // await SetActualAuthors(dto);
-                return dto;
-            });
+            var dtos = publications.Select(p => p.Map());
 
-            var dtos = await Task.WhenAll(dtosTasks);
 
 
             var administration = await _httpClient.GetFromJsonAsync<Administration>("api/administration");

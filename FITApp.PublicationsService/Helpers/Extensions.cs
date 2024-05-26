@@ -14,7 +14,7 @@ namespace FITApp.PublicationsService.Helpers
             var publication = new Publication();
             publication.Name = publicationDTO.Name;
             publication.Type = publicationDTO.Type;
-            publication.Authors = publicationDTO.Authors.Select(c => new Author
+            publication.Authors = publicationDTO.Authors.Select(c => new PublicationAuthor
             {
                 Id = c.Id,
                 FirstName = c.FirstName,
@@ -63,6 +63,28 @@ namespace FITApp.PublicationsService.Helpers
                 Type = publication.Type,
                 DateOfPublication = publication.DateOfPublication,
                 MainAuthor = publication.Authors.OrderByDescending(a => a.PagesByAuthor).First().Map()
+            };
+        }
+
+        public static AuthorDTO Map(this PublicationAuthor author)
+        {
+            return new AuthorDTO
+            {
+                FirstName = author.FirstName,
+                LastName = author.LastName,
+                Patronymic = author.Patronymic,
+            };
+        }
+
+        public static PublicationAuthor MapToPublicationAuthor(this Author author)
+        {
+            return new PublicationAuthor
+            {
+                Id = author.Id,
+                FirstName = author.FirstName,
+                LastName = author.LastName,
+                Patronymic = author.Patronymic,
+                PagesByAuthor = author.PagesByAuthor,
             };
         }
 
@@ -118,11 +140,12 @@ namespace FITApp.PublicationsService.Helpers
                 && !string.IsNullOrWhiteSpace(publicationDTO.Type)
                 && !string.IsNullOrWhiteSpace(publicationDTO.Annotation)
                 && !string.IsNullOrWhiteSpace(publicationDTO.EVersionLink)
+                && !string.IsNullOrWhiteSpace(publicationDTO.InputData)
                 && publicationDTO.DateOfPublication < DateTime.Now
                 && publicationDTO.DateOfPublication != default
                 && publicationDTO.PagesCount > 0
                 && publicationDTO.PagesByAuthorCount > 0
-                && publicationDTO.Authors.Sum(a => a.PagesByAuthorCount) + publicationDTO.PagesByAuthorCount < publicationDTO.PagesCount;
+                && publicationDTO.Authors.Sum(a => a.PagesByAuthorCount) + publicationDTO.PagesByAuthorCount <= publicationDTO.PagesCount;
         }
 
         public static bool Validate(this AuthorDTO authorDTO)

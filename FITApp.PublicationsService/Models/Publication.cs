@@ -11,7 +11,7 @@ namespace FITApp.PublicationsService.Models
 
     public string Type { get; set; }
 
-    public IList<Author> Authors { get; set; } = null!;
+    public IList<PublicationAuthor> Authors { get; set; } = null!;
 
     public string Annotation { get; set; } = null!;
 

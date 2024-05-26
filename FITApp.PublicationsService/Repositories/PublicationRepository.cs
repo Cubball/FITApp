@@ -41,7 +41,9 @@ namespace FITApp.PublicationsService.Repositories
                 .ToListAsync();
 
             var authorIds = publications.SelectMany(p => p.Authors).Select(a => a.Id).Distinct();
-            var authors = await _authorsCollection.Find(a => authorIds.Contains(a.Id)).ToListAsync();
+            var authors = await _authorsCollection
+                .Find(a => authorIds.Contains(a.Id))
+                .ToListAsync();
             var authorsDict = authors.ToDictionary(a => a.Id);
             foreach (var publication in publications)
             {
@@ -74,7 +76,9 @@ namespace FITApp.PublicationsService.Repositories
                 )
                 .ToListAsync();
             var authorIds = publications.SelectMany(p => p.Authors).Select(a => a.Id).Distinct();
-            var authors = await _authorsCollection.Find(a => authorIds.Contains(a.Id)).ToListAsync();
+            var authors = await _authorsCollection
+                .Find(a => authorIds.Contains(a.Id))
+                .ToListAsync();
             var authorsDict = authors.ToDictionary(a => a.Id);
             foreach (var publication in publications)
             {
@@ -96,17 +100,22 @@ namespace FITApp.PublicationsService.Repositories
         public async Task<Publication> GetByIdAsync(ObjectId id)
         {
             var publication = await _collection.Find(p => p.Id == id).FirstOrDefaultAsync();
-            var authorIds = publication.Authors.Select(a => a.Id);
-            var authors = await _authorsCollection.Find(a => authorIds.Contains(a.Id)).ToListAsync();
-            var authorsDict = authors.ToDictionary(a => a.Id);
-            for (int i = 0; i < publication.Authors.Count; i++)
+            if (publication is not null)
             {
-                if (publication.Authors[i].Id is not null)
+                var authorIds = publication.Authors.Select(a => a.Id);
+                var authors = await _authorsCollection
+                    .Find(a => authorIds.Contains(a.Id))
+                    .ToListAsync();
+                var authorsDict = authors.ToDictionary(a => a.Id);
+                for (int i = 0; i < publication.Authors.Count; i++)
                 {
-                    var author = authorsDict[publication.Authors[i].Id];
-                    publication.Authors[i].FirstName = author.FirstName;
-                    publication.Authors[i].LastName = author.LastName;
-                    publication.Authors[i].Patronymic = author.Patronymic;
+                    if (publication.Authors[i].Id is not null)
+                    {
+                        var author = authorsDict[publication.Authors[i].Id];
+                        publication.Authors[i].FirstName = author.FirstName;
+                        publication.Authors[i].LastName = author.LastName;
+                        publication.Authors[i].Patronymic = author.Patronymic;
+                    }
                 }
             }
 
@@ -125,6 +134,7 @@ namespace FITApp.PublicationsService.Repositories
                     .Set(p => p.EVersionLink, publication.EVersionLink)
                     .Set(p => p.PagesTotal, publication.PagesTotal)
                     .Set(p => p.DateOfPublication, publication.DateOfPublication)
+                    .Set(p => p.InputData, publication.InputData)
             );
         }
     }
