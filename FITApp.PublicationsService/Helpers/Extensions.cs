@@ -84,7 +84,6 @@ namespace FITApp.PublicationsService.Helpers
                 FirstName = author.FirstName,
                 LastName = author.LastName,
                 Patronymic = author.Patronymic,
-                PagesByAuthor = author.PagesByAuthor,
             };
         }
 

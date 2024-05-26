@@ -236,7 +236,7 @@ namespace FITApp.PublicationsService.Documents
                     table
                         .Cell()
                         .Element(CellStyle)
-                        .Text($"{item.PagesCount}/{item.PagesByAuthorCount}");
+                        .Text($"{item.PagesCount}/{item}");
                     table
                         .Cell()
                         .Element(CellStyle)

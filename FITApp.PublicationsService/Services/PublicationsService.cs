@@ -33,8 +33,9 @@ namespace FITApp.PublicationsService.Services
             await AddLackingAuthorsAsync(publicationDTO);
 
             Publication publication = publicationDTO.Map();
-            response.PagesByAuthor = publicationDTO.PagesByAuthorCount;
-            publication.Authors.Add(response.MapToPublicationAuthor());
+            var publicationAuthor = response.MapToPublicationAuthor();
+            publicationAuthor.PagesByAuthor = publicationDTO.PagesByAuthorCount;
+            publication.Authors.Add(publicationAuthor);
 
             await _unitOfWork.PublicationRepository.CreateAsync(publication);
         }
@@ -106,8 +107,9 @@ namespace FITApp.PublicationsService.Services
 
             var publication = publicationDTO.Map();
             var author = await _unitOfWork.AuthorRepository.GetAsync(userId);
-            author.PagesByAuthor = publicationDTO.PagesByAuthorCount;
-            publication.Authors.Add(author.MapToPublicationAuthor());
+            var publicationAuthor = author.MapToPublicationAuthor();
+            publicationAuthor.PagesByAuthor = publicationDTO.PagesByAuthorCount;
+            publication.Authors.Add(publicationAuthor);
             await _unitOfWork.PublicationRepository.UpdateAsync(ObjectId.Parse(id), publication);
         }
 
@@ -139,18 +141,38 @@ namespace FITApp.PublicationsService.Services
             return ms;
         }
 
+        // private async Task AddLackingAuthorsAsync(UpsertPublicationDTO publicationDTO)
+        // {
+        //     foreach (var coauthor in publicationDTO.Authors)
+        //     {
+        //         if (coauthor.Id != null)
+        //         {
+        //             var coauthorCheck = await _unitOfWork.AuthorRepository.GetAsync(coauthor.Id);
+        //             if (coauthorCheck == null)
+        //             {
+        //                 await _unitOfWork.AuthorRepository.CreateAsync(coauthor.Map());
+        //             }
+        //         }
+        //     }
+        // }
+
         private async Task AddLackingAuthorsAsync(UpsertPublicationDTO publicationDTO)
         {
-            foreach (var coauthor in publicationDTO.Authors)
+            var authorIds = publicationDTO.Authors.Select(p => p.Id).Where(id => !string.IsNullOrWhiteSpace(id));
+            var authors = await _unitOfWork.AuthorRepository.GetAllByIds(authorIds);
+            var authorsDict = authors.ToDictionary(a => a.Id);
+            var authorsToAdd = new List<Author>();
+            foreach (var author in publicationDTO.Authors)
             {
-                if (coauthor.Id != null)
+                if (author.Id is not null && !authorsDict.ContainsKey(author.Id))
                 {
-                    var coauthorCheck = await _unitOfWork.AuthorRepository.GetAsync(coauthor.Id);
-                    if (coauthorCheck == null)
-                    {
-                        await _unitOfWork.AuthorRepository.CreateAsync(coauthor.Map());
-                    }
+                    authorsToAdd.Add(author.Map());
                 }
+            }
+
+            if (authorsToAdd.Count > 0)
+            {
+                await _unitOfWork.AuthorRepository.CreateManyAsync(authorsToAdd);
             }
         }
 
