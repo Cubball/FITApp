@@ -36,6 +36,9 @@ export interface IEmployee {
   firstName: string;
   lastName: string;
   patronymic: string;
+  firstNamePossessive: string;
+  lastNamePossessive: string;
+  patronymicPossessive: string;
   birthDate: string;
   photo: string;
   positions: IPosition[];
@@ -48,6 +51,9 @@ export interface IUpdateEmployeeBody {
   firstName: string;
   lastName: string;
   patronymic: string;
+  firstNamePossessive: string;
+  lastNamePossessive: string;
+  patronymicPossessive: string;
   birthDate: string; // TODO I am not sure about the type
 }
 
