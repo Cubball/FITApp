@@ -14,6 +14,15 @@ namespace FITApp.PublicationsService.Models
         public string Patronymic { get; set; } = null!;
 
         [BsonIgnore]
+        public string FirstNamePossessive { get; set; } = null!;
+
+        [BsonIgnore]
+        public string LastNamePossessive { get; set; } = null!;
+
+        [BsonIgnore]
+        public string PatronymicPossessive { get; set; } = null!;
+
+        [BsonIgnore]
         public ICollection<AcademicDegree> AcademicDegrees { get; set; }
 
         [BsonIgnore]

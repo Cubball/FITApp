@@ -227,7 +227,7 @@ namespace FITApp.PublicationsService.Documents
 
                             // TODO change to name in possessive form
                             var fullName =
-                                $"{Author.FirstName?.ToUpper()} {Author.LastName?.ToUpper()} {Author.Patronymic?.ToUpper()}";
+                                $"{Author.FirstNamePossessive?.ToUpper()} {Author.LastNamePossessive?.ToUpper()} {Author.PatronymicPossessive?.ToUpper()}";
                             column.Item().Text($"{fullName}\n").AlignCenter().Style(headerStyle);
                         });
                 });
