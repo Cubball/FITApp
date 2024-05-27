@@ -119,16 +119,18 @@ namespace FITApp.PublicationsService.Services
             DateTime endDate
         )
         {
+            var startDateOnly = new DateOnly(startDate.Year, startDate.Month, startDate.Day);
+            var endDateOnly = new DateOnly(endDate.Year, endDate.Month, endDate.Day);
             var publications = await _unitOfWork.PublicationRepository.GetBetweenDates(
                 userId,
-                new DateOnly(startDate.Year, startDate.Month, startDate.Day),
-                new DateOnly(endDate.Year, endDate.Month, endDate.Day)
+                startDateOnly,
+                endDateOnly
             );
             var author = await _httpClient.GetFromJsonAsync<Author>("/api/profile");
 
             var administration = await _httpClient.GetFromJsonAsync<Administration>("api/administration");
 
-            var document = new Report(publications, author, administration);
+            var document = new Report(publications, author, administration, startDateOnly, endDateOnly);
 
             var bytes = document.GeneratePdf();
 

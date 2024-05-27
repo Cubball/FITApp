@@ -67,7 +67,7 @@ namespace FITApp.PublicationsService.Documents
                         && lastDegree.DateOfIssue < EndDate
                     )
                     {
-                        var degreeName = lastDegree.FullName.Split()[0];
+                        var degreeName = lastDegree.FullName.Split()[0].ToLower();
 
                         var publicationsBeforeDegree = Publications
                             .Where(p =>
@@ -220,14 +220,14 @@ namespace FITApp.PublicationsService.Documents
                             column
                                 .Item()
                                 .Text(
-                                    $"{position.ToLower()}а кафедри програмних систем і технологій факультету інформаційних технологій Київського національного університету імені Тараса Шевченка"
+                                    $"{position?.ToLower()}а кафедри програмних систем і технологій факультету інформаційних технологій Київського національного університету імені Тараса Шевченка"
                                 )
                                 .AlignCenter()
                                 .Style(headerStyle);
 
                             // TODO change to name in possessive form
                             var fullName =
-                                $"{Author.FirstName.ToUpper()} {Author.LastName.ToUpper()} {Author.Patronymic.ToUpper()}";
+                                $"{Author.FirstName?.ToUpper()} {Author.LastName?.ToUpper()} {Author.Patronymic?.ToUpper()}";
                             column.Item().Text($"{fullName}\n").AlignCenter().Style(headerStyle);
                         });
                 });
@@ -275,7 +275,7 @@ namespace FITApp.PublicationsService.Documents
                         {
                             column
                                 .Item()
-                                .Text($"{Author.FirstName} {Author.LastName.ToUpper()}\n\n\n\n")
+                                .Text($"{Author.FirstName} {Author.LastName?.ToUpper()}\n\n\n\n")
                                 .AlignRight()
                                 .Style(TextStyle);
                             column
@@ -356,7 +356,7 @@ namespace FITApp.PublicationsService.Documents
                         table
                             .Cell()
                             .Element(CellStyle)
-                            .Text($"{item.Annotation}\n\n{item.EVersionLink}");
+                            .Text($"{item.InputData}");
                         table
                             .Cell()
                             .Element(CellStyle)
