@@ -126,13 +126,9 @@ namespace FITApp.PublicationsService.Services
             );
             var author = await _httpClient.GetFromJsonAsync<Author>("/api/profile");
 
-            var dtos = publications.Select(p => p.Map());
-
-
-
             var administration = await _httpClient.GetFromJsonAsync<Administration>("api/administration");
 
-            var document = new Report(dtos, author, administration);
+            var document = new Report(publications, author, administration);
 
             var bytes = document.GeneratePdf();
 
@@ -140,21 +136,6 @@ namespace FITApp.PublicationsService.Services
 
             return ms;
         }
-
-        // private async Task AddLackingAuthorsAsync(UpsertPublicationDTO publicationDTO)
-        // {
-        //     foreach (var coauthor in publicationDTO.Authors)
-        //     {
-        //         if (coauthor.Id != null)
-        //         {
-        //             var coauthorCheck = await _unitOfWork.AuthorRepository.GetAsync(coauthor.Id);
-        //             if (coauthorCheck == null)
-        //             {
-        //                 await _unitOfWork.AuthorRepository.CreateAsync(coauthor.Map());
-        //             }
-        //         }
-        //     }
-        // }
 
         private async Task AddLackingAuthorsAsync(UpsertPublicationDTO publicationDTO)
         {
@@ -173,20 +154,6 @@ namespace FITApp.PublicationsService.Services
             if (authorsToAdd.Count > 0)
             {
                 await _unitOfWork.AuthorRepository.CreateManyAsync(authorsToAdd);
-            }
-        }
-
-        private async Task SetActualAuthors(FullPublication fullPublication)
-        {
-            for (int i = 0; i < fullPublication.Authors.Count; i++)
-            {
-                if (fullPublication.Authors[i].Id != null)
-                {
-                    var author = await _unitOfWork.AuthorRepository.GetAsync(
-                        fullPublication.Authors[i].Id
-                    );
-                    fullPublication.Authors[i] = author.MapToCoauthor();
-                }
             }
         }
     }

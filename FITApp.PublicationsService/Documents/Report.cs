@@ -9,14 +9,18 @@ namespace FITApp.PublicationsService.Documents
     public class Report : IDocument
     {
         public Report(
-            IEnumerable<FullPublication> publications,
+            IEnumerable<Publication> publications,
             Author author,
-            Administration administration
+            Administration administration,
+            DateOnly startDate,
+            DateOnly endDate
         )
         {
             Publications = publications;
             Author = author;
             Administration = administration;
+            StartDate = startDate;
+            EndDate = endDate;
         }
 
         private TextStyle TextStyle = TextStyle
@@ -25,11 +29,16 @@ namespace FITApp.PublicationsService.Documents
 
         private int worksCounter = 0;
 
+        private int sectionsCounter = 0;
+
+        public DateOnly StartDate { get; private set; }
+        public DateOnly EndDate { get; private set; }
+
         public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
 
         public DocumentSettings GetSettings() => DocumentSettings.Default;
 
-        public IEnumerable<FullPublication> Publications { get; }
+        public IEnumerable<Publication> Publications { get; }
         public Author Author { get; }
         public Administration Administration { get; }
 
@@ -49,19 +58,127 @@ namespace FITApp.PublicationsService.Documents
                 container.Column(column =>
                 {
                     column.Item().Element(ComposeHeader);
+                    var lastDegree = Author
+                        .AcademicDegrees.OrderByDescending(a => a.DateOfIssue)
+                        .ElementAtOrDefault(0);
+                    if (
+                        lastDegree is not null
+                        && lastDegree.DateOfIssue > StartDate
+                        && lastDegree.DateOfIssue < EndDate
+                    )
+                    {
+                        var degreeName = lastDegree.FullName.Split()[0];
 
-                    column
-                        .Item()
-                        .PaddingVertical(4)
-                        .Text(
-                            "І. Наукові праці за профілем кафедри, опубліковані \nза звітний період (2023-2024 навчальний рік)"
-                        )
-                        .AlignCenter()
-                        .SemiBold()
-                        .Style(TextStyle);
-                    ComposeTable(column.Item(), Publications);
+                        var publicationsBeforeDegree = Publications
+                            .Where(p =>
+                                p.Type != "Методичні вказівки"
+                                && p.Type != "Авторське право"
+                                && p.DateOfPublication < lastDegree.DateOfIssue
+                            )
+                            .ToList();
 
-                    column.Item().PaddingTop(20).Element(ComposeFooter);
+                        var publicationsAfterDegree = Publications
+                            .Where(p =>
+                                p.Type != "Методичні вказівки"
+                                && p.Type != "Авторське право"
+                                && p.DateOfPublication > lastDegree.DateOfIssue
+                            )
+                            .ToList();
+
+                        if (publicationsBeforeDegree.Count > 0)
+                        {
+                            sectionsCounter++;
+                            column
+                                .Item()
+                                .PaddingVertical(4)
+                                .Text(
+                                    $"{ToRomanNumeral(sectionsCounter)}. Наукові праці за профілем кафедри, опубліковані \nдо захисту {degreeName}ської дисертації"
+                                )
+                                .AlignCenter()
+                                .SemiBold()
+                                .Style(TextStyle);
+                            ComposeTable(column.Item(), publicationsBeforeDegree);
+                        }
+
+                        if (publicationsAfterDegree.Count > 0)
+                        {
+                            sectionsCounter++;
+                            column
+                                .Item()
+                                .PaddingVertical(4)
+                                .Text(
+                                    $"{ToRomanNumeral(sectionsCounter)}. Наукові праці за профілем кафедри, опубліковані \nпісля захисту {degreeName}ської дисертації"
+                                )
+                                .AlignCenter()
+                                .SemiBold()
+                                .Style(TextStyle);
+                            ComposeTable(column.Item(), publicationsAfterDegree);
+                        }
+                    }
+                    else
+                    {
+                        var works = Publications
+                            .Where(p =>
+                                p.Type != "Методичні вказівки" && p.Type != "Авторське право"
+                            )
+                            .ToList();
+
+                        if (works.Count > 0)
+                        {
+                            sectionsCounter++;
+                            column
+                                .Item()
+                                .PaddingVertical(4)
+                                .Text(
+                                    $"{ToRomanNumeral(sectionsCounter)}. Наукові праці за профілем кафедри, опубліковані \nза звітний період"
+                                )
+                                .AlignCenter()
+                                .SemiBold()
+                                .Style(TextStyle);
+                            ComposeTable(column.Item(), works);
+                        }
+                    }
+
+                    var copyrightWorks = Publications
+                        .Where(p => p.Type == "Авторське право")
+                        .ToList();
+
+                    if (copyrightWorks.Count > 0)
+                    {
+                        copyrightWorks.ForEach(p => p.Type = string.Empty);
+                        sectionsCounter++;
+                        column
+                            .Item()
+                            .PaddingVertical(4)
+                            .Text(
+                                $"{ToRomanNumeral(sectionsCounter)}. Свідоцтво про реєстрацію авторського права за звітний період"
+                            )
+                            .AlignCenter()
+                            .SemiBold()
+                            .Style(TextStyle);
+                        ComposeTable(column.Item(), copyrightWorks);
+                    }
+
+                    var methodicalInstructions = Publications
+                        .Where(p => p.Type == "Методичні вказівки")
+                        .ToList();
+
+                    if (methodicalInstructions.Count > 0)
+                    {
+                        sectionsCounter++;
+                        column
+                            .Item()
+                            .PaddingVertical(4)
+                            .Text(
+                                $"{ToRomanNumeral(sectionsCounter)}. Основні навчально-методичні роботи за звітний період"
+                            )
+                            .AlignCenter()
+                            .SemiBold()
+                            .Style(TextStyle);
+                        ComposeTable(column.Item(), methodicalInstructions);
+                    }
+
+                    column.Item().Element(ComposeFooter);
                 });
             }
 
@@ -80,6 +197,12 @@ namespace FITApp.PublicationsService.Documents
                                 .AlignCenter()
                                 .Style(headerStyle);
 
+                            column
+                                .Item()
+                                .Text($"за період - {StartDate.Year} - {EndDate.Year} роки")
+                                .AlignCenter()
+                                .Style(headerStyle);
+
                             var degree = GetAcademicDegree();
                             if (degree != null)
                             {
@@ -90,20 +213,19 @@ namespace FITApp.PublicationsService.Documents
                                     .Style(headerStyle);
                             }
 
-                            // TODO change to right rank or profession
-                            var rank = Author
-                                .AcademicRanks.OrderByDescending(ar => ar.DateOfIssue)
+                            var position = Author
+                                .Positions.OrderByDescending(ar => ar.StartDate)
                                 .ElementAtOrDefault(0)
                                 ?.Name;
                             column
                                 .Item()
                                 .Text(
-                                    $"{rank.ToLower()}а кафедри програмних систем і технологій факультету інформаційних технологій Київського національного університету імені Тараса Шевченка"
+                                    $"{position.ToLower()}а кафедри програмних систем і технологій факультету інформаційних технологій Київського національного університету імені Тараса Шевченка"
                                 )
                                 .AlignCenter()
                                 .Style(headerStyle);
 
-                            // TODO change to name in whose form
+                            // TODO change to name in possessive form
                             var fullName =
                                 $"{Author.FirstName.ToUpper()} {Author.LastName.ToUpper()} {Author.Patronymic.ToUpper()}";
                             column.Item().Text($"{fullName}\n").AlignCenter().Style(headerStyle);
@@ -122,7 +244,7 @@ namespace FITApp.PublicationsService.Documents
                             column.Item().Text("Список завіряю:\n").AlignLeft().Style(TextStyle);
                             column
                                 .Item()
-                                .Text("Завідувач кафедри _________________\n\n\n")
+                                .Text("Завідувач кафедри\nпрограмних систем і технологій\n\n\n")
                                 .AlignLeft()
                                 .Style(TextStyle);
                             column
@@ -137,7 +259,7 @@ namespace FITApp.PublicationsService.Documents
                         {
                             column
                                 .Item()
-                                .Text("_________________\n\n\n")
+                                .Text("_________________\n\n\n\n")
                                 .AlignRight()
                                 .Style(TextStyle);
                             column
@@ -153,7 +275,7 @@ namespace FITApp.PublicationsService.Documents
                         {
                             column
                                 .Item()
-                                .Text($"{Author.FirstName} {Author.LastName.ToUpper()}\n\n\n")
+                                .Text($"{Author.FirstName} {Author.LastName.ToUpper()}\n\n\n\n")
                                 .AlignRight()
                                 .Style(TextStyle);
                             column
@@ -189,76 +311,131 @@ namespace FITApp.PublicationsService.Documents
             return null;
         }
 
-        private void ComposeTable(IContainer container, IEnumerable<FullPublication> publications)
+        private void ComposeTable(IContainer container, IEnumerable<Publication> publications)
         {
-            container.Table(table =>
-            {
-                table.ColumnsDefinition(columns =>
+            container
+                .PaddingBottom(20)
+                .Table(table =>
                 {
-                    columns.ConstantColumn(0.9f, Unit.Centimetre);
-                    columns.RelativeColumn();
-                    columns.RelativeColumn(0.4f);
-                    columns.RelativeColumn();
-                    columns.RelativeColumn(0.4f);
-                    columns.RelativeColumn(0.8f);
-                });
-
-                table.Header(header =>
-                {
-                    header.Cell().Element(CellStyle).Text("№\nп/п");
-                    header.Cell().Element(CellStyle).Text("Назва наукової праці");
-                    header.Cell().Element(CellStyle).Text("Характер праці");
-                    header.Cell().Element(CellStyle).Text("Вхідні дані");
-                    header.Cell().Element(CellStyle).Text("Обсяг (у стор.)/ автор. доробок");
-                    header.Cell().Element(CellStyle).Text("Співавтори");
-
-                    static IContainer CellStyle(IContainer container)
+                    table.ColumnsDefinition(columns =>
                     {
-                        return container
-                            .DefaultTextStyle(x =>
-                                x.SemiBold().FontSize(13).FontFamily(Fonts.TimesNewRoman)
-                            )
-                            .Border(0.25f)
-                            .BorderColor(Colors.Black);
-                    }
-                });
+                        columns.ConstantColumn(0.9f, Unit.Centimetre);
+                        columns.RelativeColumn();
+                        columns.RelativeColumn(0.4f);
+                        columns.RelativeColumn();
+                        columns.RelativeColumn(0.4f);
+                        columns.RelativeColumn(0.8f);
+                    });
 
-                foreach (var item in publications)
-                {
-                    worksCounter++;
-                    table.Cell().Element(CellStyle).Text($"{worksCounter}");
-                    table.Cell().Element(CellStyle).Text(item.Name);
-                    table.Cell().Element(CellStyle).Text(item.Type);
-                    table
-                        .Cell()
-                        .Element(CellStyle)
-                        .Text($"{item.Annotation}\n\n{item.EVersionLink}");
-                    table
-                        .Cell()
-                        .Element(CellStyle)
-                        .Text($"{item.PagesCount}/{item}");
-                    table
-                        .Cell()
-                        .Element(CellStyle)
-                        .Text(
-                            string.Join(
-                                ", ",
-                                item.Authors.Select(ca =>
-                                    $"{ca.LastName} {ca.FirstName[0]}.{ca.Patronymic[0]}."
+                    table.Header(header =>
+                    {
+                        header.Cell().Element(CellStyle).Text("№\nп/п");
+                        header.Cell().Element(CellStyle).Text("Назва наукової праці");
+                        header.Cell().Element(CellStyle).Text("Характер праці");
+                        header.Cell().Element(CellStyle).Text("Вхідні дані");
+                        header.Cell().Element(CellStyle).Text("Обсяг (у стор.)/ автор. доробок");
+                        header.Cell().Element(CellStyle).Text("Співавтори");
+
+                        static IContainer CellStyle(IContainer container)
+                        {
+                            return container
+                                .DefaultTextStyle(x =>
+                                    x.SemiBold().FontSize(13).FontFamily(Fonts.TimesNewRoman)
                                 )
-                            )
-                        );
+                                .Border(0.25f)
+                                .BorderColor(Colors.Black);
+                        }
+                    });
 
-                    static IContainer CellStyle(IContainer container)
+                    foreach (var item in publications)
                     {
-                        return container
-                            .Border(0.25f)
-                            .BorderColor(Colors.Black)
-                            .Padding(2)
-                            .DefaultTextStyle(x => x.FontSize(12).FontFamily(Fonts.TimesNewRoman));
+                        worksCounter++;
+                        table.Cell().Element(CellStyle).Text($"{worksCounter}");
+                        table.Cell().Element(CellStyle).Text(item.Name);
+                        table.Cell().Element(CellStyle).Text(item.Type);
+                        table
+                            .Cell()
+                            .Element(CellStyle)
+                            .Text($"{item.Annotation}\n\n{item.EVersionLink}");
+                        table
+                            .Cell()
+                            .Element(CellStyle)
+                            .Text(
+                                $"{item.PagesTotal}/{item.Authors.First(a => a.Id == Author.Id).PagesByAuthor}"
+                            );
+                        table
+                            .Cell()
+                            .Element(CellStyle)
+                            .Text(
+                                string.Join(
+                                    ", ",
+                                    item.Authors.Where(a => a.Id != Author.Id)
+                                        .Select(ca =>
+                                            $"{ca.LastName} {ca.FirstName[0]}.{ca.Patronymic[0]}."
+                                        )
+                                )
+                            );
+
+                        static IContainer CellStyle(IContainer container)
+                        {
+                            return container
+                                .Border(0.25f)
+                                .BorderColor(Colors.Black)
+                                .Padding(2)
+                                .DefaultTextStyle(x =>
+                                    x.FontSize(12).FontFamily(Fonts.TimesNewRoman)
+                                );
+                        }
                     }
-                }
-            });
+                });
+        }
+
+        private static List<string> romanNumerals = new List<string>()
+        {
+            "M",
+            "CM",
+            "D",
+            "CD",
+            "C",
+            "XC",
+            "L",
+            "XL",
+            "X",
+            "IX",
+            "V",
+            "IV",
+            "I"
+        };
+        private static List<int> numerals = new List<int>()
+        {
+            1000,
+            900,
+            500,
+            400,
+            100,
+            90,
+            50,
+            40,
+            10,
+            9,
+            5,
+            4,
+            1
+        };
+
+        private static string ToRomanNumeral(int number)
+        {
+            var romanNumeral = string.Empty;
+            while (number > 0)
+            {
+                // find biggest numeral that is less than equal to number
+                var index = numerals.FindIndex(x => x <= number);
+                // subtract it's value from your number
+                number -= numerals[index];
+                // tack it onto the end of your roman numeral
+                romanNumeral += romanNumerals[index];
+            }
+            return romanNumeral;
         }
     }
 }

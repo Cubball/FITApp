@@ -17,6 +17,6 @@ namespace FITApp.PublicationsService.Models
         public ICollection<AcademicDegree> AcademicDegrees { get; set; }
 
         [BsonIgnore]
-        public ICollection<AcademicRank> AcademicRanks { get; set; }
+        public ICollection<Position> Positions { get; set; }
     }
 }
