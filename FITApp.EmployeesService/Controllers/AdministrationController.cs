@@ -10,7 +10,8 @@ namespace FITApp.EmployeesService.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class AdministrationController(IAdministrationService administrationService) : ControllerBase
+    public class AdministrationController(IAdministrationService administrationService)
+        : ControllerBase
     {
         private readonly IAdministrationService _administrationService = administrationService;
 
@@ -22,7 +23,7 @@ namespace FITApp.EmployeesService.Controllers
         }
 
         [HttpPut]
-        [RequiresPermission(Permissions.AdministrationUpdate)]
+        [RequiresPermission(Permissions.All, Permissions.AdministrationUpdate)]
         public async Task<ActionResult> UpdateAsync([FromBody] AdministrationDto administrationDto)
         {
             if (!Validate(administrationDto))
@@ -37,14 +38,14 @@ namespace FITApp.EmployeesService.Controllers
         private static bool Validate(AdministrationDto administrationDto)
         {
             return administrationDto != null
-                   && !string.IsNullOrWhiteSpace(administrationDto.HeadOfDepartment.FirstName)
-                   && !string.IsNullOrWhiteSpace(administrationDto.HeadOfDepartment.LastName)
-                   && !string.IsNullOrWhiteSpace(administrationDto.HeadOfDepartment.Patronymic)
-                   && !string.IsNullOrWhiteSpace(administrationDto.ScientificSecretary.FirstName)
-                   && !string.IsNullOrWhiteSpace(administrationDto.ScientificSecretary.LastName)
-                   && !string.IsNullOrWhiteSpace(administrationDto.ScientificSecretary.Patronymic);
+                && administrationDto.HeadOfDepartment is not null
+                && administrationDto.ScientificSecretary is not null
+                && administrationDto.HeadOfDepartment.FirstName is not null
+                && administrationDto.HeadOfDepartment.LastName is not null
+                && administrationDto.HeadOfDepartment.Patronymic is not null
+                && administrationDto.ScientificSecretary.FirstName is not null
+                && administrationDto.ScientificSecretary.LastName is not null
+                && administrationDto.ScientificSecretary.Patronymic is not null;
         }
-
-
     }
 }

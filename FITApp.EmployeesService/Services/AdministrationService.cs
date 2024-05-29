@@ -12,7 +12,7 @@ namespace FITApp.EmployeesService.Services
         public async Task<AdministrationDto> GetAsync()
         {
             var model = await _repository.GetAsync();
-            return Map(model);
+            return model == null ? new AdministrationDto() : Map(model);
         }
 
         public async Task UpdateAsync(AdministrationDto administrationDto)

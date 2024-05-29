@@ -71,7 +71,7 @@ namespace FITApp.PublicationsService.Documents
 
                         var publicationsBeforeDegree = Publications
                             .Where(p =>
-                                p.Type != "Методичні вказівки"
+                                p.Type != "Методичні рекомендації"
                                 && p.Type != "Авторське право"
                                 && p.DateOfPublication < lastDegree.DateOfIssue
                             )
@@ -79,7 +79,7 @@ namespace FITApp.PublicationsService.Documents
 
                         var publicationsAfterDegree = Publications
                             .Where(p =>
-                                p.Type != "Методичні вказівки"
+                                p.Type != "Методичні рекомендації"
                                 && p.Type != "Авторське право"
                                 && p.DateOfPublication > lastDegree.DateOfIssue
                             )
@@ -119,7 +119,7 @@ namespace FITApp.PublicationsService.Documents
                     {
                         var works = Publications
                             .Where(p =>
-                                p.Type != "Методичні вказівки" && p.Type != "Авторське право"
+                                p.Type != "Методичні рекомендації" && p.Type != "Авторське право"
                             )
                             .ToList();
 
@@ -160,7 +160,7 @@ namespace FITApp.PublicationsService.Documents
                     }
 
                     var methodicalInstructions = Publications
-                        .Where(p => p.Type == "Методичні вказівки")
+                        .Where(p => p.Type == "Методичні рекомендації")
                         .ToList();
 
                     if (methodicalInstructions.Count > 0)
