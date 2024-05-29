@@ -71,8 +71,8 @@ namespace FITApp.PublicationsService.Repositories
             var publications = await _collection
                 .Find<Publication>(p =>
                     p.Authors.Select(a => a.Id).Contains(authorId)
-                    && p.DateOfPublication > startDate
-                    && p.DateOfPublication < endDate
+                    && p.DateOfPublication >= startDate
+                    && p.DateOfPublication <= endDate
                 )
                 .ToListAsync();
             var authorIds = publications.SelectMany(p => p.Authors).Select(a => a.Id).Distinct();

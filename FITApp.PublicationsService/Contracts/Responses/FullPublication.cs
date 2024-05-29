@@ -18,6 +18,8 @@ namespace FITApp.PublicationsService.Contracts.Responses
 
         public int PagesCount { get; set; }
 
+        public int PagesByAuthorCount { get; set; }
+
         public IList<AuthorWithPagesDTO> Authors { get; set; }
 
     }

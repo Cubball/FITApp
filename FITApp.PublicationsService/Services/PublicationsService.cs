@@ -85,7 +85,8 @@ namespace FITApp.PublicationsService.Services
             }
 
             var result = publication.Map();
-
+            result.PagesByAuthorCount = (int) result.Authors.First(a => a.Id == userId).PagesByAuthorCount;
+            result.Authors = result.Authors.Where(a => a.Id != userId).ToList();
             // await SetActualAuthors(result);
 
             return result;
