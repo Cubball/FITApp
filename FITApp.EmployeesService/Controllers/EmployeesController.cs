@@ -22,18 +22,16 @@ namespace FITApp.EmployeesService.Controllers
             _employeeService = employeeService;
             _photoService = photoService;
         }
-
-
+        
         [RequiresPermission(Permissions.UsersCreate, Permissions.All)]
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDto employeeDto)
         {
             await _employeeService.CreateEmployee(employeeDto);
+            
             return Ok();
         }
 
-
-        //TODO: set bether name for method
         [RequiresPermission(Permissions.UsersUpdate, Permissions.All)]
         [HttpPut("{id}")]
         public async Task<IActionResult> SetFullNameAndBirth(string id, [FromBody] EmployeeDetailsDto employeeDetails)
@@ -46,17 +44,14 @@ namespace FITApp.EmployeesService.Controllers
             try
             {
                 long updatedCount = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
+                
                 return updatedCount == 0 ? NotFound() : Ok();
-
             }
             catch (ValidationException ex)
             {
-
                 return BadRequest(ex.Errors);
                 throw;
             }
-
-
         }
 
         [RequiresPermission(Permissions.UsersDelete, Permissions.All)]
@@ -72,13 +67,13 @@ namespace FITApp.EmployeesService.Controllers
 
             return NoContent(); // Успішний видалення, не потрібно повертати тіло відповіді
         }
-
-
+        
         [RequiresPermission(Permissions.UsersRead, Permissions.All)]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployee(string id)
         {
             var employee = await _employeeService.GetEmployee(id);
+            
             return Ok(employee);
         }
 
@@ -90,18 +85,18 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            
             try
             {
                 long updatedCount = await _employeeService.UpdateEmployeePositions(id, positionDto);
+                
                 return updatedCount == 0 ? NotFound() : Ok();
-
             }
             catch (ValidationException ex)
             {
                 return BadRequest(ex.Errors);
                 throw;
             }
-
         }
 
         [RequiresPermission(Permissions.UsersUpdate, Permissions.All)]
@@ -112,9 +107,11 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            
             try
             {
                 long updatedCount = await _employeeService.UpdateEmployeeEducations(id, educationDto);
+                
                 return updatedCount == 0 ? NotFound() : Ok();
             }
             catch (ValidationException ex)
@@ -122,8 +119,6 @@ namespace FITApp.EmployeesService.Controllers
                 return BadRequest(ex.Errors);
                 throw;
             }
-
-
         }
 
         [RequiresPermission(Permissions.UsersUpdate, Permissions.All)]
@@ -134,9 +129,11 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            
             try
             {
                 long updatedCount = await _employeeService.UpdateEmployeeAcademicDegrees(id, educationDto);
+                
                 return updatedCount == 0 ? NotFound() : Ok();
             }
             catch (ValidationException ex)
@@ -144,8 +141,6 @@ namespace FITApp.EmployeesService.Controllers
                 return BadRequest(ex.Errors);
                 throw;
             }
-
-
         }
 
         [RequiresPermission(Permissions.UsersUpdate, Permissions.All)]
@@ -156,9 +151,11 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            
             try
             {
                 long updatedCount = await _employeeService.UpdateEmployeeAcademicRanks(id, academicRankDto);
+                
                 return updatedCount == 0 ? NotFound() : Ok();
             }
             catch (ValidationException ex)
@@ -174,15 +171,16 @@ namespace FITApp.EmployeesService.Controllers
         public async Task<IActionResult> RemoveEmployeeAcademicRank(string id, int index)
         {
             var result = await _employeeService.RemoveEmployeeAcademicRankByIndex(id, index);
+            
             return result == 0 ? NotFound() : Ok();
         }
-
 
         [RequiresPermission(Permissions.UsersUpdate, Permissions.All)]
         [HttpDelete("{id}/positions/{index}")]
         public async Task<IActionResult> RemoveEmployeePosition(string id, int index)
         {
             var result = await _employeeService.RemoveEmployeePositionByIndex(id, index);
+            
             return result == 0 ? NotFound() : Ok();
         }
 
@@ -191,6 +189,7 @@ namespace FITApp.EmployeesService.Controllers
         public async Task<IActionResult> RemoveEmployeeEducation(string id, int index)
         {
             var result = await _employeeService.RemoveEmployeeEducationByIndex(id, index);
+            
             return result == 0 ? NotFound() : Ok();
         }
 
@@ -199,6 +198,7 @@ namespace FITApp.EmployeesService.Controllers
         public async Task<IActionResult> RemoveEmployeeAcademicDegree(string id, int index)
         {
             var result = await _employeeService.RemoveEmployeeAcademicDegreeByIndex(id, index);
+            
             return result == 0 ? NotFound() : Ok();
         }
 
@@ -215,6 +215,7 @@ namespace FITApp.EmployeesService.Controllers
             else
             {
                 var paginatedResponse = await _employeeService.GetEmployeesPagination(page, pageSize);
+                
                 return Ok(paginatedResponse);
             }
 
@@ -235,11 +236,13 @@ namespace FITApp.EmployeesService.Controllers
             {
                 return BadRequest("Invalid employee ID.");
             }
+            
             try
             {
                 var employee = await _employeeService.GetEmployee(id);
                 if (employee.Photo != "") { long updatedCountPhoto = await _photoService.RemoveEmployeePhoto(id); }
                 long updatedCount = await _photoService.UpdateEmployeePhoto(id, employeePhotoUploadDto);
+                
                 return updatedCount == 0 ? NotFound() : Ok();
             }
             catch (ValidationException ex)
@@ -261,6 +264,7 @@ namespace FITApp.EmployeesService.Controllers
             try
             {
                 long updatedCount = await _photoService.RemoveEmployeePhoto(id);
+                
                 return updatedCount == 0 ? NotFound() : Ok();
             }
             catch (Exception)
@@ -268,6 +272,5 @@ namespace FITApp.EmployeesService.Controllers
                 return StatusCode(500, "An error occurred while removing the employee's photo.");
             }
         }
-
     }
 }

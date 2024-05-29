@@ -14,7 +14,7 @@ namespace FITApp.EmployeesService.Services
         IValidator<EducationDto> educationValidator,
         IValidator<AcademicDegreeDto> academicDegreeDtoValidator,
         IValidator<AcademicRankDto> academicRankDtoValidator,
-        IValidator<EmployeeDetailsDto> EmployeeDetailsValidator) : IEmployeesService
+        IValidator<EmployeeDetailsDto> employeeDetailsValidator) : IEmployeesService
     {
 
         public async Task CreateEmployee(EmployeeDto employeeDto)
@@ -26,6 +26,7 @@ namespace FITApp.EmployeesService.Services
         public async Task<long> DeleteEmployee(string id)
         {
             var result = await employeeRepository.DeleteEmployee(id);
+            
             return result.DeletedCount;
         }
 
@@ -41,13 +42,12 @@ namespace FITApp.EmployeesService.Services
 
         public async Task<long> UpdateEmployeeDetails(string id, EmployeeDetailsDto employeeDetails)
         {
-            var validationResult = await EmployeeDetailsValidator.ValidateAsync(employeeDetails);
+            var validationResult = await employeeDetailsValidator.ValidateAsync(employeeDetails);
             // Check if the validation failed
             if (!validationResult.IsValid)
             {
                 throw new ValidationException("EmployeeDetailsDto validation failed.", validationResult.Errors);
             }
-
 
             DateOnly newDateFromDateTime = new(employeeDetails.BirthDate!.Value.Year,
                 employeeDetails.BirthDate.Value.Month,
@@ -56,8 +56,12 @@ namespace FITApp.EmployeesService.Services
                 .Set(employee => employee.FirstName, employeeDetails.FirstName)
                 .Set(employee => employee.LastName, employeeDetails.LastName)
                 .Set(employee => employee.Patronymic, employeeDetails.Patronymic)
+                .Set(employee => employee.FirstNamePossessive, employeeDetails.FirstNamePossessive)
+                .Set(employee => employee.LastNamePossessive, employeeDetails.LastNamePossessive)
+                .Set(employee => employee.PatronymicPossessive, employeeDetails.PatronymicPossessive)
                 .Set(employee => employee.BirthDate, newDateFromDateTime);
             var result = await employeeRepository.UpdateEmployee(id, update);
+            
             return result.ModifiedCount;
         }
 
@@ -77,6 +81,7 @@ namespace FITApp.EmployeesService.Services
 
 
             var result = await employeeRepository.UpdateEmployee(id, update);
+            
             return result.ModifiedCount;
         }
 
@@ -100,6 +105,7 @@ namespace FITApp.EmployeesService.Services
                 });
 
             var result = await employeeRepository.UpdateEmployee(id, update);
+            
             return result.ModifiedCount;
         }
 
@@ -124,6 +130,7 @@ namespace FITApp.EmployeesService.Services
                 });
 
             var result = await employeeRepository.UpdateEmployee(id, update);
+            
             return result.ModifiedCount;
         }
 
@@ -146,6 +153,7 @@ namespace FITApp.EmployeesService.Services
                 });
 
             var result = await employeeRepository.UpdateEmployee(id, update);
+            
             return result.ModifiedCount;
         }
 
@@ -156,6 +164,7 @@ namespace FITApp.EmployeesService.Services
                 index,
                 employee => employee.AcademicRanks,
                 e => e.AcademicRanks);
+            
             return result.ModifiedCount;
         }
 
@@ -165,6 +174,7 @@ namespace FITApp.EmployeesService.Services
                 index,
                 employee => employee.Positions,
                 e => e.Positions);
+            
             return result.ModifiedCount;
         }
 
@@ -174,6 +184,7 @@ namespace FITApp.EmployeesService.Services
                 index,
                 employee => employee.Educations,
                 e => e.Educations);
+            
             return result.ModifiedCount;
         }
 
@@ -183,49 +194,10 @@ namespace FITApp.EmployeesService.Services
                 index,
                 employee => employee.AcademicDegrees,
                 e => e.AcademicDegrees);
+            
             return result.ModifiedCount;
         }
-
-        // public async Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize)
-        // {
-        //     var total =
-        //         await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
-        //
-        //     var employees =
-        //         await employeeRepository.GetEmployeesByPage(FilterDefinition<Employee>.Empty, page, pageSize);
-        //
-        //     var employeesDto = mapper.Map<IEnumerable<EmployeeDto>>(employees);
-        //
-        //     EmployeesPaginationReedDto response = new EmployeesPaginationReedDto
-        //     {
-        //         Page = page,
-        //         PageSize = pageSize,
-        //         TotalCount = total,
-        //         Employees = employeesDto
-        //     };
-        //     return response;
-        // }
-
-        // public async Task<EmployeesPaginationReedDto> GetEmployeesPagination(int page, int pageSize)
-        // {
-        //     var total =
-        //         await employeeRepository.TotalCountDocuments(FilterDefinition<Employee>.Empty);
-        //
-        //     var employees =
-        //         await employeeRepository.GetEmployeesByPage2(FilterDefinition<Employee>.Empty, page, pageSize);
-        //
-        //     // var employeesDto = mapper.Map<IEnumerable<SimpleEmployeeDto>>(employees);
-        //
-        //     EmployeesPaginationReedDto response = new EmployeesPaginationReedDto
-        //     {
-        //         Page = page,
-        //         PageSize = pageSize,
-        //         TotalCount = total,
-        //         Employees = employees
-        //     };
-        //     return response;
-        // }
-
+        
         public async Task<EmployeesPaginationDto> GetEmployeesPagination(uint page, uint pageSize)
         {
             var total =
@@ -252,6 +224,7 @@ namespace FITApp.EmployeesService.Services
                 TotalCount = total,
                 Employees = employees
             };
+            
             return response;
         }
     }

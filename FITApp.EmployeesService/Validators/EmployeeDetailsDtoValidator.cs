@@ -7,7 +7,6 @@ public class EmployeeDetailsDtoValidator : AbstractValidator<EmployeeDetailsDto>
 {
     public EmployeeDetailsDtoValidator()
     {
-
         RuleFor(dto => dto.FirstName)
                     .NotEmpty().WithMessage("FirstName is required.")
                     .MaximumLength(50).WithMessage("FirstName must not exceed 50 characters.");
@@ -17,6 +16,17 @@ public class EmployeeDetailsDtoValidator : AbstractValidator<EmployeeDetailsDto>
             .MaximumLength(50).WithMessage("LastName must not exceed 50 characters.");
 
         RuleFor(dto => dto.Patronymic)
+            .MaximumLength(50).WithMessage("Patronymic must not exceed 50 characters.");
+        
+        RuleFor(dto => dto.FirstNamePossessive)
+            .NotEmpty().WithMessage("FirstName is required.")
+            .MaximumLength(50).WithMessage("FirstName must not exceed 50 characters.");
+
+        RuleFor(dto => dto.LastNamePossessive)
+            .NotEmpty().WithMessage("LastName is required.")
+            .MaximumLength(50).WithMessage("LastName must not exceed 50 characters.");
+
+        RuleFor(dto => dto.PatronymicPossessive)
             .MaximumLength(50).WithMessage("Patronymic must not exceed 50 characters.");
 
         RuleFor(dto => dto.BirthDate)

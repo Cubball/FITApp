@@ -27,8 +27,10 @@ public class SimpleEmployeeProfile : Profile
         if (src.Contains(parentFieldName))
         {
             var parentField = src[parentFieldName].AsBsonDocument;
+            
             return parentField.Contains(nestedFieldName) ? parentField.GetValue(nestedFieldName).AsString : null;
         }
+        
         return null;
     }
 }

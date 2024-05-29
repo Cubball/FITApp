@@ -15,7 +15,6 @@ public class ProfileController : ControllerBase
     private readonly IEmployeesService _employeeService;
     private readonly IPhotoService _photoService;
 
-
     public ProfileController(IEmployeesService employeeService, IPhotoService photoService)
     {
         _employeeService = employeeService;

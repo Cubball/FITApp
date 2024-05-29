@@ -26,16 +26,17 @@ namespace FITApp.EmployeesService.Repositories
         public async Task<DeleteResult> DeleteEmployee(string id)
         {
             FilterDefinition<Employee> filterDefinition = Builders<Employee>.Filter.Eq(e => e.Id, id);
+            
             return await _employeesCollection.DeleteOneAsync(filterDefinition);
         }
 
         public async Task<Employee> GetEmployee(string id)
         {
             FilterDefinition<Employee> filter = Builders<Employee>.Filter.Eq(a => a.Id, id);
+            
             return await _employeesCollection.Find(filter).FirstOrDefaultAsync();
         }
-
-
+        
         public async Task<IEnumerable<Employee>> GetEmployees()
         {
             return await _employeesCollection.Find(new BsonDocument()).ToListAsync();
@@ -78,39 +79,14 @@ namespace FITApp.EmployeesService.Repositories
                 ? Builders<Employee>.Update.Set(expression, elements)
                 : Builders<Employee>.Update.Unset(expression);
             var result = await UpdateEmployee(id, update);
+            
             return result;
         }
 
         public async Task<long> TotalCountDocuments(FilterDefinition<Employee> filter) => 
             await _employeesCollection.CountDocumentsAsync(filter);
 
-        // public async Task<IEnumerable<Employee>> GetEmployeesByPage(FilterDefinition<Employee> filter, int page, int pageSize)
-        // {
-        //     var employees = await _employeesCollection.Find(filter)
-        //                                         .Skip((page - 1) * pageSize)
-        //                                         .Limit(pageSize)
-        //                                         .ToListAsync();
-        //     return employees;
-        // }
-        //
-        // public async Task<IEnumerable<SimpleEmployeeDto>> GetEmployeesByPage2(FilterDefinition<Employee> filter, int page, int pageSize)
-        // {
-        //     var employeesProjection = _employeesCollection.Find(filter)
-        //         .Project(e => new SimpleEmployeeDto
-        //         {
-        //             Id = e.Id,
-        //             FirstName = e.FirstName,
-        //             LastName = e.LastName,
-        //             Patronymic = e.Patronymic,
-        //             Email = e.User.Email,
-        //             Role = e.User.Role
-        //         })
-        //         .Skip((page - 1) * pageSize)
-        //         .Limit(pageSize);
-        //
-        //     return await employeesProjection.ToListAsync();
-        // }
-        
+ 
         public async Task<IEnumerable<BsonDocument>> GetEmployeesByPage(
             FilterDefinition<Employee> filter, 
             ProjectionDefinition<Employee> projection, 
@@ -129,19 +105,9 @@ namespace FITApp.EmployeesService.Repositories
         {
            FilterDefinition<Employee> filter = Builders<Employee>.Filter.Eq(e => e.Id, id); 
            var count = await _employeesCollection.CountDocumentsAsync(filter);
+           
            return count > 0;
         }
-
-
-
-
-
-
-        // public async Task UpdateEmployee(Employee employee)
-        // {
-        //     var filter = Builders<Employee>.Filter.Eq("Id", employee.Id);
-        //     await _employeesCollection.ReplaceOneAsync(filter, employee);
-        // }
     }
 
 }
