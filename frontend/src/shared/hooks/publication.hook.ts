@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { publicationsService } from '../../services/publications/publications.service';
 import { employeesService } from '../../services/employees/employees.service';
 import { addSuccessToast, createOnError } from '../helpers/toast.helpers';
+import { currentUserService } from '../../services/auth/current-user.service';
 
 interface IUsePublicationReturn {
   publication?: IPublication;
@@ -28,9 +29,9 @@ export const usePublication = (id?: string): IUsePublicationReturn => {
 
   const { data: publication, isLoading: isPublicationLoading } = id
     ? useQuery({
-      queryKey,
-      queryFn: () => publicationsService.getPublication(id)
-    })
+        queryKey,
+        queryFn: () => publicationsService.getPublication(id)
+      })
     : { data: undefined, isLoading: false };
 
   // HACK: should be able to get all the employees by omitting page and pageSize query params
@@ -63,10 +64,17 @@ export const usePublication = (id?: string): IUsePublicationReturn => {
     onError: createOnError('Не вдалося оновити публікацію')
   });
 
+  const currentUserId = currentUserService.getId();
+  if (publication?.authors) {
+    publication.authors = publication.authors.filter(
+      (a) => !a.id || a.id !== currentUserId
+    );
+  }
+
   return {
     publication,
     isPublicationLoading,
-    employees: employeesList?.employees,
+    employees: employeesList?.employees.filter((e) => e.id !== currentUserId),
     areEmployeesLoading,
     createPublication,
     isCreatePublicationLoading,
