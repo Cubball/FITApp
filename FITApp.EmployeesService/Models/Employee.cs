@@ -19,6 +19,15 @@ namespace FITApp.EmployeesService.Models
         [BsonIgnoreIfNull]
         [BsonDefaultValue(null)]
         public string? Patronymic { get; set; }
+        [BsonIgnoreIfNull]
+        [BsonDefaultValue(null)]
+        public string? FirstNamePossessive { get; set; }
+        [BsonIgnoreIfNull]
+        [BsonDefaultValue(null)]
+        public string? LastNamePossessive { get; set; }
+        [BsonIgnoreIfNull]
+        [BsonDefaultValue(null)]
+        public string? PatronymicPossessive { get; set; }
         [BsonIgnoreIfDefault]
         public DateOnly? BirthDate { get; set; }
         [BsonIgnoreIfNull]

@@ -41,6 +41,15 @@ services:
       interval: 10s
       timeout: 10s
       retries: 10
+  publications-service:
+    container_name: publications-service
+    build:
+      context: .
+      dockerfile: FITApp.PublicationsService/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - publications-service-mongo
   postgres:
     container_name: postgres
     image: postgres:latest
@@ -70,7 +79,18 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+  publications-service-mongo:
+    container_name: publications-mongo
+    image: mongo:latest
+    command: mongod --port 27018
+    ports:
+      - 7003:27018
+    volumes:
+      - publications-mongo-data:/data/db
+    env_file:
+      - .env
 
 volumes:
   mongo-data:
   postgres-data:
+  publications-mongo-data:

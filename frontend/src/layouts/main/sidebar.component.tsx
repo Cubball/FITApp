@@ -26,7 +26,7 @@ const Sidebar = () => {
       <div className={(expanded ? 'block' : 'hidden') + ' md:block'}>
         <SidebarItem icon={ProfileIcon} text="Мій профіль" route="/profile" />
         <SidebarItem icon={PublicationsIcon} text="Мої публікації" route="/publications" />
-        <SidebarItem icon={AdministrationIcon} text="Адміністрація" route="/administration" requiredPermission={PermissionsEnum.administrationRead}/>
+        <SidebarItem icon={AdministrationIcon} text="Адміністрація" route="/administration" />
         <SidebarItem icon={UsersIcon} text="Користувачі" route="/employees" requiredPermission={PermissionsEnum.usersRead}/>
         <SidebarItem icon={AddUserIcon} text="Додати користувача" route="/employees/new" requiredPermission={PermissionsEnum.usersCreate}/>
         <SidebarItem icon={RolesIcon} text="Ролі" route="/roles" requiredPermission={PermissionsEnum.rolesRead}/>
