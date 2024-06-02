@@ -2,10 +2,12 @@ using FITApp.Auth.Extensions;
 using FITApp.EmployeesService;
 using FITApp.EmployeesService.Interfaces;
 using FITApp.EmployeesService.Models;
+using FITApp.EmployeesService.Options;
 using FITApp.EmployeesService.Repositories;
 using FITApp.EmployeesService.Services;
 using FITApp.EmployeesService.Validators;
 using FluentValidation;
+using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,13 @@ builder.Services.AddSingleton<IAdministrationService, AdministrationService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddHealthChecks();
+builder.Services.Configure<FITAppOptions>(builder.Configuration.GetSection(FITAppOptions.SectionName));
+
+var publicationsServiceBaseUrl = builder.Configuration["FITAppOptions:PublicationsServiceBaseUrl"] ?? throw new InvalidOperationException("FITAppOptions:PublicationsServiceBaseUrl is not set");
+builder.Services.AddHeaderPropagation(o => o.Headers.Add(HeaderNames.Authorization));
+builder.Services
+    .AddHttpClient<IPublicationsService, PublicationsService>(o => o.BaseAddress = new Uri(publicationsServiceBaseUrl))
+    .AddHeaderPropagation();
 
 MongoDbClassMapInitializer.RegisterClassMaps();
 MongoDbClassMapInitializer.AddConventionPack();
@@ -43,11 +52,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseSwagger();
-app.UseSwaggerUI();
+// app.UseSwagger();
+// app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-
+app.UseHeaderPropagation(); 
 app.MapHealthChecks("/_health");
 
 app.UseAuthorization();
