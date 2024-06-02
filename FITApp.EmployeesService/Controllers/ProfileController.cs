@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
 using FITApp.EmployeesService.Dtos;
 using FITApp.EmployeesService.Interfaces;
 using FluentValidation;
@@ -14,12 +15,21 @@ public class ProfileController : ControllerBase
 {
     private readonly IEmployeesService _employeeService;
     private readonly IPhotoService _photoService;
+    private readonly IPublicationsService _publicationsService;
+    private readonly IMapper _mapper;
 
-    public ProfileController(IEmployeesService employeeService, IPhotoService photoService)
+    public ProfileController(
+        IEmployeesService employeeService,
+        IPhotoService photoService, 
+        IPublicationsService publicationsService, 
+        IMapper mapper)
     {
         _employeeService = employeeService;
         _photoService = photoService;
+        _publicationsService = publicationsService;
+        _mapper = mapper;
     }
+    
     [HttpGet]
     public async Task<IActionResult> GetEmployee()
     {
@@ -31,6 +41,7 @@ public class ProfileController : ControllerBase
         var employee = await _employeeService.GetEmployee(id);
         return Ok(employee);
     }
+    
     [HttpPut]
     public async Task<IActionResult> SetFullNameAndBirth([FromBody] EmployeeDetailsDto employeeDetails)
     {
@@ -42,6 +53,12 @@ public class ProfileController : ControllerBase
 
         try
         {
+            var author = _mapper.Map<AuthorDto>(employeeDetails);
+            var authorUpdated = await _publicationsService.UpdateProfileDetailsAsync(author);
+            if (!authorUpdated)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
             long updatedCount = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
             return updatedCount == 0 ? NotFound() : Ok();
 
@@ -67,6 +84,7 @@ public class ProfileController : ControllerBase
         try
         {
             long updatedCount = await _employeeService.UpdateEmployeePositions(id, positionDto);
+            
             return updatedCount == 0 ? NotFound() : Ok();
 
         }
@@ -77,6 +95,7 @@ public class ProfileController : ControllerBase
         }
 
     }
+    
     [HttpPost("educations")]
     public async Task<IActionResult> AddEducation([FromBody] EducationDto educationDto)
     {
@@ -89,6 +108,7 @@ public class ProfileController : ControllerBase
         try
         {
             long updatedCount = await _employeeService.UpdateEmployeeEducations(id, educationDto);
+            
             return updatedCount == 0 ? NotFound() : Ok();
         }
         catch (ValidationException ex)
@@ -111,6 +131,7 @@ public class ProfileController : ControllerBase
         try
         {
             long updatedCount = await _employeeService.UpdateEmployeeAcademicDegrees(id, educationDto);
+            
             return updatedCount == 0 ? NotFound() : Ok();
         }
         catch (ValidationException ex)
@@ -134,6 +155,7 @@ public class ProfileController : ControllerBase
         try
         {
             long updatedCount = await _employeeService.UpdateEmployeeAcademicRanks(id, academicRankDto);
+            
             return updatedCount == 0 ? NotFound() : Ok();
         }
         catch (ValidationException ex)
@@ -143,6 +165,7 @@ public class ProfileController : ControllerBase
         }
 
     }
+    
     [HttpDelete("academic-ranks/{index}")]
     public async Task<IActionResult> RemoveEmployeeAcademicRank(int index)
     {
@@ -155,6 +178,7 @@ public class ProfileController : ControllerBase
         var result = await _employeeService.RemoveEmployeeAcademicRankByIndex(id, index);
         return result == 0 ? NotFound() : Ok();
     }
+    
     [HttpDelete("positions/{index}")]
     public async Task<IActionResult> RemoveEmployeePosition(int index)
     {
@@ -165,6 +189,7 @@ public class ProfileController : ControllerBase
         }
 
         var result = await _employeeService.RemoveEmployeePositionByIndex(id, index);
+        
         return result == 0 ? NotFound() : Ok();
     }
 
@@ -178,6 +203,7 @@ public class ProfileController : ControllerBase
         }
 
         var result = await _employeeService.RemoveEmployeeEducationByIndex(id, index);
+        
         return result == 0 ? NotFound() : Ok();
     }
 
@@ -191,6 +217,7 @@ public class ProfileController : ControllerBase
         }
 
         var result = await _employeeService.RemoveEmployeeAcademicDegreeByIndex(id, index);
+        
         return result == 0 ? NotFound() : Ok();
     }
 
@@ -207,6 +234,7 @@ public class ProfileController : ControllerBase
             var employee = await _employeeService.GetEmployee(id);
             if (employee.Photo != "") { long updatedCountPhoto = await _photoService.RemoveEmployeePhoto(id); }
             long updatedCount = await _photoService.UpdateEmployeePhoto(id, employeePhotoUploadDto);
+            
             return updatedCount == 0 ? NotFound() : Ok();
         }
         catch (ValidationException ex)
@@ -215,6 +243,7 @@ public class ProfileController : ControllerBase
             throw;
         }
     }
+    
     [HttpDelete("photo")]
     public async Task<IActionResult> RemovePhoto()
     {
@@ -227,6 +256,7 @@ public class ProfileController : ControllerBase
         try
         {
             long updatedCount = await _photoService.RemoveEmployeePhoto(id);
+            
             return updatedCount == 0 ? NotFound() : Ok();
         }
         catch (Exception)
