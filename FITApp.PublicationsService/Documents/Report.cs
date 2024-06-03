@@ -342,6 +342,7 @@ namespace FITApp.PublicationsService.Documents
                                 .DefaultTextStyle(x =>
                                     x.SemiBold().FontSize(13).FontFamily(Fonts.TimesNewRoman)
                                 )
+                                .Padding(2)
                                 .Border(0.25f)
                                 .BorderColor(Colors.Black);
                         }

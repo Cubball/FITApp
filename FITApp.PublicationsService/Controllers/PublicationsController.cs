@@ -129,7 +129,7 @@ namespace FITApp.PublicationsService.Controllers
             var userId = this.GetUserId();
 
             var ms = await _publicationsService.GetReport(userId, startDate, endDate);
-            return File(ms, "application/octet-stream", $"report_{startDate.ToString("dd-MM-yy")}_{endDate.ToString("dd-MM-yy")}.pdf");
+            return File(ms, "application/pdf", $"report_{startDate.ToString("dd-MM-yy")}_{endDate.ToString("dd-MM-yy")}.pdf");
         }
     }
 }
