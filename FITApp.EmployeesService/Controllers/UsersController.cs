@@ -22,6 +22,7 @@ namespace FITApp.EmployeesService.Controllers
             try
             {
                 await _usersService.CreateUser(userDto);
+                
                 return Ok();
             }
             catch (ValidationException ex)
@@ -30,6 +31,7 @@ namespace FITApp.EmployeesService.Controllers
                 throw;
             }
         }
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -52,8 +54,8 @@ namespace FITApp.EmployeesService.Controllers
             }
 
             long updatedCount = await _usersService.UpdateUserDetails(id, userUpdateDto);
+            
             return updatedCount == 0 ? NotFound() : Ok();
-
         }
     }
 }

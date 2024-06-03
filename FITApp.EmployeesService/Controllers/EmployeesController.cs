@@ -1,3 +1,4 @@
+using AutoMapper;
 using FITApp.Auth.Attributes;
 using FITApp.Auth.Data;
 using FITApp.EmployeesService.Dtos;
@@ -16,11 +17,18 @@ namespace FITApp.EmployeesService.Controllers
     {
         private readonly IEmployeesService _employeeService;
         private readonly IPhotoService _photoService;
+        private readonly IPublicationsService _publicationsService;
+        private IMapper _mapper;
 
-        public EmployeesController(IEmployeesService employeeService, IPhotoService photoService)
+        public EmployeesController(IEmployeesService employeeService,
+            IPhotoService photoService, 
+            IPublicationsService publicationsService, 
+            IMapper mapper)
         {
             _employeeService = employeeService;
             _photoService = photoService;
+            _publicationsService = publicationsService;
+            _mapper = mapper;
         }
         
         [RequiresPermission(Permissions.UsersCreate, Permissions.All)]
@@ -43,6 +51,12 @@ namespace FITApp.EmployeesService.Controllers
 
             try
             {
+                var author = _mapper.Map<AuthorDto>(employeeDetails);
+                var authorUpdated = await _publicationsService.UpdateAuthorDetailsAsync(id, author);
+                if (!authorUpdated)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
                 long updatedCount = await _employeeService.UpdateEmployeeDetails(id, employeeDetails);
                 
                 return updatedCount == 0 ? NotFound() : Ok();
