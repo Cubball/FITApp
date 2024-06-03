@@ -108,6 +108,7 @@ const AddUpdatePublication = () => {
                 <option value="Методичні рекомендації">Методичні рекомендації</option>
                 <option value="Монографія">Монографія</option>
                 <option value="Статті">Статті</option>
+                <option value="Авторське право">Авторське право</option>
                 <option value="Інше">Інше</option>
               </Field>
             </div>
