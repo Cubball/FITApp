@@ -339,12 +339,12 @@ namespace FITApp.PublicationsService.Documents
                         static IContainer CellStyle(IContainer container)
                         {
                             return container
+                                .Border(0.25f)
+                                .BorderColor(Colors.Black)
+                                .Padding(2)
                                 .DefaultTextStyle(x =>
                                     x.SemiBold().FontSize(13).FontFamily(Fonts.TimesNewRoman)
-                                )
-                                .Padding(2)
-                                .Border(0.25f)
-                                .BorderColor(Colors.Black);
+                                );
                         }
                     });
 
